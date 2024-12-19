@@ -55,8 +55,10 @@ public class APIRunner {
             }
 
             // Använd den sparade platsen i väder-API-anrop
-            String apiUrl = "https://api.tomorrow.io/v4/weather/realtime?location="
-                    + runner.location + "&apikey=" + runner.weatherAPI_Key;
+            String apiUrl = "https://api.tomorrow.io/v4/weather/realtime?location=" +
+                    runner.location + "&apikey=" + runner.weatherAPI_Key;
+
+            System.out.println(apiUrl);
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(apiUrl))
@@ -68,6 +70,8 @@ public class APIRunner {
 
             // Skicka vädersvar till klienten
             ctx.json(response.body());
+
+            System.out.println(response.body());
         });
     }
 
@@ -77,6 +81,7 @@ public class APIRunner {
         try (InputStream input = new FileInputStream("config.properties")) {
             props.load(input);
             weatherAPI_Key = props.getProperty("db.weatherApi");
+            System.out.println(weatherAPI_Key);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             System.out.println("WeatherAPI_Key : loadConfiguration : File not found exception");
