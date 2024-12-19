@@ -51,12 +51,12 @@ public class Location {
             JsonObject address = jsonObject.getAsJsonObject("address");
 
             // Exempel: Hämta gatan, stad och land från address-objektet
-            String road = address.has("road") ? address.get("road").getAsString() : "Okänd väg";
+            String county = address.has("county") ? address.get("county").getAsString() : "Okänt län";
             String city = address.has("city") ? address.get("city").getAsString() : "Okänd stad";
             String country = address.has("country") ? address.get("country").getAsString() : "Okänt land";
 
             // Sätt ihop och returnera en lämplig plats
-            return String.format("%s, %s, %s", road, city, country);
+            return String.format("%s, %s, %s", city, county, country);
         } catch (Exception e) {
             e.printStackTrace();
         }
