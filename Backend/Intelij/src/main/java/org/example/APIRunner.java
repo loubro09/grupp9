@@ -71,7 +71,16 @@ public class APIRunner {
             // Skicka vädersvar till klienten
             ctx.json(response.body());
 
-            System.out.println(response.body());
+            // Använd Parser
+            try {
+                WeatherData weatherData = WeatherParser.parseWeatherData(response.body());
+
+                ctx.json(weatherData);
+            } catch (Exception e) {
+                e.printStackTrace();
+                ctx.status(500).result("Error parsing weather data");
+            }
+
         });
     }
 
