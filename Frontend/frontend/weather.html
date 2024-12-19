@@ -52,10 +52,10 @@
                                 }
                                 return response.json();
                             })
-                            .then(data => {
-                                document.getElementById("weather").textContent =
-                                    `Backend svar: ${JSON.stringify(data)}`;
-                            })
+                             .then(data => {
+                        document.getElementById("weather").textContent =
+                            `Platsnamn: ${data.data}`; // Visa platsnamnet från servern
+                    })
                             .catch(error => console.error("Fel vid sparande av plats:", error));
                     },
                     (error) => {

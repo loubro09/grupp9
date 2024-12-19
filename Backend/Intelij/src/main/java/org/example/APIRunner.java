@@ -17,9 +17,11 @@ import java.util.Properties;
 public class APIRunner {
     String weatherAPI_Key;
     private String location;
+    private static Location locationController;
 
     public APIRunner() {
         loadConfig();
+        locationController = new Location();
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -43,8 +45,10 @@ public class APIRunner {
             // Spara plats i instansvariabel
             runner.location = body;
 
+            String placeName = locationController.getPlaceNameFromCoordinates(body);
+
             // Bekräfta mottagning till klient
-            ctx.json("{\"message\": \"Platsen sparad\", \"data\": " + body + "}");
+            ctx.json("{\"message\": \"Platsen sparad\", \"data\": \"" + placeName + "\"}");
         });
 
         // Hämta väderdata
