@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geolocation and Weather</title>
+</head>
+<body>
+<button id="getLocation">Hämta plats</button>
+<button id="getWeather">Hämta Väder</button>
+<p id="output"></p>
+<p id="weather"></p>
+<script>
+    document.getElementById("getWeather").addEventListener("click", () => {
+        fetch("http://localhost:5008/weather")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`API-fel: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Visa väderinformation på sidan
+                document.getElementById("weather").textContent =
+                    `Väderdata: ${JSON.stringify(data)}`;
+            })
+            .catch(error => console.error("Fel vid hämtning av väder:", error));
+    });
+
+        document.getElementById("getLocation").addEventListener("click", () => {
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+
+                        const locationData = `${latitude},${longitude}`;
+
+                        document.getElementById("output").textContent =
+                            `Latitude: ${latitude}, Longitude: ${longitude}`;
+
+                        fetch("http://localhost:5008/location", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: locationData, // Skicka som JSON
+                        })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error(`API-fel: ${response.status}`);
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                document.getElementById("weather").textContent =
+                                    `Backend svar: ${JSON.stringify(data)}`;
+                            })
+                            .catch(error => console.error("Fel vid sparande av plats:", error));
+                    },
+                    (error) => {
+                        document.getElementById("output").textContent = "Fel: " + error.message;
+                    }
+                );
+            } else {
+                document.getElementById("output").textContent = "Geolocation stöds inte.";
+            }
+        });
+</script>
+</body>
+</html>
