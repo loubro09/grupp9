@@ -17,6 +17,7 @@ import java.util.Properties;
 public class APIRunner {
     String weatherAPI_Key;
     private String location;
+    private String locationName;
     private static Location locationController;
 
     public APIRunner() {
@@ -45,10 +46,10 @@ public class APIRunner {
             // Spara plats i instansvariabel
             runner.location = body;
 
-            String placeName = locationController.getPlaceNameFromCoordinates(body);
+            runner.locationName = locationController.getPlaceNameFromCoordinates(body);
 
             // Bekräfta mottagning till klient
-            ctx.json("{\"message\": \"Platsen sparad\", \"data\": \"" + placeName + "\"}");
+            ctx.json("{\"message\": \"Platsen sparad\", \"data\": \"" +  runner.locationName + "\"}");
         });
 
         // Hämta väderdata
@@ -78,6 +79,7 @@ public class APIRunner {
             // Använd Parser
             try {
                 WeatherData weatherData = WeatherParser.parseWeatherData(response.body());
+                weatherData.setLocationName( runner.locationName);
 
                 ctx.json(weatherData);
             } catch (Exception e) {
