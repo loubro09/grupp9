@@ -120,10 +120,11 @@ public class WeatherAnalyzer {
     public static void main(String[] args) {
         WeatherAnalyzer analyzer = new WeatherAnalyzer();
 
-        System.out.println(analyzer.analyzeWeather(1000, 25.0)); // Output: Sommar - Soligt
-        System.out.println(analyzer.analyzeWeather(1101, 12.0)); // Output: Vår/Höst - Delvis soligt och lätt molnigt
-        System.out.println(analyzer.analyzeWeather(4001, -2.0)); // Output: Vinter - Kraftigt regn och åska
-        System.out.println(analyzer.analyzeWeather(0, 8.0));    // Output: Vår/Höst - Oklart eller varierande
+        //Test
+        System.out.println(analyzer.analyzeWeather(1000, 25.0));
+        System.out.println(analyzer.analyzeWeather(1101, 12.0));
+        System.out.println(analyzer.analyzeWeather(4001, -2.0));
+        System.out.println(analyzer.analyzeWeather(0, 8.0));
 
 
     }
