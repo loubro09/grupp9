@@ -15,42 +15,6 @@ public class WeatherData {
         this.locationName = locationName;
     }
 
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public String getTemp() {
-        return temp;
-    }
-
-    public void setTemp(String temp) {
-        this.temp = temp;
-    }
-
-    public String getWeatherCode() {
-        return weatherCode;
-    }
-
-    public void setWeatherCode(String weatherCode) {
-        this.weatherCode = weatherCode;
-    }
-
-    public String getLocationCor() {
-        return locationCor;
-    }
-
-    public void setLocationCor(String locationCor) {
-        this.locationCor = locationCor;
-    }
-
-    public String getLocationName() {
-        return locationName;
-    }
-
     public void setLocationName(String locationName) {
         this.locationName = locationName;
     }
