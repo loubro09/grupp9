@@ -32,7 +32,7 @@ public class WeatherData {
     /*
     Få in allt, paketera upp, skicka weather code till analyzer.
 
-    Spara svaret från analyzer så att Spotify kan hämta det. Tolka temperaturen till Spotify.
+    Spara svaret från analyzer, temperature och code så att Spotify kan hämta det.
 
     Skicka vald information till Response + svaret från Weather Analyzer + Namnet på staden.
      */
