@@ -2,12 +2,14 @@ package org.example;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.example.WeatherData;
+
 public class WeatherParser {
 
     public static WeatherData parseWeatherData(String jsonResponse) {
         JsonObject jsonObject = JsonParser.parseString(jsonResponse).getAsJsonObject();
 
-        // Packa upp JSON objekt och skapa WeatherData objekt med
+        // Extract required fields with null checks
         JsonObject data = jsonObject.getAsJsonObject("data");
         String time = data != null && data.has("time") ? data.get("time").getAsString() : "Unknown time";
 
@@ -20,10 +22,14 @@ public class WeatherParser {
         String lon = location != null && location.has("lon") ? location.get("lon").getAsString() : "Unknown longitude";
         String locationCor = lat + ", " + lon;
 
+        // For locationName, assume a placeholder since it's not in the JSON
         String locationName = "Unknown location";
 
-        //return WeatherData
+        // Populate and return WeatherData
         return new WeatherData(time, temp, weatherCode, locationCor, locationName);
     }
 
+    public static void main(String[] args) {
+        // For testing purposes, you can call the parseWeatherData here
+    }
 }
