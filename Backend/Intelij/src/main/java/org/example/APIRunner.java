@@ -17,6 +17,7 @@ import java.util.Properties;
 public class APIRunner {
     String weatherAPI_Key;
     private String location;
+    private String locationName;
     private static Location locationController;
 
     public APIRunner() {
@@ -35,21 +36,17 @@ public class APIRunner {
             });
         }).start(5008);
 
-        //hämtar nuvarande plats
+        //anrop för att få koordinaterna till nuvarande plats
         app.get("/", ctx -> ctx.result(Files.readString(Paths.get("weather.html"))));
 
-        app.post("/location", ctx -> {
-            String body = ctx.body();
-            System.out.println("Mottagna koordinater: " + body);
+        //anrop för att få namnet på en plats
+        app.post("/location", ctx -> runner.locationController.locationByCoordinates(ctx));
 
-            // Spara plats i instansvariabel
-            runner.location = body;
+        //anrop för att få koordinaterna till en plats
+        app.get("/locationByName", ctx -> runner.locationController.locationByName(ctx));
 
-            String placeName = locationController.getPlaceNameFromCoordinates(body);
-
-            // Bekräfta mottagning till klient
-            ctx.json("{\"message\": \"Platsen sparad\", \"data\": \"" + placeName + "\"}");
-        });
+        runner.location = locationController.getLocationCoordinates();
+        runner.locationName = locationController.getPlaceName();
 
         // Hämta väderdata
         app.get("/weather", ctx -> {
@@ -85,7 +82,6 @@ public class APIRunner {
         try (InputStream input = new FileInputStream("config.properties")) {
             props.load(input);
             weatherAPI_Key = props.getProperty("db.weatherApi");
-            System.out.println(weatherAPI_Key);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             System.out.println("WeatherAPI_Key : loadConfiguration : File not found exception");
@@ -95,8 +91,5 @@ public class APIRunner {
             System.out.println(":WeatherAPI_Key  loadConfiguration : IO exception");
             throw new RuntimeException(e);
         }
-
-
     }
-
 }
