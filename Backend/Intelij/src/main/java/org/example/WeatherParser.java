@@ -26,5 +26,4 @@ public class WeatherParser {
         return new WeatherData(time, temp, weatherCode, locationCor, locationName);
     }
 
-
 }
