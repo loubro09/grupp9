@@ -26,7 +26,7 @@ public class WeatherParser {
         String locationName = "Unknown location";
 
         // Populate and return WeatherData
-        return new WeatherData(time, temp, weatherCode, locationCor, locationName);
+        return new WeatherData();
     }
 
     public static void main(String[] args) {

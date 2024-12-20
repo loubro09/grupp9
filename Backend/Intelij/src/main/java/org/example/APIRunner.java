@@ -19,10 +19,12 @@ public class APIRunner {
     private String location;
     private String locationName;
     private static Location locationController;
+    private static WeatherData weatherData;
 
     public APIRunner() {
         loadConfig();
         locationController = new Location();
+        weatherData = new WeatherData();
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -50,44 +52,10 @@ public class APIRunner {
 
 
         // Hämta väderdata
-        app.get("/weather", ctx -> {
-            if (runner.location == null) {
-                ctx.status(400).result("Ingen plats har sparats ännu.");
-                return;
-            }
 
-            // Använd den sparade platsen i väder-API-anrop
-            String apiUrl = "https://api.tomorrow.io/v4/weather/realtime?location=" +
-                    runner.location + "&apikey=" + runner.weatherAPI_Key;
-
-            System.out.println(apiUrl);
-
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(apiUrl))
-                    .header("accept", "application/json")
-                    .method("GET", HttpRequest.BodyPublishers.noBody())
-                    .build();
-
-            HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        app.post("/weatherLocation", ctx -> {runner.weatherData.weatherbylocation(ctx, runner.locationName,runner.weatherAPI_Key);});
 
 
-            // Skicka vädersvar till klienten
-            ctx.json(response.body());
-
-            // Använd Parser
-            try {
-                WeatherData weatherData = WeatherParser.parseWeatherData(response.body());
-                weatherData.setLocationName( runner.locationName);
-                WeatherAnalyzer weatherAnalyzer = new WeatherAnalyzer();
-                System.out.println(weatherAnalyzer.analyzeWeather(weatherData.getWeatherCode(),weatherData.getTemp()));
-
-                ctx.json(weatherData);
-            } catch (Exception e) {
-                e.printStackTrace();
-                ctx.status(500).result("Error parsing weather data");
-            }
-
-        });
     }
 
 

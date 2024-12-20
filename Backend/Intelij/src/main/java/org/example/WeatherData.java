@@ -1,19 +1,49 @@
 package org.example;
 
+import io.javalin.http.Context;
+
+import java.net.http.HttpRequest;
+
 public class WeatherData {
     private String time;
     private String temp;
     private String weatherCode;
     private String locationCor;
     private String locationName;
+    private String API_Key;
 
-    public WeatherData(String time, String temp, String weatherCode, String locationCor, String locationName) {
-        this.time = time;
-        this.temp = temp;
-        this.weatherCode = weatherCode;
-        this.locationCor = locationCor;
-        this.locationName = locationName;
+    public void weatherbylocation(Context ctx,String location, String API_Key){
+        String apiUrl = "https://api.tomorrow.io/v4/weather/realtime?location=" +
+                location + "&apikey=" + API_Key;
+
+        System.out.println(apiUrl);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(apiUrl))
+                .header("accept", "application/json")
+                .method("GET", HttpRequest.BodyPublishers.noBody())
+                .build();
+
+        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+
+
+        // Skicka vädersvar till klienten
+        ctx.json(response.body());
+
+        // Använd Parser
+        try {
+            WeatherData weatherData = WeatherParser.parseWeatherData(response.body());
+            weatherData.setLocationName( runner.locationName);
+            WeatherAnalyzer weatherAnalyzer = new WeatherAnalyzer();
+            System.out.println(weatherAnalyzer.analyzeWeather(weatherData.getWeatherCode(),weatherData.getTemp()));
+
+            ctx.json(weatherData);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ctx.status(500).result("Error parsing weather data");
+        }
     }
+
 
     public String getTime() {
         return time;
@@ -74,4 +104,41 @@ public class WeatherData {
     Skicka vald information till Response + svaret från Weather Analyzer + Namnet på staden.
      */
 
+    /*
+    if (runner.location == null) {
+                ctx.status(400).result("Ingen plats har sparats ännu.");
+                return;
+            }
+
+            // Använd den sparade platsen i väder-API-anrop
+            String apiUrl = "https://api.tomorrow.io/v4/weather/realtime?location=" +
+                    runner.location + "&apikey=" + runner.weatherAPI_Key;
+
+            System.out.println(apiUrl);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(apiUrl))
+                    .header("accept", "application/json")
+                    .method("GET", HttpRequest.BodyPublishers.noBody())
+                    .build();
+
+            HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+
+
+            // Skicka vädersvar till klienten
+            ctx.json(response.body());
+
+            // Använd Parser
+            try {
+                WeatherData weatherData = WeatherParser.parseWeatherData(response.body());
+                weatherData.setLocationName( runner.locationName);
+                WeatherAnalyzer weatherAnalyzer = new WeatherAnalyzer();
+                System.out.println(weatherAnalyzer.analyzeWeather(weatherData.getWeatherCode(),weatherData.getTemp()));
+
+                ctx.json(weatherData);
+            } catch (Exception e) {
+                e.printStackTrace();
+                ctx.status(500).result("Error parsing weather data");
+            }
+     */
 }
