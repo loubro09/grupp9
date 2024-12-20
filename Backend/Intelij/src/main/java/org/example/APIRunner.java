@@ -53,7 +53,8 @@ public class APIRunner {
 
         // Hämta väderdata
 
-        app.post("/weatherLocation", ctx -> {runner.weatherData.weatherbylocation(ctx, runner.locationName,runner.weatherAPI_Key);});
+        app.get("/weatherLocation", ctx -> {runner.weatherData.weatherbylocation(ctx, runner.locationName,
+                runner.location, runner.weatherAPI_Key);});
 
 
     }
