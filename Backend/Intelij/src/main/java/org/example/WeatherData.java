@@ -18,7 +18,9 @@ public class WeatherData {
     private String API_Key;
 
     public void weatherbylocation(Context ctx, String location, String locationCor, String API_Key) {
-        System.out.println("WeatherData 21");
+        System.out.println("WeatherData 21 " );
+        locationName = location;
+        System.out.println(locationName);
         // Kontrollera om plats eller koordinater är null
         if (locationCor == null || locationCor.isEmpty()) {
             ctx.status(400).result("Inga koordinater sparade för att hämta väder.");
@@ -54,13 +56,16 @@ public class WeatherData {
 
             // Skapa JSON-svar till frontend
             JsonObject responseData = new JsonObject();
-            responseData.addProperty("locationName", location != null ? location : "Okänd plats");
+
+            responseData.addProperty("locationName", locationName != null ? locationName : "Okänd plats");
             responseData.addProperty("time", time != null ? time : "Okänd tid");
             responseData.addProperty("temp", temp != null ? temp : "Okänd temperatur");
             responseData.addProperty("weatherCode", weatherCode != null ? weatherCode : "Okänt väder");
 
+
             // Skicka JSON till frontend
-            ctx.json(responseData);
+            ctx.json(responseData.toString());
+            System.out.println("efter" + responseData);
 
 
         } catch (Exception e) {

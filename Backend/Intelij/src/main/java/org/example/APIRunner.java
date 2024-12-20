@@ -58,7 +58,7 @@ public class APIRunner {
                 ctx.status(400).result("Ingen plats har sparats ännu.");
                 return;
             }
-            runner.weatherData.weatherbylocation(ctx, runner.locationName,
+            runner.weatherData.weatherbylocation(ctx, locationController.getPlaceName(),
                     locationController.getLocationCoordinates(), runner.weatherAPI_Key);
 
         });
