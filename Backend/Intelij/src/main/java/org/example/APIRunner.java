@@ -48,6 +48,7 @@ public class APIRunner {
         runner.location = locationController.getLocationCoordinates();
         runner.locationName = locationController.getPlaceName();
 
+
         // Hämta väderdata
         app.get("/weather", ctx -> {
             if (runner.location == null) {
@@ -72,7 +73,17 @@ public class APIRunner {
             // Skicka vädersvar till klienten
             ctx.json(response.body());
 
-            System.out.println(response.body());
+            // Använd Parser
+            try {
+                WeatherData weatherData = WeatherParser.parseWeatherData(response.body());
+                weatherData.setLocationName( runner.locationName);
+
+                ctx.json(weatherData);
+            } catch (Exception e) {
+                e.printStackTrace();
+                ctx.status(500).result("Error parsing weather data");
+            }
+
         });
     }
 
