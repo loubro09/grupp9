@@ -52,9 +52,16 @@ public class APIRunner {
 
 
         // Hämta väderdata
+        app.get("/weatherLocation", ctx -> {
+            System.out.println(locationController.getLocationCoordinates());
+            if (locationController.getLocationCoordinates() == null) {
+                ctx.status(400).result("Ingen plats har sparats ännu.");
+                return;
+            }
+            runner.weatherData.weatherbylocation(ctx, runner.locationName,
+                    locationController.getLocationCoordinates(), runner.weatherAPI_Key);
 
-        app.get("/weatherLocation", ctx -> {runner.weatherData.weatherbylocation(ctx, runner.locationName,
-                runner.location, runner.weatherAPI_Key);});
+        });
 
 
     }

@@ -130,6 +130,32 @@
             .catch(error => console.error("Fel vid hämtning av koordinater:", error));
     });
 
+    document.getElementById("getWeather").addEventListener("click", () => {
+        fetch("http://localhost:5008/weatherLocation")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`API-fel: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Visa data på frontend
+                const weatherOutput = `
+                Plats: ${data.locationName || "Okänd plats"}
+                Temperatur: ${data.temp || "Okänd temperatur"} °C
+                Tid: ${data.time || "Okänd tid"}
+                Väderkod: ${data.weatherCode || "Okänt väder"}
+            `;
+                document.getElementById("weather").textContent = weatherOutput;
+            })
+            .catch(error => {
+                console.error("Fel vid hämtning av väderdata:", error);
+                document.getElementById("weather").textContent = "Kunde inte hämta väderdata.";
+            });
+    });
+
+
+
     document.getElementById("getLocation").addEventListener("click", () => {
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(

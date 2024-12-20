@@ -17,14 +17,21 @@ public class WeatherData {
     private String locationName;
     private String API_Key;
 
-    public void weatherbylocation(Context ctx,String location, String locationCor, String API_Key){
-        locationName = location;
+    public void weatherbylocation(Context ctx, String location, String locationCor, String API_Key) {
+        System.out.println("WeatherData 21");
+        // Kontrollera om plats eller koordinater är null
+        if (locationCor == null || locationCor.isEmpty()) {
+            ctx.status(400).result("Inga koordinater sparade för att hämta väder.");
+            return;
+        }
 
+        // Skapa API URL
         String apiUrl = "https://api.tomorrow.io/v4/weather/realtime?location=" +
                 locationCor + "&apikey=" + API_Key;
 
-        System.out.println(apiUrl);
+        System.out.println("Calling Weather API: " + apiUrl);
 
+        // Skapa HTTP-begäran
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(apiUrl))
                 .header("accept", "application/json")
@@ -32,19 +39,36 @@ public class WeatherData {
                 .build();
 
         try {
-        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            // Skicka HTTP-begäran
+            HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 
-        // Skicka vädersvar till klienten
-        ctx.json(response.body());
-            getWeather(response.body());
+            // Kontrollera om API-svaret är giltigt
+            if (response.statusCode() != 200) {
+                ctx.status(response.statusCode()).result("Fel från väder-API: " + response.body());
+                return;
+            }
 
-            ctx.json(toString());
+            // Hämta och bearbeta väderdata
+            String jsonResponse = response.body();
+            getWeather(jsonResponse);
+
+            // Skapa JSON-svar till frontend
+            JsonObject responseData = new JsonObject();
+            responseData.addProperty("locationName", location != null ? location : "Okänd plats");
+            responseData.addProperty("time", time != null ? time : "Okänd tid");
+            responseData.addProperty("temp", temp != null ? temp : "Okänd temperatur");
+            responseData.addProperty("weatherCode", weatherCode != null ? weatherCode : "Okänt väder");
+
+            // Skicka JSON till frontend
+            ctx.json(responseData);
+
 
         } catch (Exception e) {
             e.printStackTrace();
-            ctx.status(500).result("Error parsing weather data");
+            ctx.status(500).result("Fel vid hämtning av väderdata.");
         }
     }
+
 
     private void getWeather(String jsonResponse){
         JsonObject jsonObject = JsonParser.parseString(jsonResponse).getAsJsonObject();

@@ -13,7 +13,6 @@ public class WeatherAnalyzer {
     public String analyzeWeather(String weatherCode, double temperature) {
         String season = getSeason(temperature);
         String weatherDescription = getWeatherDescription(weatherCode);
-        System.out.println("ANALYZER 16");
 
         if (season.equals("Summer") && weatherDescription.equals("Sunshine")) {
             return "Summer Mix";
