@@ -141,10 +141,10 @@
             .then(data => {
                 // Visa data på frontend
                 const weatherOutput = `
-                Plats: ${data.locationName || "Okänd plats"}
-                Temperatur: ${data.temp || "Okänd temperatur"} °C
-                Tid: ${data.time || "Okänd tid"}
-                Väderkod: ${data.weatherCode || "Okänt väder"}
+                Place: ${data.locationName || "Okänd plats"},
+                Time: ${data.time || "Okänd tid"},
+                Weather forecast: ${data.weatherDescription || "Okänt väder"},
+                Temperature: ${data.temp || "Okänd temperatur"} °C
             `;
                 document.getElementById("weather").textContent = weatherOutput;
             })

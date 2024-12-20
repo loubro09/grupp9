@@ -62,7 +62,7 @@ public class WeatherAnalyzer {
      * @param weatherCode the code representing the weather condition.
      * @return a string describing the weather condition (e.g., Sunshine, Rain, Snow).
      */
-    private String getWeatherDescription(String weatherCode) {
+    public String getWeatherDescription(String weatherCode) {
         switch (weatherCode) {
             case "1000": // "Clear, Sunny"
             case "1100": // "Mostly Clear"
@@ -115,19 +115,6 @@ public class WeatherAnalyzer {
         } else {
             return "Winter";  // Vinter om temperaturen är under 5°C
         }
-    }
-
-    public static void main(String[] args) {
-        WeatherAnalyzer analyzer = new WeatherAnalyzer();
-
-
-        //Test
-        System.out.println(analyzer.analyzeWeather("1000", 25.0));
-        System.out.println(analyzer.analyzeWeather("1101", 12.0));
-        System.out.println(analyzer.analyzeWeather("4001", -2.0));
-        System.out.println(analyzer.analyzeWeather("0", 8.0));
-
-
     }
 }
 

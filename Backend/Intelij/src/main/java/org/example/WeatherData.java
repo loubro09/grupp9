@@ -13,14 +13,19 @@ public class WeatherData {
     private String time;
     private String temp;
     private String weatherCode;
+    private String weatherDescription;
     private String locationCor;
     private String locationName;
-    private String API_Key;
+    private WeatherAnalyzer weatherAnalyzer;
+
+
+    public WeatherData() {
+         weatherAnalyzer = new WeatherAnalyzer();
+    }
 
     public void weatherbylocation(Context ctx, String location, String locationCor, String API_Key) {
-        System.out.println("WeatherData 21 " );
+
         locationName = location;
-        System.out.println(locationName);
         // Kontrollera om plats eller koordinater är null
         if (locationCor == null || locationCor.isEmpty()) {
             ctx.status(400).result("Inga koordinater sparade för att hämta väder.");
@@ -31,7 +36,7 @@ public class WeatherData {
         String apiUrl = "https://api.tomorrow.io/v4/weather/realtime?location=" +
                 locationCor + "&apikey=" + API_Key;
 
-        System.out.println("Calling Weather API: " + apiUrl);
+
 
         // Skapa HTTP-begäran
         HttpRequest request = HttpRequest.newBuilder()
@@ -61,11 +66,13 @@ public class WeatherData {
             responseData.addProperty("time", time != null ? time : "Okänd tid");
             responseData.addProperty("temp", temp != null ? temp : "Okänd temperatur");
             responseData.addProperty("weatherCode", weatherCode != null ? weatherCode : "Okänt väder");
+            weatherDescription = weatherAnalyzer.getWeatherDescription(getWeatherCode());
+            responseData.addProperty("weatherDescription", weatherDescription != null ? weatherDescription : "weathercode saknas");
 
 
             // Skicka JSON till frontend
             ctx.json(responseData.toString());
-            System.out.println("efter" + responseData);
+
 
 
         } catch (Exception e) {
@@ -86,9 +93,8 @@ public class WeatherData {
         JsonObject values = data != null ? data.getAsJsonObject("values") : null;
         temp = values != null && values.has("temperature") ? values.get("temperature").getAsString() : "Unknown temperature";
         weatherCode = values != null && values.has("weatherCode") ? values.get("weatherCode").getAsString() : "Unknown weather code";
+
     }
-
-
     public String getTime() {
         return time;
     }
@@ -140,47 +146,5 @@ public class WeatherData {
                 ", locationName='" + locationName + '\'' +
                 '}';
     }
-    /*
-    Få in allt, paketera upp, skicka weather code till analyzer.
 
-    Spara svaret från analyzer så att Spotify kan hämta det. Tolka temperaturen till Spotify.
-
-    Skicka vald information till Response + svaret från Weather Analyzer + Namnet på staden.
-     */
-
-    /*
-    if (runner.location == null) {
-                ctx.status(400).result("Ingen plats har sparats ännu.");
-                return;
-            }
-
-            // Använd den sparade platsen i väder-API-anrop
-            String apiUrl = "https://api.tomorrow.io/v4/weather/realtime?location=" +
-                    runner.location + "&apikey=" + runner.weatherAPI_Key;
-
-            System.out.println(apiUrl);
-
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(apiUrl))
-                    .header("accept", "application/json")
-                    .method("GET", HttpRequest.BodyPublishers.noBody())
-                    .build();
-
-            HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-
-
-            // Skicka vädersvar till klienten
-            ctx.json(response.body());
-
-            // Använd Parser
-            try {
-                weatherData.setLocationName( runner.locationName);
-                System.out.println(weatherAnalyzer.analyzeWeather(weatherData.getWeatherCode(),weatherData.getTemp()));
-
-                ctx.json(weatherData);
-            } catch (Exception e) {
-                e.printStackTrace();
-                ctx.status(500).result("Error parsing weather data");
-            }
-     */
 }
