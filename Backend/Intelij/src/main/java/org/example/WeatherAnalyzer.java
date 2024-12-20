@@ -10,9 +10,10 @@ public class WeatherAnalyzer {
      * @param temperature the current temperature in degrees Celsius.
      * @return a string representing a playlist based on the weather and season.
      */
-    public String analyzeWeather(int weatherCode, double temperature) {
+    public String analyzeWeather(String weatherCode, double temperature) {
         String season = getSeason(temperature);
         String weatherDescription = getWeatherDescription(weatherCode);
+        System.out.println("ANALYZER 16");
 
         if (season.equals("Summer") && weatherDescription.equals("Sunshine")) {
             return "Summer Mix";
@@ -62,38 +63,38 @@ public class WeatherAnalyzer {
      * @param weatherCode the code representing the weather condition.
      * @return a string describing the weather condition (e.g., Sunshine, Rain, Snow).
      */
-    private String getWeatherDescription(int weatherCode) {
+    private String getWeatherDescription(String weatherCode) {
         switch (weatherCode) {
-            case 1000: // "Clear, Sunny"
-            case 1100: // "Mostly Clear"
+            case "1000": // "Clear, Sunny"
+            case "1100": // "Mostly Clear"
                 return "Sunshine";
-            case 1101: // "Partly Cloudy"
-            case 1102: // "Mostly Cloudy"
-            case 1001: // "Cloudy"
-            case 2000: // "Fog"
-            case 2100: // "Light Fog"
+            case "1101": // "Partly Cloudy"
+            case "1102": // "Mostly Cloudy"
+            case "1001": // "Cloudy"
+            case "2000": // "Fog"
+            case "2100": // "Light Fog"
                 return "Cloudy"; // Mostly Clear, Partly Cloudy
-            case 4000: // "Drizzle"
-            case 4200: // "Rain"
-            case 4001: // "Light Rain"
-            case 4201: // "Heavy Rain"
+            case "4000": // "Drizzle"
+            case "4200": // "Rain"
+            case "4001": // "Light Rain"
+            case "4201": // "Heavy Rain"
                 return "Rain";
-            case 8000: // "Thunderstorm"
+            case "8000": // "Thunderstorm"
                 return "Thunderstorm";
-            case 5000: // "Snow"
-            case 5100: // "Flurries"
-            case 5101: // "Light Snow"
-            case 5001: // "Heavy Snow"
+            case "5000": // "Snow"
+            case "5100": // "Flurries"
+            case "5101": // "Light Snow"
+            case "5001": // "Heavy Snow"
                 return "Snow";
-            case 6000: // "Freezing Drizzle"
-            case 6001: // "Freezing Rain"
-            case 6200: // "Light Freezing Rain"
-            case 6201: // "Heavy Freezing Rain"
-            case 7000: // "Ice Pellets"
-            case 7101: // "Heavy Ice Pellets"
-            case 7102: // "Light Ice Pellets"
+            case "6000": // "Freezing Drizzle"
+            case "6001": // "Freezing Rain"
+            case "6200": // "Light Freezing Rain"
+            case "6201": // "Heavy Freezing Rain"
+            case "7000": // "Ice Pellets"
+            case "7101": // "Heavy Ice Pellets"
+            case "7102": // "Light Ice Pellets"
                 return "Cold";
-            case 0: // Unknown
+            case "0": // Unknown
                 return "Unknown";
             default:
                 return "Deafult";
@@ -120,11 +121,12 @@ public class WeatherAnalyzer {
     public static void main(String[] args) {
         WeatherAnalyzer analyzer = new WeatherAnalyzer();
 
+
         //Test
-        System.out.println(analyzer.analyzeWeather(1000, 25.0));
-        System.out.println(analyzer.analyzeWeather(1101, 12.0));
-        System.out.println(analyzer.analyzeWeather(4001, -2.0));
-        System.out.println(analyzer.analyzeWeather(0, 8.0));
+        System.out.println(analyzer.analyzeWeather("1000", 25.0));
+        System.out.println(analyzer.analyzeWeather("1101", 12.0));
+        System.out.println(analyzer.analyzeWeather("4001", -2.0));
+        System.out.println(analyzer.analyzeWeather("0", 8.0));
 
 
     }

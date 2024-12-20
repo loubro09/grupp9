@@ -70,6 +70,7 @@ public class APIRunner {
 
             HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 
+
             // Skicka vädersvar till klienten
             ctx.json(response.body());
 
@@ -77,6 +78,8 @@ public class APIRunner {
             try {
                 WeatherData weatherData = WeatherParser.parseWeatherData(response.body());
                 weatherData.setLocationName( runner.locationName);
+                WeatherAnalyzer weatherAnalyzer = new WeatherAnalyzer();
+                System.out.println(weatherAnalyzer.analyzeWeather(weatherData.getWeatherCode(),weatherData.getTemp()));
 
                 ctx.json(weatherData);
             } catch (Exception e) {

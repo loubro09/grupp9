@@ -23,8 +23,9 @@ public class WeatherData {
         this.time = time;
     }
 
-    public String getTemp() {
-        return temp;
+    public double getTemp() {
+        double temp1 = Double.parseDouble(temp);
+        return temp1;
     }
 
     public void setTemp(String temp) {
