@@ -3,8 +3,6 @@ package org.example;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.javalin.http.Context;
-import org.eclipse.jetty.http.HttpParser;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
