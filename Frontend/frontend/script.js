@@ -90,3 +90,4 @@ document.getElementById("fetchCoordinates").addEventListener("click", async () =
 
 // Kör plats- och väderhämtning vid inloggning (sidladdning)
 window.addEventListener("load", fetchLocationAndWeather);
+document.getElementById("getLocation").addEventListener("click", fetchLocationAndWeather);
