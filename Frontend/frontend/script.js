@@ -88,5 +88,50 @@ document.getElementById("fetchCoordinates").addEventListener("click", async () =
     }
 });
 
+document.getElementById("getLocation").addEventListener("click", async () => {
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+
+                const locationData = `${latitude},${longitude}`;
+
+                try {
+                    // Skicka platskoordinater till servern
+                    const locationResponse = await fetch("http://localhost:5009/location", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(locationData),
+                    });
+
+                    if (!locationResponse.ok) {
+                        throw new Error(`API-fel: ${locationResponse.status}`);
+                    }
+
+                    const locationDataResponse = await locationResponse.json();
+                    const place = locationDataResponse.place || "Okänd plats";
+                    document.getElementById("output").textContent = `Plats: ${place}`;
+
+                    // Hämta väderdata baserat på platsen
+                    await fetchWeather();
+                } catch (error) {
+                    console.error("Fel vid hämtning av plats:", error);
+                    document.getElementById("output").textContent = "Kunde inte hämta plats.";
+                }
+            },
+            (error) => {
+                document.getElementById("output").textContent = "Fel vid geolocation: " + error.message;
+            }
+        );
+    } else {
+        document.getElementById("output").textContent = "Geolocation stöds inte.";
+    }
+});
+
+
+
 // Kör plats- och väderhämtning vid inloggning (sidladdning)
 window.addEventListener("load", fetchLocationAndWeather);
