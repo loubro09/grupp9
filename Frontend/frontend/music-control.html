@@ -3,12 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Musikstyrning</title>
+  <title>Musik och Väder</title>
   <link rel="stylesheet" href="/frontend/style.css">
 </head>
 <body>
-<h1>Kontrollera din musik</h1>
+<h1>Musik och Väder</h1>
+
+<!-- Musikstyrning -->
 <div id="player">
+  <h2>Kontrollera din musik</h2>
   <button id="play-button">Spela musik</button>
   <button id="pause-button">Pausa musik</button>
   <button id="prev-button">Previous</button>
@@ -16,6 +19,19 @@
   <input type="range" id="volume-control" min="0" max="1" step="0.01" value="0.5">
 </div>
 
+<!-- Geolocation och väder -->
+<div class="container">
+  <h2>Hämta din plats och väder</h2>
+  <button id="getLocation">Hämta min plats</button>
+  <button id="getWeather">Hämta Väder</button>
+  <label for="manualLocation">Ange en plats:</label>
+  <input type="text" id="manualLocation" placeholder="Skriv plats här...">
+  <button id="fetchCoordinates">Hämta plats</button>
+  <p id="output"></p>
+  <p id="weather"></p>
+</div>
+
 <script src="/frontend/script.js"></script>
+
 </body>
 </html>

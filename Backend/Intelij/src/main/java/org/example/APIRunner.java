@@ -56,7 +56,7 @@ public class APIRunner {
             /** OBSSSS!!!
              * startar server på port 5008 FÖR weather
              */
-        }).start(5008);
+        }).start(5009);
 
         //anrop för att få koordinaterna till nuvarande plats
         //app.get("/", ctx -> ctx.result(Files.readString(Paths.get("weather.html"))));
@@ -65,8 +65,8 @@ public class APIRunner {
         /** TO DO:
          * // LÄGG TILL NYA HTML
          */
-        //app.get("/", ctx -> {ctx.render("login.html");});
-        app.get("/", ctx -> {ctx.render("weather.html");});
+        app.get("/", ctx -> {ctx.render("login.html");});
+        //app.get("/", ctx -> {ctx.render("weather.html");});
 
 
         //anrop för att få namnet på en plats
