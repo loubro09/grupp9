@@ -58,15 +58,8 @@ public class APIRunner {
              */
         }).start(5009);
 
-        //anrop för att få koordinaterna till nuvarande plats
-        //app.get("/", ctx -> ctx.result(Files.readString(Paths.get("weather.html"))));
 
-        //anrop för att hämta första sidan (kan tas bort om index.html används som inlogg-sida)
-        /** TO DO:
-         * // LÄGG TILL NYA HTML
-         */
         app.get("/", ctx -> {ctx.render("login.html");});
-        //app.get("/", ctx -> {ctx.render("weather.html");});
 
 
         //anrop för att få namnet på en plats
