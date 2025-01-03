@@ -15,28 +15,28 @@ public class WeatherAnalyzer {
         String weatherDescription = getWeatherDescription(weatherCode);
 
         if (season.equals("Summer") && weatherDescription.equals("Sunshine")) {
-            return "6s2WRJKFow7wGTj4Ogsgwv?si=716792282ada4c5d";
+            return "6s2WRJKFow7wGTj4Ogsgwv";
 
         } else if (season.equals("SA") && weatherDescription.equals("Sunshine")) {
-            return "0tdypn7twCk5zLq2tbClJn?si=d55c7be2ce9e4514";
+            return "0tdypn7twCk5zLq2tbClJn";
 
         } else if (season.equals("Winter") && weatherDescription.equals("Sunshine")) {
-            return "1CD4pZITYUfEtfuXc2VRa2?si=6513f9aee00048c5 ";
+            return "1CD4pZITYUfEtfuXc2VRa2";
 
         } else if (season.equals("Summer") && weatherDescription.equals("Cloudy")) {
-            return "7jO7rEKc7j1CUjpB9QcbCX?si=160c1b36e205494b";
+            return "7jO7rEKc7j1CUjpB9QcbCX";
 
         } else if (season.equals("SA") && weatherDescription.equals("Cloudy")) {
-            return "1KcOgxwD7Lj44lfb2KbO3f?si=a0c8621bfd0247c4";
+            return "1KcOgxwD7Lj44lfb2KbO3f";
 
         } else if (season.equals("Winter") && weatherDescription.equals("Cloudy")) {
-            return "3zhLD3MnatY98mrKI4O33G?si=788910f27a274df3";
+            return "3zhLD3MnatY98mrKI4O33G";
 
         } else if (season.equals("Summer") && weatherDescription.equals("Rain")) {
             return "4p7lCzu4FNwPlyUtfm3mXY";
 
         } else if (season.equals("SA") && weatherDescription.equals("Rain")) {
-            return "0nEchTvkwkbzJ54p5aTT7X?si=12b70bf97c23412b";
+            return "0nEchTvkwkbzJ54p5aTT7X";
 
         } else if (season.equals("Winter") && weatherDescription.equals("Rain")) {
             return "2yIAa15P5OsuxOCBbQ98aP";
@@ -48,7 +48,7 @@ public class WeatherAnalyzer {
             return "1XZNnIESn9lDcLY7WzItO4";
 
         } else if ((season.equals("SA") || season.equals("Winter")) && weatherDescription.equals("Snow")) {
-            return "2o0fV3Wo2MtDfi0dLKJqv2?si=4f8e80c91f4d4b4f";
+            return "2o0fV3Wo2MtDfi0dLKJqv2";
 
         } else if ((season.equals("SA") || season.equals("Winter")) && weatherDescription.equals("Cold")) {
             return "6UUCrjB00LEiGvhCWtxduy";
@@ -57,10 +57,10 @@ public class WeatherAnalyzer {
             return "4p7lCzu4FNwPlyUtfm3mXY";
 
         } else if (season.equals("Tropical") && weatherDescription.equals("Sunshine")) {
-            return "3fVXnGdrsw7bKUmUd3OxFv?si=eb84db8bac8d4c92";
+            return "3fVXnGdrsw7bKUmUd3OxFv";
 
         } else if (season.equals("Tropical") && weatherDescription.equals("Cloudy")) {
-            return "6E0RTtaSREqhZJQgAWEFqt?si=47ff8629237942c5";
+            return "6E0RTtaSREqhZJQgAWEFqt";
 
         }else {
             return "6i2Qd6OpeRBAzxfscNXeWp";

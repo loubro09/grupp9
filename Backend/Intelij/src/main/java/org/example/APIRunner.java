@@ -16,6 +16,7 @@ public class APIRunner {
     private String locationName;
     private static Location locationController;
     private static WeatherData weatherData;
+    private static WeatherAnalyzer weatherAnalyzer;
     private static Login loginController;
     private static MusicController musicController;
     private String clientId;
@@ -28,6 +29,7 @@ public class APIRunner {
         weatherData = new WeatherData();
         loginController = new Login(clientId, clientSecret);
         musicController = new MusicController();
+        weatherAnalyzer = new WeatherAnalyzer();
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -56,7 +58,7 @@ public class APIRunner {
             /** OBSSSS!!!
              * startar server på port 5008 FÖR weather
              */
-        }).start(5008);
+        }).start(5009);
 
         //anrop för att få koordinaterna till nuvarande plats
         //app.get("/", ctx -> ctx.result(Files.readString(Paths.get("weather.html"))));
@@ -65,8 +67,8 @@ public class APIRunner {
         /** TO DO:
          * // LÄGG TILL NYA HTML
          */
-        //app.get("/", ctx -> {ctx.render("login.html");});
-        app.get("/", ctx -> {ctx.render("weather.html");});
+        app.get("/", ctx -> {ctx.render("login.html");});
+        //app.get("/", ctx -> {ctx.render("weather.html");});
 
 
         //anrop för att få namnet på en plats
@@ -133,7 +135,11 @@ public class APIRunner {
         //anrop för att starta musik
         app.put("/play-playlist", ctx -> {
             String accessToken = loginController.getAccessToken();
-            String playlistId = "1pYJQgF8EmVcSlGbskZXfA"; //temporär spellista hårdkodad
+            // String playlistId = "1pYJQgF8EmVcSlGbskZXfA"; //temporär spellista hårdkodad
+            String playlistId = weatherAnalyzer.analyzeWeather("1000",16.0);
+            //System.out.println(weatherAnalyzer.analyzeWeather("1000",12.0));
+            //String playlistId = "37i9dQZF1EIfS0ZRAzGri5";
+            System.out.println(weatherAnalyzer.analyzeWeather("1000",16.0));
             musicController.playOrResumeMusic(playlistId, accessToken);
         });
     }
