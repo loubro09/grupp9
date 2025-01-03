@@ -137,9 +137,7 @@ public class APIRunner {
             String accessToken = loginController.getAccessToken();
             // String playlistId = "1pYJQgF8EmVcSlGbskZXfA"; //temporär spellista hårdkodad
             String playlistId = weatherAnalyzer.analyzeWeather("1000",16.0);
-            //System.out.println(weatherAnalyzer.analyzeWeather("1000",12.0));
             //String playlistId = "37i9dQZF1EIfS0ZRAzGri5";
-            System.out.println(weatherAnalyzer.analyzeWeather("1000",16.0));
             musicController.playOrResumeMusic(playlistId, accessToken);
         });
     }
