@@ -15,6 +15,7 @@ public class APIRunner {
     private String location;
     private String locationName;
     private static Location locationController;
+    private static WeatherData weatherData;
     private static Login loginController;
     private static MusicController musicController;
     private String clientId;
@@ -24,6 +25,7 @@ public class APIRunner {
     public APIRunner() {
         loadConfig();
         locationController = new Location();
+        weatherData = new WeatherData();
         loginController = new Login(clientId, clientSecret);
         musicController = new MusicController();
     }
@@ -51,64 +53,47 @@ public class APIRunner {
                     it.anyHost();  //tillåter alla domäner skicka begäranden till servern
                 });
             });
-        }).start(5009); //startar server på port
+            /** OBSSSS!!!
+             * startar server på port 5008 FÖR weather
+             */
+        }).start(5008);
 
         //anrop för att få koordinaterna till nuvarande plats
         //app.get("/", ctx -> ctx.result(Files.readString(Paths.get("weather.html"))));
 
         //anrop för att hämta första sidan (kan tas bort om index.html används som inlogg-sida)
-        app.get("/", ctx -> {ctx.render("login.html");});
+        /** TO DO:
+         * // LÄGG TILL NYA HTML
+         */
+        //app.get("/", ctx -> {ctx.render("login.html");});
+        app.get("/", ctx -> {ctx.render("weather.html");});
+
 
         //anrop för att få namnet på en plats
         app.post("/location", ctx -> {
             runner.locationController.locationByCoordinates(ctx);
-            runner.location = locationController.getLocationCoordinates();
-            runner.locationName = locationController.getPlaceName();
         });
 
         //anrop för att få koordinaterna till en plats
         app.get("/locationByName", ctx -> {
             runner.locationController.locationByName(ctx);
+
             runner.location = locationController.getLocationCoordinates();
             runner.locationName = locationController.getPlaceName();
         });
 
         // Hämta väderdata
-        app.get("/weather", ctx -> {
-            if (runner.location == null) {
-                ctx.status(400).result("Ingen plats har sparats ännu.");
-                return;
-            }
 
-            // Använd den sparade platsen i väder-API-anrop
-            String apiUrl = "https://api.tomorrow.io/v4/weather/realtime?location=" +
-                    runner.location + "&apikey=" + runner.weatherAPI_Key;
+            // Hämta väderdata
+            app.get("/weatherLocation", ctx -> {
+                if (locationController.getLocationCoordinates() == null) {
+                    ctx.status(400).result("Ingen plats har sparats ännu.");
+                    return;
+                }
+                runner.weatherData.weatherbylocation(ctx, locationController.getPlaceName(),
+                        locationController.getLocationCoordinates(), runner.weatherAPI_Key);
 
-            System.out.println(apiUrl);
-
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(apiUrl))
-                    .header("accept", "application/json")
-                    .method("GET", HttpRequest.BodyPublishers.noBody())
-                    .build();
-
-            HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-
-            // Skicka vädersvar till klienten
-            ctx.json(response.body());
-
-            // Använd Parser
-            try {
-                WeatherData weatherData = WeatherParser.parseWeatherData(response.body());
-                weatherData.setLocationName( runner.locationName);
-
-                ctx.json(weatherData);
-            } catch (Exception e) {
-                e.printStackTrace();
-                ctx.status(500).result("Error parsing weather data");
-            }
-
-        });
+            });
 
         //anrop för att logga in
         app.get("/login", ctx -> {
