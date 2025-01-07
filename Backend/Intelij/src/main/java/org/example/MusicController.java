@@ -1,6 +1,8 @@
 package org.example;
 
 import com.google.gson.*;
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;

@@ -7,17 +7,7 @@
   <link rel="stylesheet" href="/frontend/style.css">
 </head>
 <body>
-<h1>Musik och Väder</h1>
-
-<!-- Musikstyrning -->
-<div id="player">
-  <h2>Kontrollera din musik</h2>
-  <button id="play-button">Spela musik</button>
-  <button id="pause-button">Pausa musik</button>
-  <button id="prev-button">Previous</button>
-  <button id="next-button">Next</button>
-  <input type="range" id="volume-control" min="0" max="1" step="0.01" value="0.5">
-</div>
+<h1>Weatherify</h1>
 
 <!-- Geolocation och väder -->
 <div class="container">
@@ -28,6 +18,16 @@
   <button id="getLocation">Hämta min plats</button>
   <p id="output"></p>
   <p id="weather"></p>
+</div>
+
+<!-- Musikstyrning -->
+<div id="player">
+  <div class="controls">
+    <button id="prev-button">⏮</button>
+    <button id="play-button">▶</button>
+    <button id="pause-button">⏸</button>
+    <button id="next-button">⏭</button>
+  </div>
 </div>
 
 <script src="/frontend/script.js"></script>

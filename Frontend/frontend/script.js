@@ -107,4 +107,35 @@ document.getElementById("prev-button").addEventListener("click", async () => {
 document.getElementById("next-button").addEventListener("click", async () => {
     await fetch("/next", { method: "POST" });
 });
+// Progressindikator
+function updateProgress() {
+    fetch('/track-progress')
+        .then(response => response.json())
+        .then(progress => {
+            const progressBar = document.getElementById('track-progress');
+            const trackDuration = 300000; // exempel på total längd på låt i millisekunder
+            const progressPercentage = (progress / trackDuration) * 100;
+            progressBar.value = progressPercentage;
+        });
+}
 
+// Funktion för att skicka 'seek' begäran till Spotify
+function seekToPosition(position_ms) {
+    const accessToken = 'din_access_token'; // Hämta access token från användarens session eller OAuth
+    const deviceId = 'din_device_id'; // Hämta device id för användarens enhet
+
+    // Skicka PUT-begäran till Spotify API för att ändra positionen
+    fetch(`https://api.spotify.com/v1/me/player/seek?position_ms=${position_ms}&device_id=${deviceId}`, {
+        method: 'PUT',
+        headers: {
+            'Authorization': `Bearer ${accessToken}`,
+        },
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log("Position uppdaterad");
+        } else {
+            console.error("Fel vid uppdatering av position");
+        }
+    });
+}

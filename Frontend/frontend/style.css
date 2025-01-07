@@ -1,5 +1,5 @@
 body {
-    font-family: 'Poppins', sans-serif; /* Modern font för en fräsch känsla */
+    font-family: 'Poppins', sans-serif;
     background-color: #1a1a2e; /* Djup indigo för en sofistikerad bakgrund */
     color: white;
     text-align: center;
@@ -9,40 +9,62 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
-.container {
-    padding: 30px;
-    background: linear-gradient(145deg, #222437, #2b2d42);
-    border-radius: 20px;/* Djupare skuggor */
+/* Behåll musikspelaren längst ner */
+#player {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #181818;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5);
+}
+
+#progress-bar {
     width: 90%;
-    max-width: 500px;
-    animation: fadeIn 1.5s ease-in-out;
+    margin-bottom: 10px;
 }
 
-h1 {
-    font-size: 3em;
-    margin-bottom: 20px;
-    color: #ff76b3;
-    font-weight: bold;
-    text-shadow: 0 4px 20px rgba(247, 37, 133, 0.5);
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
 }
 
-h2 {
-    color: #4361ee;
-    margin-bottom: 20px;
+button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    transition: color 0.3s;
 }
 
+button:hover {
+    color: #1db954; /* Spotify-grön */
+}
+
+#volume-control {
+    width: 100px;
+}
+
+/* Knappstil med .btn */
 .btn {
     display: inline-block;
-    padding: 15px 30px;
-    margin: 10px 5px;
+    padding: 10px 20px;
     font-size: 1.2em;
     color: white;
     background: radial-gradient(circle at 20% 50%, #7209b7, #3a0ca3);
     border: none;
-    border-radius: 12px; /* Rundade hörn */
+    border-radius: 12px;
     text-decoration: none;
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
@@ -50,7 +72,7 @@ h2 {
 }
 
 .btn:hover {
-    transform: scale(1.1); /* Växer vid hover */
+    transform: scale(1.1);
     box-shadow: 0 8px 30px rgba(114, 9, 183, 0.6);
     background: radial-gradient(circle at 80% 20%, #3a0ca3, #7209b7);
 }
@@ -60,47 +82,15 @@ h2 {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-p {
-    font-size: 1.1em;
-    line-height: 1.5;
-    margin: 15px 0;
-    color: #d9d9d9;
-}
-
-input[type="text"] {
-    width: 100%;
-    padding: 12px;
-    margin: 15px 0;
-    font-size: 1em;
-    border: none;
-    border-radius: 15px;
-    background: #2c2c4b;
-    color: white;
-    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
-    transition: background 0.3s ease, box-shadow 0.3s ease;
-}
-
-input[type="text"]::placeholder {
-    color: #9f9f9f;
-}
-
-input[type="text"]:focus {
-    outline: none;
-    background: #4361ee;
-    color: white;
-    box-shadow: 0 0 10px rgba(67, 97, 238, 0.8);
-}
-
-@media (max-width: 600px) {
-    h1 {
-        font-size: 2.2em;
-    }
-
-    .btn {
-        width: 100%;
-        padding: 15px 20px;
-        font-size: 1em;
-    }
+/* Ge container för väder och plats en margin så att det inte kolliderar med musikspelaren */
+.container {
+    padding: 30px;
+    background: linear-gradient(145deg, #222437, #2b2d42);
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    animation: fadeIn 1.5s ease-in-out;
+    margin-bottom: 180px; /* Skapa utrymme för musikspelaren */
 }
 
 /* Animationer */

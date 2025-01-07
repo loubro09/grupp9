@@ -67,7 +67,9 @@ public class APIRunner {
         /** TO DO:
          * // LÄGG TILL NYA HTML
          */
-        app.get("/", ctx -> {ctx.render("login.html");});
+        app.get("/", ctx -> {
+            ctx.render("login.html");
+        });
         //app.get("/", ctx -> {ctx.render("weather.html");});
 
 
@@ -86,16 +88,16 @@ public class APIRunner {
 
         // Hämta väderdata
 
-            // Hämta väderdata
-            app.get("/weatherLocation", ctx -> {
-                if (locationController.getLocationCoordinates() == null) {
-                    ctx.status(400).result("Ingen plats har sparats ännu.");
-                    return;
-                }
-                runner.weatherData.weatherbylocation(ctx, locationController.getPlaceName(),
-                        locationController.getLocationCoordinates(), runner.weatherAPI_Key);
+        // Hämta väderdata
+        app.get("/weatherLocation", ctx -> {
+            if (locationController.getLocationCoordinates() == null) {
+                ctx.status(400).result("Ingen plats har sparats ännu.");
+                return;
+            }
+            runner.weatherData.weatherbylocation(ctx, locationController.getPlaceName(),
+                    locationController.getLocationCoordinates(), runner.weatherAPI_Key);
 
-            });
+        });
 
         //anrop för att logga in
         app.get("/login", ctx -> {
@@ -135,16 +137,16 @@ public class APIRunner {
         //anrop för att starta musik
         app.put("/play-playlist", ctx -> {
             String accessToken = loginController.getAccessToken();
-            // String playlistId = "1pYJQgF8EmVcSlGbskZXfA"; //temporär spellista hårdkodad
-            String playlistId = weatherAnalyzer.analyzeWeather(weatherData.getWeatherCode(), weatherData.getTemp());
-            System.out.println(playlistId + ", "+  weatherData.getWeatherCode() +  ", "+  weatherData.getTemp());
+            String playlistId = "1pYJQgF8EmVcSlGbskZXfA"; //temporär spellista hårdkodad
+            //String playlistId = weatherAnalyzer.analyzeWeather(weatherData.getWeatherCode(), weatherData.getTemp());
+            //System.out.println(playlistId + ", "+  weatherData.getWeatherCode() +  ", "+  weatherData.getTemp());
             //String playlistId = "37i9dQZF1EIfS0ZRAzGri5";
             musicController.playOrResumeMusic(playlistId, accessToken);
         });
+
     }
 
-
-    public void loadConfig() {
+        public void loadConfig() {
         Properties props = new Properties();
         try (InputStream input = new FileInputStream("config.properties")) {
             props.load(input);
