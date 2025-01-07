@@ -107,4 +107,5 @@ document.getElementById("prev-button").addEventListener("click", async () => {
 document.getElementById("next-button").addEventListener("click", async () => {
     await fetch("/next", { method: "POST" });
 });
-
+const weatherCode = data.weatherCode;
+document.getElementById("weather-icon").src = `icons/${weatherCode}.png`;

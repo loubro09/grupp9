@@ -8,6 +8,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Properties;
 
 public class APIRunner {
@@ -136,9 +137,10 @@ public class APIRunner {
         app.put("/play-playlist", ctx -> {
             String accessToken = loginController.getAccessToken();
             // String playlistId = "1pYJQgF8EmVcSlGbskZXfA"; //temporär spellista hårdkodad
-            String playlistId = weatherAnalyzer.analyzeWeather("1000",16.0);
+            String playlistId = Arrays.toString(weatherAnalyzer.analyzeWeather("1000",16.0));
             //String playlistId = "37i9dQZF1EIfS0ZRAzGri5";
             musicController.playOrResumeMusic(playlistId, accessToken);
+
         });
     }
 
