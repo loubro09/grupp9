@@ -104,8 +104,12 @@ public class WeatherData {
     }
 
     public double getTemp() {
-        double temp1 = Double.parseDouble(temp);
-        return temp1;
+        if (temp == null || temp.isEmpty()) {
+            return 100;
+        } else {
+            double temp1 = Double.parseDouble(temp);
+            return temp1;
+        }
     }
 
     public void setTemp(String temp) {
@@ -113,7 +117,12 @@ public class WeatherData {
     }
 
     public String getWeatherCode() {
-        return weatherCode;
+        if (weatherCode == null || weatherCode.isEmpty()) {
+            return "0";
+        }
+        else {
+            return weatherCode;
+        }
     }
 
     public void setWeatherCode(String weatherCode) {

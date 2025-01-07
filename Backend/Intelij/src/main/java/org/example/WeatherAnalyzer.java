@@ -11,6 +11,7 @@ public class WeatherAnalyzer {
      * @return a string representing a playlist based on the weather and season.
      */
     public String analyzeWeather(String weatherCode, double temperature) {
+
         String season = getSeason(temperature);
         String weatherDescription = getWeatherDescription(weatherCode);
 
@@ -40,7 +41,7 @@ public class WeatherAnalyzer {
 
         } else if (season.equals("Winter") && weatherDescription.equals("Rain")) {
             return "2yIAa15P5OsuxOCBbQ98aP";
-            
+
         } else if (season.equals("Summer") && weatherDescription.equals("ThunderStorm")) {
             return "1XZNnIESn9lDcLY7WzItO4";
 
@@ -62,8 +63,8 @@ public class WeatherAnalyzer {
         } else if (season.equals("Tropical") && weatherDescription.equals("Cloudy")) {
             return "6E0RTtaSREqhZJQgAWEFqt";
 
-        }else {
-            return "6i2Qd6OpeRBAzxfscNXeWp";
+        } else {
+            return "5EIjIqnxsxQrlms9XSWhEs";
         }
     }
 
@@ -119,15 +120,16 @@ public class WeatherAnalyzer {
      * @return a string representing the season (e.g., Summer, SA (Spring/Autumn), Winter).
      */
     private String getSeason(double temperature) {
-        if (temperature >30.0){
+        if (temperature == 100) {
+            return "Default";
+        } else if (temperature > 30.0) {
             return "Tropical"; //Tropiskt klimat om temperaturen är över 30 °C
-        }
-        else if (temperature > 19.0) {
+        } else if (temperature > 19.0) {
             return "Summer";  // Sommar om temperaturen är över 15°C
         } else if (temperature >= 5.0) {
             return "SA";     // Vår/Höst om temperaturen är mellan 5°C och 15°C
         } else {
-            return "Winter";  // Vinter om temperaturen är under 5°C
+            return "Winter";// Vinter om temperaturen är under 5°C
         }
     }
 }
