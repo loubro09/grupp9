@@ -137,7 +137,7 @@ public class APIRunner {
         app.put("/play-playlist", ctx -> {
             String accessToken = loginController.getAccessToken();
             // String playlistId = "1pYJQgF8EmVcSlGbskZXfA"; //temporär spellista hårdkodad
-            String playlistId = Arrays.toString(weatherAnalyzer.analyzeWeather("1000",16.0));
+            String playlistId = (weatherAnalyzer.analyzeWeather("1000",16.0));
             //String playlistId = "37i9dQZF1EIfS0ZRAzGri5";
             musicController.playOrResumeMusic(playlistId, accessToken);
 

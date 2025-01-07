@@ -16,6 +16,7 @@ public class WeatherData {
     private String weatherDescription;
     private String locationCor;
     private String locationName;
+    private String icon;
     private WeatherAnalyzer weatherAnalyzer;
 
 
@@ -68,6 +69,8 @@ public class WeatherData {
             responseData.addProperty("weatherCode", weatherCode != null ? weatherCode : "Okänt väder");
             weatherDescription = weatherAnalyzer.getWeatherDescription(getWeatherCode());
             responseData.addProperty("weatherDescription", weatherDescription != null ? weatherDescription : "weathercode saknas");
+            responseData.addProperty("icon", icon != null ? icon : "Okänd icon");
+
 
 
             // Skicka JSON till frontend
@@ -101,6 +104,11 @@ public class WeatherData {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getIcon() {
+        icon = weatherCode + ".png";
+        return icon;
     }
 
     public double getTemp() {

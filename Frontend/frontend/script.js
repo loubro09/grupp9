@@ -55,8 +55,10 @@ async function fetchWeather() {
             Time: ${data.time || "Okänd tid"},
             Weather forecast: ${data.weatherDescription || "Okänt väder"},
             Temperature: ${data.temp || "Okänd temperatur"} °C
+
         `;
         document.getElementById("weather").textContent = weatherOutput;
+
     } catch (error) {
         console.error("Fel vid hämtning av väderdata:", error);
         document.getElementById("weather").textContent = "Kunde inte hämta väderdata.";
@@ -109,3 +111,4 @@ document.getElementById("next-button").addEventListener("click", async () => {
 });
 const weatherCode = data.weatherCode;
 document.getElementById("weather-icon").src = `icons/${weatherCode}.png`;
+console.log("Weather Code:", weatherCode);
