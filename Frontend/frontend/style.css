@@ -114,3 +114,13 @@ input[type="text"]:focus {
         transform: translateY(0);
     }
 }
+
+/* Anpassningar för Bootstrap-knappar */
+.btn {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease !important;
+}
+
+.btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 30px rgba(114, 9, 183, 0.6);
+}
