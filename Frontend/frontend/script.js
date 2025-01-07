@@ -1,3 +1,7 @@
+window.onload = function() {
+            // Öppnar Spotify Web Player i en ny flik när sidan har laddats
+            window.open("https://open.spotify.com/?flow_ctx=e9948630-d52d-48b6-ad66-c1b385b1a927%3A1736272483", "_blank", "width=800,height=600");
+        };
 async function fetchLocationAndWeather() {
     if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(
