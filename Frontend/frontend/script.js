@@ -50,6 +50,17 @@ async function fetchWeather() {
         }
 
         const data = await response.json();
+               console.log("Weather data:", data);
+
+                // Set the weather icon dynamically
+                const weatherCode = data.weatherCode;
+                const weatherIconElement = document.getElementById("weather-icon");
+
+                if (weatherIconElement && weatherCode) {
+                    weatherIconElement.src = `/frontend/icons/${weatherCode}.png`;
+                } else {
+                    console.error("Weather icon element or weather code not found.");
+                }
         const weatherOutput = `
             Place: ${data.locationName || "Okänd plats"},
             Time: ${data.time || "Okänd tid"},
@@ -58,6 +69,8 @@ async function fetchWeather() {
 
         `;
         document.getElementById("weather").textContent = weatherOutput;
+       // const weatherCode = data.weatherCode;
+
 
     } catch (error) {
         console.error("Fel vid hämtning av väderdata:", error);
@@ -109,6 +122,18 @@ document.getElementById("prev-button").addEventListener("click", async () => {
 document.getElementById("next-button").addEventListener("click", async () => {
     await fetch("/next", { method: "POST" });
 });
-const weatherCode = data.weatherCode;
-document.getElementById("weather-icon").src = `icons/${weatherCode}.png`;
-console.log("Weather Code:", weatherCode);
+//console.log("Weather Code:", weatherCode);
+//const weatherCode = 1000;
+//document.getElementById("weather-icon").src = `/frontend/icons/${weatherCode}.png`;
+document.addEventListener("DOMContentLoaded", function() {
+    const weatherCode = data.weatherCode;
+    const weatherIconElement = document.getElementById("weather-icon");
+
+    if (weatherIconElement) {
+        // Set the source of the weather icon image dynamically
+        weatherIconElement.src = `/frontend/icons/${weatherCode}.png`;
+    } else {
+        console.error("Weather icon element not found.");
+    }
+});
+
