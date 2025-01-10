@@ -40,6 +40,7 @@ async function fetchLocationAndWeather() {
 
                     // Hämta väderdata baserat på platsen
                     fetchWeather();
+                    fetchPlaylist()
                 } catch (error) {
                     console.error("Fel vid hämtning av plats:", error);
                     document.getElementById("output").textContent = "Kunde inte hämta plats.";
@@ -74,6 +75,8 @@ async function fetchWeather() {
 
         // Uppdatera väderbilden baserat på väderdata
         updateWeatherImage(data.weatherCode, data.weatherDescription);
+
+        fetchPlaylist(data.weatherCode, data.temp);
     } catch (error) {
         console.error("Fel vid hämtning av väderdata:", error);
         document.getElementById("weather").textContent = "Kunde inte hämta väderdata.";
@@ -335,3 +338,42 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
+
+async function fetchPlaylist(weatherCode, temp) {
+    try {
+        const response = await fetch(`http://localhost:5009/play-playlist?weatherCode=${weatherCode}&temp=${temp}`, {
+            method: "PUT",
+        });
+
+        if (!response.ok) {
+            throw new Error(`API-fel vid spellista: ${response.status}`);
+        }
+
+        const playlistData = await response.json();
+        const playlistName = playlistData.playlistName || "Okänd spellista";
+        const playlistImage = playlistData.playlistImage || "/images/default.png";
+
+        const playlistCard = document.getElementById("playlistCard");
+        playlistCard.innerHTML = `
+            <h2>${playlistName}</h2>
+            <img src="${playlistImage}" alt="Playlist Image" class="playlist__image">
+            <p>Denna spellista matchar vädret!</p>
+            <button id="start-playlist">Starta spellista</button>
+        `;
+
+        // Lägg till eventlyssnare för startknappen
+        const startPlaylistButton = document.getElementById("start-playlist");
+        if (startPlaylistButton) {
+            startPlaylistButton.addEventListener("click", async () => {
+                try {
+                    await fetch("/start-playlist", { method: "PUT" });
+                } catch (error) {
+                    console.error("Error starting playlist:", error);
+                }
+            });
+        }
+    } catch (error) {
+        console.error("Fel vid hämtning av spellista:", error);
+    }
+}
