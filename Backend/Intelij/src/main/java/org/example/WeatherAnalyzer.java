@@ -15,44 +15,55 @@ public class WeatherAnalyzer {
         String weatherDescription = getWeatherDescription(weatherCode);
 
         if (season.equals("Summer") && weatherDescription.equals("Sunshine")) {
-            return "Summer Mix";
+            return "6s2WRJKFow7wGTj4Ogsgwv";
 
         } else if (season.equals("SA") && weatherDescription.equals("Sunshine")) {
-            return "Sunny Day";
+            return "0tdypn7twCk5zLq2tbClJn";
 
         } else if (season.equals("Winter") && weatherDescription.equals("Sunshine")) {
-            return "Sunshine Winter Mix";
+            return "1CD4pZITYUfEtfuXc2VRa2";
 
         } else if (season.equals("Summer") && weatherDescription.equals("Cloudy")) {
-            return "Chill Moody Mix";
+            return "7jO7rEKc7j1CUjpB9QcbCX";
 
         } else if (season.equals("SA") && weatherDescription.equals("Cloudy")) {
-            return "Moody Sad Mix";
+            return "1KcOgxwD7Lj44lfb2KbO3f";
 
         } else if (season.equals("Winter") && weatherDescription.equals("Cloudy")) {
-            return "Dark Moody Mix";
+            return "3zhLD3MnatY98mrKI4O33G";
 
         } else if (season.equals("Summer") && weatherDescription.equals("Rain")) {
-            return "Rainy Day Mix";
+            return "4p7lCzu4FNwPlyUtfm3mXY";
 
         } else if (season.equals("SA") && weatherDescription.equals("Rain")) {
-            return "Rainy Day Mix";
+            return "0nEchTvkwkbzJ54p5aTT7X";
 
         } else if (season.equals("Winter") && weatherDescription.equals("Rain")) {
-            return "Rainy Day Mix";
+            return "2yIAa15P5OsuxOCBbQ98aP";
+            
         } else if (season.equals("Summer") && weatherDescription.equals("ThunderStorm")) {
-            return "Beast Mode";
+            return "1XZNnIESn9lDcLY7WzItO4";
 
         } else if (season.equals("SA") || season.equals("Winter") && weatherDescription.equals("ThunderStorm")) {
-            return "Beast Mode";
+            return "1XZNnIESn9lDcLY7WzItO4";
 
         } else if ((season.equals("SA") || season.equals("Winter")) && weatherDescription.equals("Snow")) {
-            return "Chill Winter Mix";
+            return "2o0fV3Wo2MtDfi0dLKJqv2";
 
         } else if ((season.equals("SA") || season.equals("Winter")) && weatherDescription.equals("Cold")) {
-            return "Morning Winter Mix";
-        } else {
-            return "Today's Top Hits";
+            return "6UUCrjB00LEiGvhCWtxduy";
+
+        } else if (season.equals("Tropical") && weatherDescription.equals("Rain")) {
+            return "4p7lCzu4FNwPlyUtfm3mXY";
+
+        } else if (season.equals("Tropical") && weatherDescription.equals("Sunshine")) {
+            return "3fVXnGdrsw7bKUmUd3OxFv";
+
+        } else if (season.equals("Tropical") && weatherDescription.equals("Cloudy")) {
+            return "6E0RTtaSREqhZJQgAWEFqt";
+
+        }else {
+            return "6i2Qd6OpeRBAzxfscNXeWp";
         }
     }
 
@@ -108,7 +119,10 @@ public class WeatherAnalyzer {
      * @return a string representing the season (e.g., Summer, SA (Spring/Autumn), Winter).
      */
     private String getSeason(double temperature) {
-        if (temperature > 19.0) {
+        if (temperature >30.0){
+            return "Tropical"; //Tropiskt klimat om temperaturen är över 30 °C
+        }
+        else if (temperature > 19.0) {
             return "Summer";  // Sommar om temperaturen är över 15°C
         } else if (temperature >= 5.0) {
             return "SA";     // Vår/Höst om temperaturen är mellan 5°C och 15°C
