@@ -111,16 +111,32 @@ public class APIRunner {
 
         app.put("/play-playlist", ctx -> {
             String accessToken = loginController.getAccessToken();
+<<<<<<< HEAD
             String playlistId = weatherAnalyzer.analyzeWeather(weatherData.getWeatherCode(), weatherData.getTemp());
+=======
+            // String playlistId = "1pYJQgF8EmVcSlGbskZXfA"; // Temporär spellista hårdkodad
+            String playlistId = weatherAnalyzer.analyzeWeather(weatherData.getWeatherCode(), weatherData.getTemp());
+            if (!musicController.isActiveDevice(accessToken)) {
+                ctx.status(400); // Bad Request
+                return;
+            }
+
+>>>>>>> forntend--location-BACKUP
             musicController.playOrResumeMusic(playlistId, accessToken);
             musicData.fetchPlaylistData(ctx, playlistId, accessToken);
         });
 
+<<<<<<< HEAD
         app.get("/currently-playing", ctx -> {
             String accessToken = loginController.getAccessToken();
             musicData.fetchCurrentlyPlaying(ctx, accessToken);
         });
 
+=======
+        // *** NYA ENDPOINTS FÖR MUSIKSPELAREN ***
+
+        // Endpoint för att hämta aktuell spellistas coverbild
+>>>>>>> forntend--location-BACKUP
         app.get("/current-track-cover", ctx -> {
             String accessToken = loginController.getAccessToken();
             if (accessToken != null && !accessToken.isEmpty()) {
