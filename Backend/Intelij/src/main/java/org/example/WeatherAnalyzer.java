@@ -10,13 +10,12 @@ public class WeatherAnalyzer {
      * @param temperature the current temperature in degrees Celsius.
      * @return a string representing a playlist based on the weather and season.
      */
-    public String[] analyzeWeather(String weatherCode, double temperature) {
+    public String analyzeWeather(String weatherCode, double temperature) {
         String season = getSeason(temperature);
         String weatherDescription = getWeatherDescription(weatherCode);
 
         // Return Spotify playlist and image filename
         String playlistId = "";
-        String imageFilename = getImageFilename(weatherCode);
 
         if (season.equals("Summer") && weatherDescription.equals("Sunshine")) {
             playlistId = "6s2WRJKFow7wGTj4Ogsgwv";
@@ -53,8 +52,7 @@ public class WeatherAnalyzer {
         } else {
             playlistId = "6i2Qd6OpeRBAzxfscNXeWp";
         }
-
-        return new String[]{playlistId, imageFilename};
+        return playlistId;
     }
 
 
@@ -124,9 +122,6 @@ public class WeatherAnalyzer {
         }
     }
 
-    private String getImageFilename(String weatherCode) {
-        return weatherCode + ".png";
-    }
 
 }
 
