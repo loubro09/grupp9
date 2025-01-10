@@ -1,9 +1,23 @@
 
 window.onload = function () {
+// Sätt default-bakgrund för locationCard och playlistCard
+    const defaultBg = "/images/cloudy.jpg"; // Eller vilken default-bild du vill använda
+
+    const locationCard = document.getElementById("locationCard");
+    const playlistCard = document.getElementById("playlistCard");
+
+    if (locationCard) {
+        locationCard.style.backgroundImage = `linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(17, 17, 17, 0.6) 100%), url('${defaultBg}')`;
+    }
+
+    if (playlistCard) {
+        playlistCard.style.backgroundImage = `linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(17, 17, 17, 0.9) 100%), url('${defaultBg}')`;
+    }
+
     // Fetch the currently playing song when the page loads
     fetchCurrentlyPlaying();
     // Periodically refresh the currently playing info every 30 seconds
-    setInterval(fetchCurrentlyPlaying, 30000);
+    setInterval(fetchCurrentlyPlaying, 1000);
 };
 // --- Plats- och Väderfunktionalitet ---
 
@@ -162,8 +176,8 @@ function updateWeatherImage(weatherCode, weatherDescription) {
         weatherInfo.textContent = weatherDescription;
     }
 
-    // Uppdatera bakgrundsbilderna i Services Section baserat på väder
-    updateServicesBackgrounds(weatherCode, weatherDescription);
+        // Uppdatera bakgrundsbilderna i Services Section baserat på väder
+        updateServicesBackgrounds(weatherCode, weatherDescription);
 }
 
 // Funktion för att uppdatera bakgrundsbilderna i Services Section
@@ -236,9 +250,6 @@ async function fetchCurrentlyPlaying() {
         const trackArtistElement = document.getElementById("track-artist");
         const trackImageElement = document.getElementById("track-image");
 
-        if (trackTitleElement) trackTitleElement.textContent = "Loading...";
-        if (trackArtistElement) trackArtistElement.textContent = "Please wait...";
-        if (trackImageElement) trackImageElement.src = "/images/loading.png";
 
         const response = await fetch("http://localhost:5009/currently-playing");
 
@@ -264,9 +275,6 @@ async function fetchCurrentlyPlaying() {
         const trackArtistElement = document.getElementById("track-artist");
         const trackImageElement = document.getElementById("track-image");
 
-        if (trackTitleElement) trackTitleElement.textContent = "Error fetching song";
-        if (trackArtistElement) trackArtistElement.textContent = "";
-        if (trackImageElement) trackImageElement.src = "/images/default.png";
     }
 }
 document.getElementById("pause-button").addEventListener("click", async () => {
@@ -289,7 +297,6 @@ document.getElementById("play-button").addEventListener("click", async () => {
     }
 });
 
-
 async function fetchPlaylist(weatherCode, temp) {
     try {
         const response = await fetch(`http://localhost:5009/play-playlist?weatherCode=${weatherCode}&temp=${temp}`, {
@@ -302,37 +309,50 @@ async function fetchPlaylist(weatherCode, temp) {
 
         const playlistData = await response.json();
         const playlistName = playlistData.playlistName || "Okänd spellista";
-        const playlistImage = playlistData.playlistImage; // Ingen fallback behövs för att kontrollera null
+        const playlistImage = playlistData.playlistImage;
 
         const playlistCard = document.getElementById("playlistCard");
-        playlistCard.innerHTML = `
-            <h2>${playlistName}</h2>
-        `;
 
+        // Rensa innehållet innan vi lägger till nya element
+        playlistCard.innerHTML = "";
+
+        // Skapa en behållare för att centrera bilden
         if (playlistImage) {
-            // Lägg till bild endast om den finns
+            const imageContainer = document.createElement("div");
+            imageContainer.style.display = "flex";
+            imageContainer.style.justifyContent = "center";
+            imageContainer.style.alignItems = "center";
+            imageContainer.style.marginBottom = "10px"; // Utrymme mellan bild och rubrik
+
+            // Skapa bild-elementet
             const imgElement = document.createElement("img");
             imgElement.src = playlistImage;
             imgElement.alt = "Playlist Image";
             imgElement.classList.add("playlist__image");
-            playlistCard.appendChild(imgElement);
+
+            // Begränsa storlek
+            imgElement.style.maxWidth = "100%";
+            imgElement.style.maxHeight = "300px";
+            imgElement.style.objectFit = "cover";
+
+            // Lägg till bilden i behållaren
+            imageContainer.appendChild(imgElement);
+
+            // Lägg till behållaren i playlistCard
+            playlistCard.appendChild(imageContainer);
         }
 
-        // Lägg till eventlyssnare för startknappen
-        const startPlaylistButton = document.getElementById("start-playlist");
-        if (startPlaylistButton) {
-            startPlaylistButton.addEventListener("click", async () => {
-                try {
-                    await fetch("/start-playlist", { method: "PUT" });
-                } catch (error) {
-                    console.error("Error starting playlist:", error);
-                }
-            });
-        }
+        // Skapa och lägg till rubriken under bilden
+        const titleElement = document.createElement("h2");
+        titleElement.textContent = playlistName;
+        titleElement.style.textAlign = "center"; // Centrera rubriken
+        titleElement.style.marginTop = "10px"; // Utrymme mellan rubriken och bilden
+        playlistCard.appendChild(titleElement);
     } catch (error) {
         console.error("Fel vid hämtning av spellista:", error);
     }
 }
+
 
 // Funktion för att visa popup
 function showPopup() {

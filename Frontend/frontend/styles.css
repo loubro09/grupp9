@@ -705,6 +705,7 @@ body {
 .music-player__track-info {
     display: flex;
     align-items: center;
+    justify-content: center;
     width: 100%;
     max-width: 700px;
     margin-bottom: 5px;
@@ -846,13 +847,14 @@ body {
     }
 }
 
-.playlist__image {
-  max-width: 100%;
-  max-height: 300px;
-  margin: 20px 0;
-  object-fit: cover; /* Anpassar bildens storlek */
-  border-radius: 10px; /* Gör hörnen rundade */
-  }
+.playlistcard {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Justera för att centrerad vertikalt */
+  position: relative; /* För att säkerställa korrekt placering av eventuella absolut positionerade element */
+  background: none; /* Ta bort bakgrund */
+  padding: 20px; /* Om du vill ha lite utrymme runt kortet */
+}
 
 /* Popup container */
 .popup {

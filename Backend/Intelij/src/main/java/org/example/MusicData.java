@@ -32,6 +32,7 @@ public class MusicData {
      * @param accessToken Spotify API access-token för autentisering.
      */
     public void fetchPlaylistData(Context ctx, String playlistId, String accessToken) {
+        // Första anropet: Hämta spellistans namn och låtdata
         String apiUrl = "https://api.spotify.com/v1/playlists/" + playlistId;
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -49,18 +50,59 @@ public class MusicData {
                 return;
             }
 
+            // Bearbeta spellistans data
             String jsonResponse = response.body();
             processPlaylistData(jsonResponse);
 
+            // Hämta spellistans bild
+            String playlistImage = fetchPlaylistImage(playlistId, accessToken);
+
+            // Skicka svar med spellistans namn och bild
             JsonObject responseData = new JsonObject();
             responseData.addProperty("playlistName", playlistName);
             responseData.addProperty("playlistImage", playlistImage);
             ctx.json(responseData.toString());
 
-
         } catch (Exception e) {
             e.printStackTrace();
             ctx.status(500).result("Error processing playlist data.");
+        }
+    }
+
+    /**
+     * Hämtar spellistans bild från Spotify API.
+     *
+     * @param playlistId Spellistans ID.
+     * @param accessToken Åtkomsttoken för Spotify API.
+     * @return Bildens URL.
+     */
+    private String fetchPlaylistImage(String playlistId, String accessToken) {
+        String apiUrl = "https://api.spotify.com/v1/playlists/" + playlistId + "/images";
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(apiUrl))
+                .header("Authorization", "Bearer " + accessToken)
+                .GET()
+                .build();
+
+        try {
+            HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 200) {
+                return "No Image URL"; // Returnera default om det finns ett fel
+            }
+
+            // Parsar JSON-svaret för att få bildens URL
+            JsonArray images = JsonParser.parseString(response.body()).getAsJsonArray();
+            if (images.size() > 0) {
+                JsonObject firstImage = images.get(0).getAsJsonObject();
+                return firstImage.has("url") ? firstImage.get("url").getAsString() : "No Image URL";
+            } else {
+                return "No Image URL"; // Returnera default om ingen bild finns
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "No Image URL"; // Returnera default om något går fel
         }
     }
 
@@ -72,9 +114,10 @@ public class MusicData {
     private void processPlaylistData(String jsonResponse) {
         JsonObject jsonObject = JsonParser.parseString(jsonResponse).getAsJsonObject();
 
+        // Hämta spellistans namn
         playlistName = jsonObject.has("name") ? jsonObject.get("name").getAsString() : "Unknown Playlist";
 
-
+        // Hämta spårinformation som tidigare
         JsonArray tracks = jsonObject.getAsJsonObject("tracks").getAsJsonArray("items");
         if (tracks.size() > 0) {
             JsonObject trackObject = tracks.get(0).getAsJsonObject().getAsJsonObject("track");
@@ -82,13 +125,13 @@ public class MusicData {
             artist = trackObject.getAsJsonArray("artists").size() > 0
                     ? trackObject.getAsJsonArray("artists").get(0).getAsJsonObject().get("name").getAsString()
                     : "Unknown Artist";
-
         } else {
             songName = "No Songs";
             artist = "Unknown Artist";
             songImage = "No Image";
         }
     }
+
 
     /**
      * Hämtar information om den aktuellt spelande låten från Spotify API och skickar tillbaka informationen till klienten.
