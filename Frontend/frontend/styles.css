@@ -362,7 +362,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
   }
 
   .services h1 {
@@ -381,7 +380,6 @@
     -moz-background-clip: text;
     -webkit-text-fill-color: transparent;
     -moz-text-fill-color: transparent;
-    margin-bottom: 5rem;
     font-size: 2.5rem;
   }
 
@@ -431,6 +429,12 @@
     top: 400px;
     left: 30px;
   }
+
+  .services__card p#temperature {
+      position: absolute;
+      top: 430px;
+      left: 30px;
+    }
 
   .services__card button {
     color: #fff;
@@ -612,15 +616,6 @@
     }
   }
 
-/* Sökfältets container */
-.search__container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #131313;
-    padding: 1rem;
-  }
-
   /* Input-fältet */
   #manualLocation {
     width: 250px;
@@ -651,20 +646,6 @@
     background: #4837ff;
   }
 
-  /* Om du vill att sökrutan "klistrar" högst upp:
-     ta bort om du inte vill ha den funktionen */
-  .search__container {
-    position: sticky;
-    top: 80px; /* hamnar precis under navbaren som är 80px hög */
-    z-index: 998;
-  }
-
-  #output,
-  #weather {
-    color: #fff;         /* gör texten vit */
-    margin-top: 1rem;    /* ger lite avstånd uppåt */
-  }
-
   .search__container {
     display: flex;
     justify-content: center;
@@ -674,20 +655,6 @@
     position: sticky;
     top: 80px;
     z-index: 998;
-  }
-
-  /* Egen container för texten, under sökbaren */
-  .output__container {
-    background-color: #131313; /* valfri bakgrund */
-    padding: 1rem;
-    text-align: center;        /* centrera texten */
-  }
-
-  /* Texten */
-  #output,
-  #weather {
-    color: #fff;
-    margin-top: 1rem;
   }
 
 /* Väderbildens container */
@@ -869,10 +836,91 @@ body {
 }
 
 
+<<<<<<< HEAD
 .playlist__image {
   max-width: 100%;
   max-height: 300px;
   margin: 20px 0;
   object-fit: cover; /* Anpassar bildens storlek */
   border-radius: 10px; /* Gör hörnen rundade */
+=======
+/* Popup container */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Mörk bakgrund med transparens */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 20px;
+}
+/* Popup styling */
+.popup-content {
+    background-color: #1a1a1a; /* En mörkare bakgrund för att passa den generella designen */
+    padding: 30px;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    color: #fff; /* Vit textfärg för bättre kontrast */
+    font-family: 'Kumbh Sans', sans-serif; /* Matcha fonten med resten av sidan */
+}
+
+.popup-header {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #ff8177; /* En färg som matchar din övergripande design */
+    font-weight: bold;
+}
+
+.popup-buttons {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;  /* Mellanrum mellan knappar */
+    width: 100%; /* Se till att knapparna fyller hela bredden */
+}
+
+/* Button styles */
+.popup-content button {
+    padding: 12px 24px;
+    background-color: #f77062; /* Matchar dina primära knapppfärger */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    flex: 1;  /* Gör knapparna flexibla och tar lika mycket plats */
+    min-width: 120px; /* Se till att knapparna inte blir för smala */
+}
+
+.popup-content button:hover {
+    background-color: #4837ff; /* En subtil övergång till en blå nyans */
+}
+
+.popup-content a button {
+    background-color: #1db954; /* Spotify-grön */
+    color: #fff;
+    border-radius: 8px;
+}
+
+/* Close Button Styling */
+.popup-content .close-btn {
+    background-color: transparent;
+    color: #f77062; /* Matcha med huvudknappen */
+    font-size: 1.5rem;
+    cursor: pointer;
+    border: none;
+    margin-top: 20px;
+    transition: color 0.3s ease;
+}
+
+.popup-content .close-btn:hover {
+    color: #ff5566;
+>>>>>>> forntend--location-BACKUP
 }

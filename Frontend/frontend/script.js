@@ -1,7 +1,4 @@
 window.onload = function () {
-    // Open Spotify Web Player in a new tab when the page loads
-    window.open("https://open.spotify.com/?flow_ctx=e9948630-d52d-48b6-ad66-c1b385b1a927%3A1736272483", "_blank", "width=800,height=600");
-
     // Fetch the currently playing song when the page loads
     fetchCurrentlyPlaying();
     // Periodically refresh the currently playing info every 30 seconds
@@ -35,7 +32,7 @@ async function fetchLocationAndWeather() {
 
                     const locationDataResponse = await locationResponse.json();
                     const place = locationDataResponse.place || "Okänd plats";
-                    document.getElementById("output").textContent = `Plats: ${place}`;
+                    document.getElementById("place").textContent = place;
 
                     // Hämta väderdata baserat på platsen
                     fetchWeather();
@@ -64,13 +61,13 @@ async function fetchWeather() {
         }
 
         const data = await response.json();
-        const weatherOutput = `
-            Plats: ${data.locationName || "Okänd plats"},
-            Tid: ${data.time || "Okänd tid"},
-            Väderprognos: ${data.weatherDescription || "Okänt väder"},
-            Temperatur: ${data.temp || "Okänd temperatur"} °C
-        `;
+        const weatherOutput = data.weatherDescription || "Unknown weather";
         document.getElementById("weather").textContent = weatherOutput;
+
+
+       const temperatureOutput = `${Math.round(data.temp)} °C` || "Unknown temperature";
+       document.getElementById("temperature").textContent = temperatureOutput;
+
 
         // Uppdatera väderbilden baserat på väderdata
         updateWeatherImage(data.weatherCode, data.weatherDescription);
@@ -98,7 +95,7 @@ document.getElementById("fetchCoordinates").addEventListener("click", async () =
 
         const data = await response.json();
         const place = data.place || "Okänd plats";
-        document.getElementById("output").textContent = `Plats: ${place}`;
+        document.getElementById("place").textContent = place;
 
         // Hämta väderdata baserat på den sökta platsen
         fetchWeather();
@@ -328,6 +325,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+document.getElementById("play-button").addEventListener("click", async () => {
+    const response = await fetch("/play-playlist", { method: "PUT" });
+    if (response.status === 400) {
+        showPopup();  // Visa popup med felmeddelandet
+    }
 });
 
 
@@ -340,6 +342,7 @@ async function fetchPlaylist(weatherCode, temp) {
         if (!response.ok) {
             throw new Error(`API-fel vid spellista: ${response.status}`);
         }
+
 
         const playlistData = await response.json();
         const playlistName = playlistData.playlistName || "Okänd spellista";
@@ -372,5 +375,32 @@ async function fetchPlaylist(weatherCode, temp) {
         }
     } catch (error) {
         console.error("Fel vid hämtning av spellista:", error);
+    }
+}
+
+// Funktion för att visa popup
+function showPopup() {
+    const popup = document.createElement("div");
+    popup.classList.add("popup");
+    popup.innerHTML = `
+            <div class="popup-content">
+                <p>Ingen aktiv enhet hittades.</p>
+                <p>Du måste först aktivera Spotify på en enhet genom att starta en låt.</p>
+                <div class="popup-buttons">
+                    <button onclick="closePopup()">OK</button>
+                    <a href="https://open.spotify.com/" target="_blank">
+                        <button onclick="closePopup()">Öppna Spotify på webben</button>
+                    </a>
+                </div>
+            </div>
+        `;
+    document.body.appendChild(popup);
+}
+
+// Funktion för att stänga popup
+function closePopup() {
+    const popup = document.querySelector(".popup");
+    if (popup) {
+        popup.remove();
     }
 }

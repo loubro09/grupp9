@@ -27,32 +27,22 @@
 
 <!-- Search Section -->
 <div class="search__container">
-  <input type="text" id="manualLocation" placeholder="Sök plats..." />
-  <button id="fetchCoordinates">Sök</button>
-  <button id="getLocation">Hämta min plats</button>
+  <input type="text" id="manualLocation" placeholder="Search location..." />
+  <button id="fetchCoordinates">Search</button>
+  <button id="getLocation">Get my location</button>
 </div>
 
-<!-- Output Section -->
-<div class="output__container">
-  <p id="output"></p>
-  <p id="weather"></p>
-  <img id="weather-icon" src="" alt="Weather Icon" />
-
-  <!-- Väderbild -->
-</div>
-
-
-<!-- Services Section -->
 <!-- Services Section -->
 <div class="services">
   <h1>Where weather meets music</h1>
   <div class="services__container">
     <div class="services__card" id="locationCard">
-      <h2>Plats</h2>
-      <p>Här kan man visa vald stad eller position</p>
+      <h2 id="place"></h2>
+      <p id="weather"></p>
+      <p id="temperature"></p>
     </div>
     <div class="services__card" id="playlistCard">
-      <h2>Spellista namn</h2>
+      <h2 id>Spellista namn</h2>
       <p>Koppla till spotify</p>
     </div>
   </div>
