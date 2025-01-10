@@ -5,7 +5,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +15,7 @@ public class MusicController {
 
     private static final HttpClient client = HttpClient.newHttpClient();
     private final String baseUrl = "https://api.spotify.com/v1/me/player/";
+    private MusicData musicData = new MusicData();
 
     /**
      * Kollar om musiken är pausad eller inte
@@ -67,6 +67,7 @@ public class MusicController {
 
         //skickar förfrågan och sparar svar
         HttpResponse<String> response = sendRequest(apiUrl, "PUT", accessToken, jsonBody.toString());
+
 
         //om anropet inte var framgångsrikt
         handleApiError(response);
@@ -164,23 +165,23 @@ public class MusicController {
     private boolean isPausedTrackInPlaylist(List<String> trackUris, String accessToken) throws Exception {
         String apiUrl = baseUrl + "currently-playing";
 
-        //skickar förfrågan och sparar svar
         HttpResponse<String> response = sendRequest(apiUrl, "GET", accessToken, null);
 
-        //om anropet var framgångsrikt
         if (response.statusCode() == 200) {
             JsonObject jsonResponse = JsonParser.parseString(response.body()).getAsJsonObject();
-            //hämtar uri för den pausade låten
             if (jsonResponse.has("item")) {
                 String pausedTrackUri = jsonResponse.getAsJsonObject("item").get("uri").getAsString();
-                //kollar om den pausade låtens uri finns i spellistan
                 return trackUris.contains(pausedTrackUri);
             }
+        } else if (response.statusCode() == 204) { // No content - no song is currently playing
+            System.err.println("No song currently playing.");
+            return false;
         } else {
             handleApiError(response);
         }
         return false;
     }
+
 
     /**
      * Kontrollerar om det finns en aktiv enhet som spelar musik

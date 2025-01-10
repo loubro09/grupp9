@@ -119,6 +119,10 @@ public class WeatherAnalyzer {
      * @return a string representing the season (e.g., Summer, SA (Spring/Autumn), Winter).
      */
     private String getSeason(double temperature) {
+
+        if(temperature == 10000.0){
+            return "default";
+        }
         if (temperature >30.0){
             return "Tropical"; //Tropiskt klimat om temperaturen är över 30 °C
         }

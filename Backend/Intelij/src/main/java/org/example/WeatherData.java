@@ -104,6 +104,9 @@ public class WeatherData {
     }
 
     public double getTemp() {
+        if(temp == null || temp.isEmpty()) {
+            return 10000.0;
+        }
         double temp1 = Double.parseDouble(temp);
         return temp1;
     }
@@ -113,6 +116,9 @@ public class WeatherData {
     }
 
     public String getWeatherCode() {
+        if(weatherCode == null || weatherCode.isEmpty()) {
+            return "Unknown weather code";
+        }
         return weatherCode;
     }
 
@@ -136,15 +142,5 @@ public class WeatherData {
         this.locationName = locationName;
     }
 
-    @Override
-    public String toString() {
-        return "WeatherData{" +
-                "time='" + time + '\'' +
-                ", temp='" + temp + '\'' +
-                ", weatherCode='" + weatherCode + '\'' +
-                ", locationCor='" + locationCor + '\'' +
-                ", locationName='" + locationName + '\'' +
-                '}';
-    }
 
 }
