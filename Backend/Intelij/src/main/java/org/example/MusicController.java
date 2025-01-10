@@ -16,6 +16,7 @@ public class MusicController {
 
     private static final HttpClient client = HttpClient.newHttpClient();
     private final String baseUrl = "https://api.spotify.com/v1/me/player/";
+    private MusicData musicData = new MusicData();
 
     /**
      * Kollar om musiken är pausad eller inte
@@ -67,8 +68,14 @@ public class MusicController {
         // Skickar förfrågan och sparar svar
         HttpResponse<String> response = sendRequest(apiUrl, "PUT", accessToken, jsonBody.toString());
 
+
+        //TODO: Här ska det anropa
+        musicData.getMusic(jsonBody);
+
+
         // Om anropet inte var framgångsrikt
         handleApiError(response);
+
     }
 
     /**

@@ -136,15 +136,5 @@ public class WeatherData {
         this.locationName = locationName;
     }
 
-    @Override
-    public String toString() {
-        return "WeatherData{" +
-                "time='" + time + '\'' +
-                ", temp='" + temp + '\'' +
-                ", weatherCode='" + weatherCode + '\'' +
-                ", locationCor='" + locationCor + '\'' +
-                ", locationName='" + locationName + '\'' +
-                '}';
-    }
 
 }
