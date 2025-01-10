@@ -268,7 +268,7 @@ public class MusicController {
      * @return sant om det finns en aktiv enhet
      * @throws Exception
      */
-    private boolean isActiveDevice(String accessToken) throws Exception {
+    public boolean isActiveDevice(String accessToken) throws Exception {
         String apiUrl = baseUrl + "devices";
 
         // Skickar förfrågan och sparar svaret
