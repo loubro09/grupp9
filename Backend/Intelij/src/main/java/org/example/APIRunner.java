@@ -128,9 +128,11 @@ public class APIRunner {
             musicData.fetchCurrentlyPlaying(ctx, accessToken);
         });
 
+
         // *** NYA ENDPOINTS FÖR MUSIKSPELAREN ***
 
         // Endpoint för att hämta aktuell spellistas coverbild
+
         app.get("/current-track-cover", ctx -> {
             String accessToken = loginController.getAccessToken();
             if (accessToken != null && !accessToken.isEmpty()) {

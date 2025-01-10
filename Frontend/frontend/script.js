@@ -7,7 +7,6 @@ window.onload = function () {
 };
 // --- Plats- och Väderfunktionalitet ---
 
-
 // Funktion för att hämta plats och väder vid sidladdning eller via knappar
 async function fetchLocationAndWeather() {
     if ("geolocation" in navigator) {
@@ -34,7 +33,7 @@ async function fetchLocationAndWeather() {
 
                     const locationDataResponse = await locationResponse.json();
                     const place = locationDataResponse.place || "Okänd plats";
-                    document.getElementById("place").textContent = place;
+                    document.getElementById("output").textContent = `Plats: ${place}`;
 
                     // Hämta väderdata baserat på platsen
                     fetchWeather();
@@ -63,13 +62,13 @@ async function fetchWeather() {
         }
 
         const data = await response.json();
-        const weatherOutput = data.weatherDescription || "Unknown weather";
+        const weatherOutput = `
+            Plats: ${data.locationName || "Okänd plats"},
+            Tid: ${data.time || "Okänd tid"},
+            Väderprognos: ${data.weatherDescription || "Okänt väder"},
+            Temperatur: ${data.temp || "Okänd temperatur"} °C
+        `;
         document.getElementById("weather").textContent = weatherOutput;
-
-
-       const temperatureOutput = `${Math.round(data.temp)} °C` || "Unknown temperature";
-       document.getElementById("temperature").textContent = temperatureOutput;
-
 
         // Uppdatera väderbilden baserat på väderdata
         updateWeatherImage(data.weatherCode, data.weatherDescription);
@@ -97,7 +96,7 @@ document.getElementById("fetchCoordinates").addEventListener("click", async () =
 
         const data = await response.json();
         const place = data.place || "Okänd plats";
-        document.getElementById("place").textContent = place;
+        document.getElementById("output").textContent = `Plats: ${place}`;
 
         // Hämta väderdata baserat på den sökta platsen
         fetchWeather();
@@ -302,7 +301,6 @@ async function fetchPlaylist(weatherCode, temp) {
         if (!response.ok) {
             throw new Error(`API-fel vid spellista: ${response.status}`);
         }
-
 
         const playlistData = await response.json();
         const playlistName = playlistData.playlistName || "Okänd spellista";
