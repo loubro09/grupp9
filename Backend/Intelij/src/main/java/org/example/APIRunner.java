@@ -1,24 +1,28 @@
 package org.example;
 
 import io.javalin.Javalin;
+
 import java.io.*;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
+
 import com.google.gson.*;
 
 public class APIRunner {
     private String weatherAPI_Key;
     private String location;
     private String locationName;
+    private String clientId;
+    private String clientSecret;
     private static Location locationController;
     private static WeatherData weatherData;
     private static WeatherAnalyzer weatherAnalyzer;
     private static Login loginController;
     private static MusicController musicController;
-    private String clientId;
-    private String clientSecret;
+    private static MusicData musicData;
+
 
     public APIRunner() {
         loadConfig();
@@ -27,6 +31,8 @@ public class APIRunner {
         loginController = new Login(clientId, clientSecret);
         musicController = new MusicController();
         weatherAnalyzer = new WeatherAnalyzer();
+        musicData = new MusicData();
+
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -64,7 +70,9 @@ public class APIRunner {
         /** TO DO:
          * // LÄGG TILL NYA HTML
          */
-        app.get("/", ctx -> { ctx.render("login.html"); });
+        app.get("/", ctx -> {
+            ctx.render("login.html");
+        });
         // app.get("/", ctx -> {ctx.render("weather.html"); });
 
         // Anrop för att få namnet på en plats
@@ -132,12 +140,12 @@ public class APIRunner {
         // Anrop för att starta musik
         app.put("/play-playlist", ctx -> {
             String accessToken = loginController.getAccessToken();
-            // String playlistId = "1pYJQgF8EmVcSlGbskZXfA"; // Temporär spellista hårdkodad
             String playlistId = weatherAnalyzer.analyzeWeather("1000", 16.0);
-            // String playlistId = "37i9dQZF1EIfS0ZRAzGri5";
             musicController.playOrResumeMusic(playlistId, accessToken);
+            musicData.fetchPlaylistData(ctx, playlistId, accessToken);
             ctx.status(204);
         });
+
 
         app.put("/start-playlist", ctx -> {
             String accessToken = loginController.getAccessToken();
@@ -191,6 +199,13 @@ public class APIRunner {
                 ctx.status(401).result("Obehörig");
             }
         });
+
+        app.get("/currently-playing", ctx -> {
+            String accessToken = loginController.getAccessToken();
+            musicData.fetchCurrentlyPlaying(ctx, accessToken);
+        });
+
+
     }
 
     public void loadConfig() {

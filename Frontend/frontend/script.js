@@ -228,9 +228,31 @@ function updateServicesBackgrounds(weatherCode, weatherDescription) {
 
 document.getElementById("play-button").addEventListener("click", async () => {
     await fetch("/play-playlist", { method: "PUT" });
-});
 
-document.getElementById("pause-button").addEventListener("click", async () => {
+        try {
+            // Step 1: Call the backend to play the playlist
+            const response = await fetch("/play-playlist", { method: "PUT" });
+
+            if (!response.ok) {
+                throw new Error(`API error while playing playlist: ${response.status}`); // Corrected backticks
+            }
+
+            const playlistData = await response.json();
+            console.log("Playing Playlist:", playlistData);
+
+            // Step 2: Optionally display playlist info in the UI
+            const playlistOutput = `
+            Playlist Name: ${playlistData.playlistName || "Unknown Playlist"}
+            Playlist Image: ${playlistData.playlistImage || "Unknown Playlist Image"}
+        `;
+            document.getElementById("output").textContent = playlistOutput;
+        } catch (error) {
+            console.error("Error playing music:", error);
+            document.getElementById("output").textContent = "Failed to play music.";
+        }
+    });
+
+    document.getElementById("pause-button").addEventListener("click", async () => {
     await fetch("/pause", { method: "PUT" });
 });
 
@@ -245,3 +267,29 @@ document.getElementById("next-button").addEventListener("click", async () => {
 document.getElementById("start-playlist").addEventListener("click", async () => {
     await fetch("/start-playlist", { method: "PUT" });
 });
+
+async function fetchCurrentlyPlaying() {
+    try {
+        const response = await fetch("http://localhost:5009/currently-playing");
+
+        if (!response.ok) {
+            if (response.status === 204) {
+                console.log("No song is currently playing.");
+                document.getElementById("output").textContent = "No song is currently playing.";
+                return;
+            }
+            throw new Error(`API error: ${response.status}`); // Corrected closing quotation mark
+        }
+
+        const data = await response.json();
+        const currentlyPlayingOutput = `
+            Song: ${data.songName || "Unknown Song"},
+            Artist: ${data.artist || "Unknown Artist"}
+        `;
+        document.getElementById("output").textContent = currentlyPlayingOutput;
+    } catch (error) {
+        console.error("Error fetching currently playing song:", error);
+        document.getElementById("output").textContent = "Failed to fetch currently playing song.";
+    }
+}
+
