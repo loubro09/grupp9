@@ -1,9 +1,14 @@
-window.onload = function() {
-            // Öppnar Spotify Web Player i en ny flik när sidan har laddats
-            window.open("https://open.spotify.com/?flow_ctx=e9948630-d52d-48b6-ad66-c1b385b1a927%3A1736272483", "_blank", "width=800,height=600");
-        };
-// script.js
 
+window.onload = function () {
+    // Open Spotify Web Player in a new tab when the page loads
+    window.open("https://open.spotify.com/?flow_ctx=e9948630-d52d-48b6-ad66-c1b385b1a927%3A1736272483", "_blank", "width=800,height=600");
+
+    // Fetch the currently playing song when the page loads
+    fetchCurrentlyPlaying();
+
+    // Periodically refresh the currently playing info every 30 seconds
+    setInterval(fetchCurrentlyPlaying, 30000);
+};
 // --- Plats- och Väderfunktionalitet ---
 
 // Funktion för att hämta plats och väder vid sidladdning eller via knappar
@@ -226,70 +231,110 @@ function updateServicesBackgrounds(weatherCode, weatherDescription) {
     }
 }
 
-document.getElementById("play-button").addEventListener("click", async () => {
-    await fetch("/play-playlist", { method: "PUT" });
-
-        try {
-            // Step 1: Call the backend to play the playlist
-            const response = await fetch("/play-playlist", { method: "PUT" });
-
-            if (!response.ok) {
-                throw new Error(`API error while playing playlist: ${response.status}`); // Corrected backticks
-            }
-
-            const playlistData = await response.json();
-            console.log("Playing Playlist:", playlistData);
-
-            // Step 2: Optionally display playlist info in the UI
-            const playlistOutput = `
-            Playlist Name: ${playlistData.playlistName || "Unknown Playlist"}
-            Playlist Image: ${playlistData.playlistImage || "Unknown Playlist Image"}
-        `;
-            document.getElementById("output").textContent = playlistOutput;
-        } catch (error) {
-            console.error("Error playing music:", error);
-            document.getElementById("output").textContent = "Failed to play music.";
-        }
-    });
-
-    document.getElementById("pause-button").addEventListener("click", async () => {
-    await fetch("/pause", { method: "PUT" });
-});
-
-document.getElementById("prev-button").addEventListener("click", async () => {
-    await fetch("/previous", { method: "POST" });
-});
-
-document.getElementById("next-button").addEventListener("click", async () => {
-    await fetch("/next", { method: "POST" });
-});
-
-document.getElementById("start-playlist").addEventListener("click", async () => {
-    await fetch("/start-playlist", { method: "PUT" });
-});
+// --- Music Player Functionality ---
 
 async function fetchCurrentlyPlaying() {
     try {
+        const trackTitleElement = document.getElementById("track-title");
+        const trackArtistElement = document.getElementById("track-artist");
+        const trackImageElement = document.getElementById("track-image");
+
+        if (trackTitleElement) trackTitleElement.textContent = "Loading...";
+        if (trackArtistElement) trackArtistElement.textContent = "Please wait...";
+        if (trackImageElement) trackImageElement.src = "/images/loading.png";
+
         const response = await fetch("http://localhost:5009/currently-playing");
 
         if (!response.ok) {
             if (response.status === 204) {
-                console.log("No song is currently playing.");
-                document.getElementById("output").textContent = "No song is currently playing.";
+                if (trackTitleElement) trackTitleElement.textContent = "No song is playing";
+                if (trackArtistElement) trackArtistElement.textContent = "";
+                if (trackImageElement) trackImageElement.src = "/images/default.png";
                 return;
             }
-            throw new Error(`API error: ${response.status}`); // Corrected closing quotation mark
+            throw new Error(`API error: ${response.status}`);
         }
 
         const data = await response.json();
-        const currentlyPlayingOutput = `
-            Song: ${data.songName || "Unknown Song"},
-            Artist: ${data.artist || "Unknown Artist"}
-        `;
-        document.getElementById("output").textContent = currentlyPlayingOutput;
+
+        if (trackTitleElement) trackTitleElement.textContent = data.songName || "Unknown Song";
+        if (trackArtistElement) trackArtistElement.textContent = data.artist || "Unknown Artist";
+        if (trackImageElement) trackImageElement.src = data.songImage || "/images/default.png";
+
     } catch (error) {
         console.error("Error fetching currently playing song:", error);
-        document.getElementById("output").textContent = "Failed to fetch currently playing song.";
+        const trackTitleElement = document.getElementById("track-title");
+        const trackArtistElement = document.getElementById("track-artist");
+        const trackImageElement = document.getElementById("track-image");
+
+        if (trackTitleElement) trackTitleElement.textContent = "Error fetching song";
+        if (trackArtistElement) trackArtistElement.textContent = "";
+        if (trackImageElement) trackImageElement.src = "/images/default.png";
     }
 }
+
+// Event Listeners for Music Controls
+document.addEventListener("DOMContentLoaded", () => {
+    const playButton = document.getElementById("play-button");
+    const pauseButton = document.getElementById("pause-button");
+    const prevButton = document.getElementById("prev-button");
+    const nextButton = document.getElementById("next-button");
+    const startPlaylistButton = document.getElementById("start-playlist");
+
+    if (playButton) {
+        playButton.addEventListener("click", async () => {
+            try {
+                await fetch("/play-playlist", { method: "PUT" });
+                fetchCurrentlyPlaying();
+            } catch (error) {
+                console.error("Error playing playlist:", error);
+            }
+        });
+    }
+
+    if (pauseButton) {
+        pauseButton.addEventListener("click", async () => {
+            try {
+                await fetch("/pause", { method: "PUT" });
+                fetchCurrentlyPlaying();
+            } catch (error) {
+                console.error("Error pausing music:", error);
+            }
+        });
+    }
+
+    if (prevButton) {
+        prevButton.addEventListener("click", async () => {
+            try {
+                await fetch("/previous", { method: "POST" });
+                fetchCurrentlyPlaying();
+            } catch (error) {
+                console.error("Error going to previous track:", error);
+            }
+        });
+    }
+
+    if (nextButton) {
+        nextButton.addEventListener("click", async () => {
+            try {
+                await fetch("/next", { method: "POST" });
+                fetchCurrentlyPlaying();
+            } catch (error) {
+                console.error("Error going to next track:", error);
+            }
+        });
+    }
+
+    if (startPlaylistButton) {
+        startPlaylistButton.addEventListener("click", async () => {
+            try {
+                await fetch("/start-playlist", { method: "PUT" });
+                fetchCurrentlyPlaying();
+            } catch (error) {
+                console.error("Error starting playlist:", error);
+            }
+        });
+    }
+});
+
 
