@@ -10,7 +10,7 @@ async function fetchLocationAndWeather() {
                 const latitude = position.coords.latitude;
                 const longitude = position.coords.longitude;
 
-                const locationData = { latitude, longitude };
+                 const locationData = `${latitude},${longitude}`;
 
                 try {
                     // Skicka platskoordinater till servern
