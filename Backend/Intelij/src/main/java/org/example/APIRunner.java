@@ -17,6 +17,7 @@ public class APIRunner {
     private static WeatherAnalyzer weatherAnalyzer;
     private static Login loginController;
     private static MusicController musicController;
+    private static MusicData musicData;
     private String clientId;
     private String clientSecret;
 
@@ -27,6 +28,8 @@ public class APIRunner {
         loginController = new Login(clientId, clientSecret);
         musicController = new MusicController();
         weatherAnalyzer = new WeatherAnalyzer();
+        musicData = new MusicData();
+
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -129,6 +132,7 @@ public class APIRunner {
             ctx.status(204);
         });
 
+<<<<<<< HEAD
         // Anrop för att starta musik
         app.put("/play-playlist", ctx -> {
             String accessToken = loginController.getAccessToken();
@@ -190,7 +194,25 @@ public class APIRunner {
             } else {
                 ctx.status(401).result("Obehörig");
             }
+=======
+        // Play playlist endpoint
+
+        app.put("/play-playlist", ctx -> {
+            String accessToken = loginController.getAccessToken();
+            String playlistId = weatherAnalyzer.analyzeWeather(weatherData.getWeatherCode(), weatherData.getTemp());
+            musicController.playOrResumeMusic(playlistId, accessToken);
+            musicData.fetchPlaylistData(ctx,playlistId, accessToken);
+
+>>>>>>> backend--weather-and-music
         });
+
+        // fetch information about the current song playing
+        app.get("/currently-playing", ctx -> {
+            String accessToken = loginController.getAccessToken();
+            musicData.fetchCurrentlyPlaying(ctx, accessToken);
+        });
+
+
     }
 
     public void loadConfig() {
