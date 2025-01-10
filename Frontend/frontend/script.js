@@ -112,15 +112,37 @@ function updateWeatherImage(weatherCode, weatherDescription) {
     // Mappa väderkoder till bilder
     switch (weatherCode) {
         case "1000": // Klar himmel
+        case "1100": // Mycket klart
             imgSrc = "/images/Sunny.jpg";
             break;
-        case "1100": // Mycket klart
-        case "1101": // Delvis molnigt
+        case "1101": // "Partly Cloudy"
+        case "1102": // "Mostly Cloudy"
+        case "1001": // "Cloudy"
+        case "2000": // "Fog"
+        case "2100": // "Light Fog"
             imgSrc = "/images/cloudy.jpg";
             break;
-        // Lägg till fler fall baserat på Tomorrow.io's väderkoder om du har fler bilder
+        case "4000": // "Drizzle"
+        case "4200": // "Rain"
+        case "4001": // "Light Rain"
+        case "4201": // "Heavy Rain"
+        case "8000": // "Thunderstorm"
+            imgSrc = "/images/rain.jpg";
+            break;
+        case "5000": // "Snow"
+        case "5100": // "Flurries"
+        case "5101": // "Light Snow"
+        case "5001": // "Heavy Snow"
+        case "6000": // "Freezing Drizzle"
+        case "6001": // "Freezing Rain"
+        case "6200": // "Light Freezing Rain"
+        case "6201": // "Heavy Freezing Rain"
+        case "7000": // "Ice Pellets"
+        case "7101": // "Heavy Ice Pellets"
+        case "7102": // "Light Ice Pellets"
+            imgSrc= "/images/winter.jpg";
         default:
-            imgSrc = "/images/default.png";
+            imgSrc = "/images/default.jpg";
             break;
     }
 
