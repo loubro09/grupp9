@@ -843,6 +843,7 @@ body {
   margin: 20px 0;
   object-fit: cover; /* Anpassar bildens storlek */
   border-radius: 10px; /* Gör hörnen rundade */
+  }
 
 /* Popup container */
 .popup {
@@ -922,5 +923,4 @@ body {
 
 .popup-content .close-btn:hover {
     color: #ff5566;
-
 }

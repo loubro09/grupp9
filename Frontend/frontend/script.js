@@ -272,60 +272,18 @@ async function fetchCurrentlyPlaying() {
         if (trackImageElement) trackImageElement.src = "/images/default.png";
     }
 }
+document.getElementById("pause-button").addEventListener("click", async () => {
+    await fetch("/pause", { method: "PUT" });
+});
 
-// Event Listeners for Music Controls
-document.addEventListener("DOMContentLoaded", () => {
-    const playButton = document.getElementById("play-button");
-    const pauseButton = document.getElementById("pause-button");
-    const prevButton = document.getElementById("prev-button");
-    const nextButton = document.getElementById("next-button");
-    const startPlaylistButton = document.getElementById("start-playlist");
+document.getElementById("prev-button").addEventListener("click", async () => {
+    await fetch("/previous", { method: "POST" });
+});
 
-    if (playButton) {
-        playButton.addEventListener("click", async () => {
-            try {
-                await fetch("/play-playlist", { method: "PUT" });
-                fetchCurrentlyPlaying();
-            } catch (error) {
-                console.error("Error playing playlist:", error);
-            }
-        });
+document.getElementById("next-button").addEventListener("click", async () => {
+    await fetch("/next", { method: "POST" });
+});
 
-        fetchPlaylist()
-    }
-
-    if (pauseButton) {
-        pauseButton.addEventListener("click", async () => {
-            try {
-                await fetch("/pause", { method: "PUT" });
-                fetchCurrentlyPlaying();
-            } catch (error) {
-                console.error("Error pausing music:", error);
-            }
-        });
-    }
-
-    if (prevButton) {
-        prevButton.addEventListener("click", async () => {
-            try {
-                await fetch("/previous", { method: "POST" });
-                fetchCurrentlyPlaying();
-            } catch (error) {
-                console.error("Error going to previous track:", error);
-            }
-        });
-    }
-
-    if (nextButton) {
-        nextButton.addEventListener("click", async () => {
-            try {
-                await fetch("/next", { method: "POST" });
-                fetchCurrentlyPlaying();
-            } catch (error) {
-                console.error("Error going to next track:", error);
-            }
-        });
-    }
 
 document.getElementById("play-button").addEventListener("click", async () => {
     const response = await fetch("/play-playlist", { method: "PUT" });
