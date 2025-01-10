@@ -16,7 +16,6 @@ public class MusicController {
 
     private static final HttpClient client = HttpClient.newHttpClient();
     private final String baseUrl = "https://api.spotify.com/v1/me/player/";
-    private MusicData musicData = new MusicData();
 
     /**
      * Kollar om musiken är pausad eller inte
@@ -71,12 +70,7 @@ public class MusicController {
         // Skickar förfrågan och sparar svar
         HttpResponse<String> response = sendRequest(apiUrl, "PUT", accessToken, jsonBody.toString());
 
-<<<<<<< HEAD
         // Om anropet inte var framgångsrikt
-=======
-
-        //om anropet inte var framgångsrikt
->>>>>>> backend--weather-and-music
         handleApiError(response);
     }
 
@@ -250,7 +244,6 @@ public class MusicController {
     private boolean isPausedTrackInPlaylist(List<String> trackUris, String accessToken) throws Exception {
         String apiUrl = baseUrl + "currently-playing";
 
-<<<<<<< HEAD
         // Skickar förfrågan och sparar svar
         HttpResponse<String> response = sendRequest(apiUrl, "GET", accessToken, null);
 
@@ -261,25 +254,13 @@ public class MusicController {
             if (jsonResponse.has("item")) {
                 String pausedTrackUri = jsonResponse.getAsJsonObject("item").get("uri").getAsString();
                 // Kollar om den pausade låtens uri finns i spellistan
-=======
-        HttpResponse<String> response = sendRequest(apiUrl, "GET", accessToken, null);
-
-        if (response.statusCode() == 200) {
-            JsonObject jsonResponse = JsonParser.parseString(response.body()).getAsJsonObject();
-            if (jsonResponse.has("item")) {
-                String pausedTrackUri = jsonResponse.getAsJsonObject("item").get("uri").getAsString();
->>>>>>> backend--weather-and-music
                 return trackUris.contains(pausedTrackUri);
             }
-        } else if (response.statusCode() == 204) { // No content - no song is currently playing
-            System.err.println("No song currently playing.");
-            return false;
         } else {
             handleApiError(response);
         }
         return false;
     }
-
 
     /**
      * Kontrollerar om det finns en aktiv enhet som spelar musik
