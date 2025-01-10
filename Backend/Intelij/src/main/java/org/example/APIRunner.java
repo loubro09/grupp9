@@ -133,8 +133,7 @@ public class APIRunner {
         app.put("/play-playlist", ctx -> {
             String accessToken = loginController.getAccessToken();
             // String playlistId = "1pYJQgF8EmVcSlGbskZXfA"; // Temporär spellista hårdkodad
-            String playlistId = weatherAnalyzer.analyzeWeather("1000", 16.0);
-            // String playlistId = "37i9dQZF1EIfS0ZRAzGri5";
+            String playlistId = weatherAnalyzer.analyzeWeather(weatherData.getWeatherCode(), weatherData.getTemp());
             if (!musicController.isActiveDevice(accessToken)) {
                 ctx.status(400); // Bad Request
                 return;
