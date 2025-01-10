@@ -242,3 +242,6 @@ document.getElementById("next-button").addEventListener("click", async () => {
     await fetch("/next", { method: "POST" });
 });
 
+document.getElementById("start-playlist").addEventListener("click", async () => {
+    await fetch("/start-playlist", { method: "PUT" });
+});

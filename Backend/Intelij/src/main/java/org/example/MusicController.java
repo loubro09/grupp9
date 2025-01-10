@@ -52,6 +52,9 @@ public class MusicController {
      * @throws Exception
      */
     public void playPlaylist(String playlistId, String accessToken) throws Exception {
+        String deviceId = getSpotifyWebPlayerDeviceId(accessToken);
+        setActiveDevice(deviceId, accessToken);
+
         String apiUrl = baseUrl + "play";
         // Hämtar alla låtar från spellistan
         List<String> trackUris = getPlaylistTracks(playlistId, accessToken);
@@ -159,38 +162,55 @@ public class MusicController {
     }
 
     /**
-     * Uppdaterar access_token med refresh_token
-     * @param refreshToken
-     * @return Nytt access_token
-     * @throws Exception
+     * Hämtar alla tillgängliga enheter och returnerar enhet-ID för Spotify Web Player
+     * @param accessToken
+     * @return deviceId (eller null om den inte hittas)
      */
-    public String refreshAccessToken(String refreshToken) throws Exception {
-        String apiUrl = "https://accounts.spotify.com/api/token";
-        String clientId = System.getenv("CLIENT_ID");
-        String clientSecret = System.getenv("CLIENT_SECRET");
+    public String getSpotifyWebPlayerDeviceId(String accessToken) throws Exception {
+        String apiUrl = baseUrl + "devices";
 
-        String credentials = clientId + ":" + clientSecret;
-        String encodedCredentials = Base64.getEncoder().encodeToString(credentials.getBytes());
+        // Skicka API-förfrågan
+        HttpResponse<String> response = sendRequest(apiUrl, "GET", accessToken, null);
 
-        String requestBody = "grant_type=refresh_token&refresh_token=" + refreshToken;
+        // Parse API-responsen
+        JsonObject jsonResponse = JsonParser.parseString(response.body()).getAsJsonObject();
+        JsonArray devices = jsonResponse.getAsJsonArray("devices");
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(apiUrl))
-                .header("Authorization", "Basic " + encodedCredentials)
-                .header("Content-Type", "application/x-www-form-urlencoded")
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-        if (response.statusCode() == 200) {
-            JsonObject jsonResponse = JsonParser.parseString(response.body()).getAsJsonObject();
-            return jsonResponse.get("access_token").getAsString();
-        } else {
-            handleApiError(response);
-            throw new RuntimeException("Misslyckades att uppdatera access_token: " + response.body());
+        for (JsonElement deviceElement : devices) {
+            JsonObject device = deviceElement.getAsJsonObject();
+            String name = device.get("name").getAsString();
+            boolean isWebPlayer = name.contains("Web Player"); // Kontrollera om namnet innehåller "Web Player"
+            if (isWebPlayer) {
+                return device.get("id").getAsString(); // Returnera enhetens ID
+            }
         }
+        return null; // Returnera null om ingen Web Player hittas
     }
+
+
+
+    /**
+     * Växlar aktiv enhet till Spotify Web Player
+     * @param deviceId Enhets-ID för Spotify Web Player
+     * @param accessToken
+     */
+    public void setActiveDevice(String deviceId, String accessToken) throws Exception {
+        JsonObject jsonBody = new JsonObject();
+        JsonArray deviceIdsArray = new JsonArray();
+        deviceIdsArray.add(deviceId); // Lägg till deviceId som ett element i arrayen
+        jsonBody.add("device_ids", deviceIdsArray);
+
+        // Lägg till play: false för att inte starta uppspelningen på den nya enheten
+        jsonBody.addProperty("play", false);
+
+        HttpResponse<String> response = sendRequest(baseUrl, "PUT", accessToken, jsonBody.toString());
+
+        // Hantera eventuella fel
+        handleApiError(response);
+    }
+
+
+
 
     /**
      * Kontrollerar om musiken är pausad
