@@ -60,20 +60,32 @@ async function fetchWeather() {
         const response = await fetch("http://localhost:5009/weatherLocation");
 
         if (!response.ok) {
-            throw new Error(`API-fel vid väder: ${response.status}`);
+            throw new Error(API-fel vid väder: ${response.status});
         }
 
         const data = await response.json();
+               console.log("Weather data:", data);
+
+                // Set the weather icon dynamically
+                const weatherCode = data.weatherCode;
+                const weatherIconElement = document.getElementById("weather-icon");
+
+                if (weatherIconElement && weatherCode) {
+                    weatherIconElement.src = /frontend/icons/${weatherCode}.png;
+                } else {
+                    console.error("Weather icon element or weather code not found.");
+                }
         const weatherOutput = `
-            Plats: ${data.locationName || "Okänd plats"},
-            Tid: ${data.time || "Okänd tid"},
-            Väderprognos: ${data.weatherDescription || "Okänt väder"},
-            Temperatur: ${data.temp || "Okänd temperatur"} °C
+            Place: ${data.locationName || "Okänd plats"},
+            Time: ${data.time || "Okänd tid"},
+            Weather forecast: ${data.weatherDescription || "Okänt väder"},
+            Temperature: ${data.temp || "Okänd temperatur"} °C
+
         `;
         document.getElementById("weather").textContent = weatherOutput;
+       // const weatherCode = data.weatherCode;
 
-        // Uppdatera väderbilden baserat på väderdata
-        updateWeatherImage(data.weatherCode, data.weatherDescription);
+
     } catch (error) {
         console.error("Fel vid hämtning av väderdata:", error);
         document.getElementById("weather").textContent = "Kunde inte hämta väderdata.";
@@ -274,6 +286,18 @@ async function fetchCurrentlyPlaying() {
 
 // Event Listeners for Music Controls
 document.addEventListener("DOMContentLoaded", () => {
+    // Add your weather icon dynamic update logic here
+    const weatherCode = data.weatherCode;
+    const weatherIconElement = document.getElementById("weather-icon");
+
+    if (weatherIconElement) {
+        // Set the source of the weather icon image dynamically
+        weatherIconElement.src = `/frontend/icons/${weatherCode}.png`;
+    } else {
+        console.error("Weather icon element not found.");
+    }
+
+    // Music controls initialization
     const playButton = document.getElementById("play-button");
     const pauseButton = document.getElementById("pause-button");
     const prevButton = document.getElementById("prev-button");
