@@ -52,9 +52,6 @@ public class MusicController {
      * @throws Exception
      */
     public void playPlaylist(String playlistId, String accessToken) throws Exception {
-        String deviceId = getSpotifyWebPlayerDeviceId(accessToken);
-        setActiveDevice(deviceId, accessToken);
-
         String apiUrl = baseUrl + "play";
         // Hämtar alla låtar från spellistan
         List<String> trackUris = getPlaylistTracks(playlistId, accessToken);
@@ -160,57 +157,6 @@ public class MusicController {
         }
         return "/images/spotify.png"; // Fallback-bild
     }
-
-    /**
-     * Hämtar alla tillgängliga enheter och returnerar enhet-ID för Spotify Web Player
-     * @param accessToken
-     * @return deviceId (eller null om den inte hittas)
-     */
-    public String getSpotifyWebPlayerDeviceId(String accessToken) throws Exception {
-        String apiUrl = baseUrl + "devices";
-
-        // Skicka API-förfrågan
-        HttpResponse<String> response = sendRequest(apiUrl, "GET", accessToken, null);
-
-        // Parse API-responsen
-        JsonObject jsonResponse = JsonParser.parseString(response.body()).getAsJsonObject();
-        JsonArray devices = jsonResponse.getAsJsonArray("devices");
-
-        for (JsonElement deviceElement : devices) {
-            JsonObject device = deviceElement.getAsJsonObject();
-            String name = device.get("name").getAsString();
-            boolean isWebPlayer = name.contains("Web Player"); // Kontrollera om namnet innehåller "Web Player"
-            if (isWebPlayer) {
-                return device.get("id").getAsString(); // Returnera enhetens ID
-            }
-        }
-        return null; // Returnera null om ingen Web Player hittas
-    }
-
-
-
-    /**
-     * Växlar aktiv enhet till Spotify Web Player
-     * @param deviceId Enhets-ID för Spotify Web Player
-     * @param accessToken
-     */
-    public void setActiveDevice(String deviceId, String accessToken) throws Exception {
-        JsonObject jsonBody = new JsonObject();
-        JsonArray deviceIdsArray = new JsonArray();
-        deviceIdsArray.add(deviceId); // Lägg till deviceId som ett element i arrayen
-        jsonBody.add("device_ids", deviceIdsArray);
-
-        // Lägg till play: false för att inte starta uppspelningen på den nya enheten
-        jsonBody.addProperty("play", false);
-
-        HttpResponse<String> response = sendRequest(baseUrl, "PUT", accessToken, jsonBody.toString());
-
-        // Hantera eventuella fel
-        handleApiError(response);
-    }
-
-
-
 
     /**
      * Kontrollerar om musiken är pausad
