@@ -33,7 +33,7 @@ async function fetchLocationAndWeather() {
 
                     const locationDataResponse = await locationResponse.json();
                     const place = locationDataResponse.place || "Okänd plats";
-                    document.getElementById("output").textContent = `Plats: ${place}`;
+                    document.getElementById("place").textContent = place;
 
                     // Hämta väderdata baserat på platsen
                     fetchWeather();
@@ -62,13 +62,11 @@ async function fetchWeather() {
         }
 
         const data = await response.json();
-        const weatherOutput = `
-            Plats: ${data.locationName || "Okänd plats"},
-            Tid: ${data.time || "Okänd tid"},
-            Väderprognos: ${data.weatherDescription || "Okänt väder"},
-            Temperatur: ${data.temp || "Okänd temperatur"} °C
-        `;
+        const weatherOutput = data.weatherDescription || "Unknown weather";
         document.getElementById("weather").textContent = weatherOutput;
+
+        const temperatureOutput = `${Math.round(data.temp)} °C` || "Unknown temperature";
+               document.getElementById("temperature").textContent = temperatureOutput;
 
         // Uppdatera väderbilden baserat på väderdata
         updateWeatherImage(data.weatherCode, data.weatherDescription);
@@ -96,7 +94,7 @@ document.getElementById("fetchCoordinates").addEventListener("click", async () =
 
         const data = await response.json();
         const place = data.place || "Okänd plats";
-        document.getElementById("output").textContent = `Plats: ${place}`;
+       document.getElementById("place").textContent = place;
 
         // Hämta väderdata baserat på den sökta platsen
         fetchWeather();

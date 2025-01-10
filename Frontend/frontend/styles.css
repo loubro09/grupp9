@@ -362,7 +362,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
   }
 
   .services h1 {
@@ -381,7 +380,6 @@
     -moz-background-clip: text;
     -webkit-text-fill-color: transparent;
     -moz-text-fill-color: transparent;
-    margin-bottom: 5rem;
     font-size: 2.5rem;
   }
 
@@ -430,6 +428,12 @@
     position: absolute;
     top: 400px;
     left: 30px;
+  }
+
+  .services__card p#temperature {
+          position: absolute;
+          top: 440px;
+          left: 30px;
   }
 
   .services__card button {
@@ -612,15 +616,6 @@
     }
   }
 
-/* Sökfältets container */
-.search__container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #131313;
-    padding: 1rem;
-  }
-
   /* Input-fältet */
   #manualLocation {
     width: 250px;
@@ -651,15 +646,6 @@
     background: #4837ff;
   }
 
-  /* Om du vill att sökrutan "klistrar" högst upp:
-     ta bort om du inte vill ha den funktionen */
-  .search__container {
-    position: sticky;
-    top: 80px; /* hamnar precis under navbaren som är 80px hög */
-    z-index: 998;
-  }
-
-  #output,
   #weather {
     color: #fff;         /* gör texten vit */
     margin-top: 1rem;    /* ger lite avstånd uppåt */
@@ -676,15 +662,7 @@
     z-index: 998;
   }
 
-  /* Egen container för texten, under sökbaren */
-  .output__container {
-    background-color: #131313; /* valfri bakgrund */
-    padding: 1rem;
-    text-align: center;        /* centrera texten */
-  }
 
-  /* Texten */
-  #output,
   #weather {
     color: #fff;
     margin-top: 1rem;

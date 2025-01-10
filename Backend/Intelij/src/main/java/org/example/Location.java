@@ -153,13 +153,13 @@ public class Location {
             }
 
             //county sparas i sträng om inte state eller provins redan finns
-            if (state == null) {
+            /*if (state == null) {
                 if (province == null) {
                     if (county != null && !county.isEmpty()) {
                         addressString.append(", ").append(county);
                     }
                 }
-            }
+            }*/
 
             /*
             if (stateDistrict != null && !stateDistrict.isEmpty()) {
@@ -167,9 +167,9 @@ public class Location {
             }*/
 
             //state sparas i sträng
-            if (state != null && !state.isEmpty()) {
+            /*if (state != null && !state.isEmpty()) {
                 addressString.append(", ").append(state);
-            }
+            }*/
 
             //land sparas i sträng
             addressString.append(", ").append(country);
