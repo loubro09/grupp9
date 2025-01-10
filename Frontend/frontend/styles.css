@@ -836,14 +836,14 @@ body {
 }
 
 
-<<<<<<< HEAD
+
 .playlist__image {
   max-width: 100%;
   max-height: 300px;
   margin: 20px 0;
   object-fit: cover; /* Anpassar bildens storlek */
   border-radius: 10px; /* Gör hörnen rundade */
-=======
+
 /* Popup container */
 .popup {
     position: fixed;
@@ -922,5 +922,5 @@ body {
 
 .popup-content .close-btn:hover {
     color: #ff5566;
->>>>>>> forntend--location-BACKUP
+
 }

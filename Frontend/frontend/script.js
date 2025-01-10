@@ -1,3 +1,4 @@
+
 window.onload = function () {
     // Fetch the currently playing song when the page loads
     fetchCurrentlyPlaying();
@@ -5,6 +6,7 @@ window.onload = function () {
     setInterval(fetchCurrentlyPlaying, 30000);
 };
 // --- Plats- och Väderfunktionalitet ---
+
 
 // Funktion för att hämta plats och väder vid sidladdning eller via knappar
 async function fetchLocationAndWeather() {
