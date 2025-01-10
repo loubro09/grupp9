@@ -4,7 +4,6 @@ window.onload = function () {
 
     // Fetch the currently playing song when the page loads
     fetchCurrentlyPlaying();
-
     // Periodically refresh the currently playing info every 30 seconds
     setInterval(fetchCurrentlyPlaying, 30000);
 };
@@ -292,6 +291,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error("Error playing playlist:", error);
             }
         });
+
+        fetchPlaylist()
     }
 
     if (pauseButton) {
@@ -327,16 +328,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    if (startPlaylistButton) {
-        startPlaylistButton.addEventListener("click", async () => {
-            try {
-                await fetch("/start-playlist", { method: "PUT" });
-                fetchCurrentlyPlaying();
-            } catch (error) {
-                console.error("Error starting playlist:", error);
-            }
-        });
-    }
 });
 
 
@@ -352,15 +343,21 @@ async function fetchPlaylist(weatherCode, temp) {
 
         const playlistData = await response.json();
         const playlistName = playlistData.playlistName || "Okänd spellista";
-        const playlistImage = playlistData.playlistImage || "/images/default.png";
+        const playlistImage = playlistData.playlistImage; // Ingen fallback behövs för att kontrollera null
 
         const playlistCard = document.getElementById("playlistCard");
         playlistCard.innerHTML = `
             <h2>${playlistName}</h2>
-            <img src="${playlistImage}" alt="Playlist Image" class="playlist__image">
-            <p>Denna spellista matchar vädret!</p>
-            <button id="start-playlist">Starta spellista</button>
         `;
+
+        if (playlistImage) {
+            // Lägg till bild endast om den finns
+            const imgElement = document.createElement("img");
+            imgElement.src = playlistImage;
+            imgElement.alt = "Playlist Image";
+            imgElement.classList.add("playlist__image");
+            playlistCard.appendChild(imgElement);
+        }
 
         // Lägg till eventlyssnare för startknappen
         const startPlaylistButton = document.getElementById("start-playlist");
