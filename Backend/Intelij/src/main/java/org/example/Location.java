@@ -130,15 +130,12 @@ public class Location {
             JsonObject address = jsonObject.getAsJsonObject("address");
             String city = address.has("city") ? address.get("city").getAsString() : null;
             String province =address.has("province") ? address.get("province").getAsString() : null;
-            String county = address.has("county") ? address.get("county").getAsString() : null;
-            String state = address.has("state") ? address.get("state").getAsString() : null;
-            //String stateDistrict = address.has("state_district") ? address.get("state_district").getAsString() : null;
             String country = address.has("country") ? address.get("country").getAsString() : null;
 
             //stad eller provins måste ha skrivits in
             if (city == null || city.isEmpty()) {
                 if (province == null || province.isEmpty()) {
-                    return "Stad måste fyllas i.";
+                    return "You must enter a city name.";
                 }
             }
 
@@ -151,25 +148,6 @@ public class Location {
             else if (province != null && !province.isEmpty()) {
                 addressString.append(province);
             }
-
-            //county sparas i sträng om inte state eller provins redan finns
-            /*if (state == null) {
-                if (province == null) {
-                    if (county != null && !county.isEmpty()) {
-                        addressString.append(", ").append(county);
-                    }
-                }
-            }*/
-
-            /*
-            if (stateDistrict != null && !stateDistrict.isEmpty()) {
-                addressString.append(", ").append(stateDistrict);
-            }*/
-
-            //state sparas i sträng
-            /*if (state != null && !state.isEmpty()) {
-                addressString.append(", ").append(state);
-            }*/
 
             //land sparas i sträng
             addressString.append(", ").append(country);
