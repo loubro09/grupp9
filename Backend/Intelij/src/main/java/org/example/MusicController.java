@@ -5,9 +5,9 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Base64;
 
 /**
  * Interagerar med Spotify Web API för att kontrollera musiken
@@ -24,12 +24,6 @@ public class MusicController {
      * @throws Exception
      */
     public void playOrResumeMusic(String playlistId, String accessToken) throws Exception {
-        //kollar om Spotify körs någonstans (behövs för att interagera med det)
-        if (!isActiveDevice(accessToken)) {
-            System.out.println("Ingen aktiv enhet hittades. Se till att du har Spotify öppet på någon enhet.");
-            return;
-        }
-
         List<String> trackUris = getPlaylistTracks(playlistId, accessToken);
 
         //kollar om musiken är pausad
@@ -37,8 +31,7 @@ public class MusicController {
             //kollar om den pausade musiken är en del av den givna spellistan
             if (isPausedTrackInPlaylist(trackUris, accessToken)) {
                 resumePlayback(accessToken); //om musiken tillhör spellistan fortsätter den spela bara
-            }
-            else {
+            } else {
                 playPlaylist(playlistId, accessToken); //om musiken är en annan låt så startas spellistan
             }
         } else {
@@ -188,7 +181,7 @@ public class MusicController {
      * @return sant om det finns en aktiv enhet
      * @throws Exception
      */
-    private boolean isActiveDevice(String accessToken) throws Exception {
+    public boolean isActiveDevice(String accessToken) throws Exception {
         String apiUrl = baseUrl + "devices";
 
         //skickar förfrågan och sparar svaret
@@ -261,7 +254,7 @@ public class MusicController {
      * @return http-svar
      * @throws Exception
      */
-    private HttpResponse<String> sendRequest(String uri, String method, String accessToken, String body) throws Exception {
+    public HttpResponse<String> sendRequest(String uri, String method, String accessToken, String body) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(uri))
                 .header("Authorization", "Bearer " + accessToken)
@@ -276,7 +269,7 @@ public class MusicController {
      * Hanterar API-anrop misslyckanden
      * @param response
      */
-    private void handleApiError(HttpResponse<String> response) {
+    public void handleApiError(HttpResponse<String> response) {
         if (response.statusCode() != 200 && response.statusCode() != 204) {
             System.err.println("API-anrop misslyckades med statuskod: " + response.statusCode());
             System.err.println("Response Body: " + response.body());

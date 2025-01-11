@@ -70,7 +70,8 @@ public class Login {
      */
     public String getSpotifyLoginUrl() {
         //scopes definierar de åtkomstbehörigheter som användaren behöver i programmet (spela musik osv)
-        String scopes = "user-read-playback-state user-modify-playback-state streaming";
+        String scopes = "user-read-playback-state user-modify-playback-state streaming user-read-currently-playing user-read-playback-position";
+
         return "https://accounts.spotify.com/authorize" +
                 "?client_id=" + clientId +
                 "&response_type=code" + //får tillbaka authorization code som byts ut till access token

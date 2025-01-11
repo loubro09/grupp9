@@ -1,36 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Musik och Väder</title>
-  <link rel="stylesheet" href="/frontend/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weatherly</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link
+          rel="stylesheet"
+          href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"
+          integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc"
+          crossorigin="anonymous"
+  />
+  <link
+          href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap"
+          rel="stylesheet"
+  />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
 </head>
 <body>
-<h1>Musik och Väder</h1>
+<!-- Navbar Section -->
+<nav class="navbar">
+  <div class="navbar__container">
+    <a href="/" id="navbar__logo"><i class="bi bi-droplet"></i>Weatherly</a>
+  </div>
+</nav>
 
-<!-- Musikstyrning -->
-<div id="player">
-  <h2>Kontrollera din musik</h2>
-  <button id="play-button">Spela musik</button>
-  <button id="pause-button">Pausa musik</button>
-  <button id="prev-button">Previous</button>
-  <button id="next-button">Next</button>
-  <input type="range" id="volume-control" min="0" max="1" step="0.01" value="0.5">
+<!-- Search Section -->
+<div class="search__container">
+  <input type="text" id="manualLocation" placeholder="Search location..." />
+  <button id="fetchCoordinates">Search</button>
+  <button id="getLocation">Get my location</button>
 </div>
 
-<!-- Geolocation och väder -->
-<div class="container">
-  <h2>Hämta din plats och väder</h2>
-  <label for="manualLocation">Ange en plats:</label>
-  <input type="text" id="manualLocation" placeholder="Skriv plats här...">
-  <button id="fetchCoordinates">Hämta plats</button>
-  <button id="getLocation">Hämta min plats</button>
-  <p id="output"></p>
-  <p id="weather"></p>
+<!-- Services Section -->
+<div class="services">
+  <h1>Where weather meets music</h1>
+  <div class="services__container">
+    <div class="services__card" id="locationCard">
+      <h2 id="place"></h2>
+      <p id="weather"></p>
+      <p id="temperature"></p>
+    </div>
+    <div class="services__card" id="playlistCard">
+      <h2></h2>
+      <p></p>
+    </div>
+  </div>
 </div>
 
-<script src="/frontend/script.js"></script>
+<!-- Musikspelare Sektion -->
+<div class="music-player">
+  <div class="music-player__track-info">
+    <img id="track-image" src="" alt="" />
+    <div class="music-player__details">
+      <h3 id="track-title"></h3>
+      <p id="track-artist"></p>
+    </div>
+  </div>
+  <div class="music-player__controls">
+    <button id="prev-button" class="music-player__control-button" aria-label="Föregående"><i class="fas fa-backward"></i></button>
+    <button id="play-button" class="music-player__control-button" aria-label="Spela"><i class="fas fa-play"></i></button>
+    <button id="pause-button" class="music-player__control-button" aria-label="Pausa"><i class="fas fa-pause"></i></button>
+    <button id="next-button" class="music-player__control-button" aria-label="Nästa"><i class="fas fa-forward"></i></button>
+  </div>
+  <div class="music-player__progress-bar">
+    <span id="current-time">0:00</span>
+    <input type="range" id="seek-bar" class="music-player__seek-bar" value="0" min="0" max="100">
+    <span id="duration">0:00</span>
+  </div>
+</div>
 
+
+
+
+<!-- Footer Section -->
+<div class="footer__container">
+  <div class="footer__links">
+    <div class="footer__link--wrapper">
+      <div class="footer__link--items">
+        <h2>Gabriel Carlstoft</h2>
+      </div>
+      <div class="footer__link--items">
+        <h2>Alanah Coleman</h2>
+      </div>
+    </div>
+    <div class="footer__link--wrapper">
+      <div class="footer__link--items">
+        <h2>Ida Nordenswan</h2>
+      </div>
+      <div class="footer__link--items">
+        <h2>Kenan Al Tal</h2>
+      </div>
+    </div>
+    <div class="footer__link--wrapper">
+      <div class="footer__link--items">
+        <h2>Louis Brown</h2>
+      </div>
+    </div>
+  </div>
+  <section class="footer">
+    <div class="footer--wrap">
+      <div class="footer__logo">
+        <a href="/" id="footer__logo"><i class="bi bi-droplet"></i>Weatherly</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>

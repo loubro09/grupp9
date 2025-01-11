@@ -2,9 +2,6 @@ package org.example;
 
 import io.javalin.Javalin;
 import java.io.*;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -12,16 +9,14 @@ import java.util.Properties;
 
 public class APIRunner {
     private String weatherAPI_Key;
-    private String location;
-    private String locationName;
     private static Location locationController;
     private static WeatherData weatherData;
     private static WeatherAnalyzer weatherAnalyzer;
     private static Login loginController;
     private static MusicController musicController;
+    private static MusicData musicData;
     private String clientId;
     private String clientSecret;
-
 
     public APIRunner() {
         loadConfig();
@@ -30,6 +25,7 @@ public class APIRunner {
         loginController = new Login(clientId, clientSecret);
         musicController = new MusicController();
         weatherAnalyzer = new WeatherAnalyzer();
+        musicData = new MusicData();
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -39,7 +35,7 @@ public class APIRunner {
         //skapar instans av Javalin
         Javalin app = Javalin.create(config -> {
             //konfigurerar servern att hämta statiska filer (css, js) från frontend katalogen
-            config.staticFiles.add("frontend", io.javalin.http.staticfiles.Location.EXTERNAL);
+            config.staticFiles.add("frontend/frontend", io.javalin.http.staticfiles.Location.EXTERNAL);
             //anger hur servern ska läsa och returnera en fil (html) när den efterfrågas
             config.fileRenderer((filePath, ctx, layoutPath) -> {
                 try {
@@ -52,24 +48,15 @@ public class APIRunner {
             //aktiverar CORS-plugin
             config.bundledPlugins.enableCors(cors -> {
                 cors.addRule(it -> {
-                    it.anyHost();  //tillåter alla domäner skicka begäranden till servern
+                    it.anyHost(); //tillåter alla domäner skicka begäranden till servern
                 });
             });
-            /** OBSSSS!!!
-             * startar server på port 5008 FÖR weather
-             */
-        }).start(5009);
+        }).start(5009); //startar server på port 5009
 
-        //anrop för att få koordinaterna till nuvarande plats
-        //app.get("/", ctx -> ctx.result(Files.readString(Paths.get("weather.html"))));
-
-        //anrop för att hämta första sidan (kan tas bort om index.html används som inlogg-sida)
-        /** TO DO:
-         * // LÄGG TILL NYA HTML
-         */
-        app.get("/", ctx -> {ctx.render("login.html");});
-        //app.get("/", ctx -> {ctx.render("weather.html");});
-
+        //anrop för att hämta första sidan
+        app.get("/", ctx -> {
+            ctx.render("login.html");
+        });
 
         //anrop för att få namnet på en plats
         app.post("/location", ctx -> {
@@ -79,23 +66,17 @@ public class APIRunner {
         //anrop för att få koordinaterna till en plats
         app.get("/locationByName", ctx -> {
             runner.locationController.locationByName(ctx);
-
-            runner.location = locationController.getLocationCoordinates();
-            runner.locationName = locationController.getPlaceName();
         });
 
-        // Hämta väderdata
-
-            // Hämta väderdata
-            app.get("/weatherLocation", ctx -> {
-                if (locationController.getLocationCoordinates() == null) {
-                    ctx.status(400).result("Ingen plats har sparats ännu.");
-                    return;
-                }
-                runner.weatherData.weatherbylocation(ctx, locationController.getPlaceName(),
-                        locationController.getLocationCoordinates(), runner.weatherAPI_Key);
-
-            });
+        //anrop för att få vädret hos en plats
+        app.get("/weatherLocation", ctx -> {
+            if (locationController.getLocationCoordinates() == null) {
+                ctx.status(400).result("Ingen plats har sparats ännu.");
+                return;
+            }
+            runner.weatherData.weatherbylocation(ctx, locationController.getPlaceName(),
+                    locationController.getLocationCoordinates(), runner.weatherAPI_Key);
+        });
 
         //anrop för att logga in
         app.get("/login", ctx -> {
@@ -110,7 +91,7 @@ public class APIRunner {
                 loginController.handleCallback(code);
                 ctx.render("music-control.html");
             } else {
-                ctx.result("Login failed");
+                ctx.result("Login misslyckades.");
             }
         });
 
@@ -135,15 +116,51 @@ public class APIRunner {
         //anrop för att starta musik
         app.put("/play-playlist", ctx -> {
             String accessToken = loginController.getAccessToken();
-            // String playlistId = "1pYJQgF8EmVcSlGbskZXfA"; //temporär spellista hårdkodad
             String playlistId = weatherAnalyzer.analyzeWeather(weatherData.getWeatherCode(), weatherData.getTemp());
-            System.out.println(playlistId + ", "+  weatherData.getWeatherCode() +  ", "+  weatherData.getTemp());
-            //String playlistId = "37i9dQZF1EIfS0ZRAzGri5";
+
+            if (!musicController.isActiveDevice(accessToken)) {
+                ctx.status(400); //ingen aktiv enhet, skapar popup på webbsidan
+                return;
+            }
+            
             musicController.playOrResumeMusic(playlistId, accessToken);
+            musicData.fetchPlaylistData(ctx, playlistId, accessToken); //hämtar data om spellista för att visa på webbsidan
+        });
+
+        //anrop för att hämta låten som spelas just nu
+        app.get("/currently-playing", ctx -> {
+            String accessToken = loginController.getAccessToken();
+            musicData.fetchCurrentlyPlaying(ctx, accessToken);
+        });
+
+        app.put("/seek", ctx -> {
+            String accessToken = loginController.getAccessToken();
+            if (accessToken != null && !accessToken.isEmpty()) {
+                String positionMs = ctx.queryParam("position_ms");
+                if (positionMs != null && !positionMs.isEmpty()) {
+                    try {
+                        String apiUrl = "https://api.spotify.com/v1/me/player/seek?position_ms=" + positionMs;
+                        HttpResponse<String> response = musicController.sendRequest(apiUrl, "PUT", accessToken, null);
+                        if (response.statusCode() == 204) {
+                            ctx.status(204);
+                        } else {
+                            musicController.handleApiError(response);
+                            ctx.status(500).result("Serverfel vid seek.");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        ctx.status(500).result("Serverfel vid seek.");
+                    }
+                } else {
+                    ctx.status(400).result("Bad Request: position_ms saknas.");
+                }
+            } else {
+                ctx.status(401).result("Obehörig");
+            }
         });
     }
 
-
+    //laddar config filen med api-nycklar
     public void loadConfig() {
         Properties props = new Properties();
         try (InputStream input = new FileInputStream("config.properties")) {
@@ -153,11 +170,9 @@ public class APIRunner {
             clientSecret = props.getProperty("db.clientSecret");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            System.out.println("WeatherAPI_Key : loadConfiguration : File not found exception");
             throw new RuntimeException(e);
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println(":WeatherAPI_Key  loadConfiguration : IO exception");
             throw new RuntimeException(e);
         }
     }
