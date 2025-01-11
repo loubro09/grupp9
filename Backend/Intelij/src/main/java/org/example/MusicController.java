@@ -24,24 +24,18 @@ public class MusicController {
      * @throws Exception
      */
     public void playOrResumeMusic(String playlistId, String accessToken) throws Exception {
-        // Kollar om Spotify körs någonstans (behövs för att interagera med det)
-        if (!isActiveDevice(accessToken)) {
-            System.out.println("Ingen aktiv enhet hittades. Se till att du har Spotify öppet på någon enhet.");
-            return;
-        }
-
         List<String> trackUris = getPlaylistTracks(playlistId, accessToken);
 
-        // Kollar om musiken är pausad
+        //kollar om musiken är pausad
         if (isPlaybackPaused(accessToken)) {
-            // Kollar om den pausade musiken är en del av den givna spellistan
+            //kollar om den pausade musiken är en del av den givna spellistan
             if (isPausedTrackInPlaylist(trackUris, accessToken)) {
-                resumePlayback(accessToken); // Om musiken tillhör spellistan fortsätter den spela bara
+                resumePlayback(accessToken); //om musiken tillhör spellistan fortsätter den spela bara
             } else {
-                playPlaylist(playlistId, accessToken); // Om musiken är en annan låt så startas spellistan
+                playPlaylist(playlistId, accessToken); //om musiken är en annan låt så startas spellistan
             }
         } else {
-            playPlaylist(playlistId, accessToken); // Om musiken inte är pausad så startar spellistan från början
+            playPlaylist(playlistId, accessToken); //om musiken inte är pausad så startar spellistan från början
         }
     }
 
@@ -53,21 +47,21 @@ public class MusicController {
      */
     public void playPlaylist(String playlistId, String accessToken) throws Exception {
         String apiUrl = baseUrl + "play";
-        // Hämtar alla låtar från spellistan
+        //hämtar alla låtar från spellistan
         List<String> trackUris = getPlaylistTracks(playlistId, accessToken);
 
-        // Konverterar spellistan till json-struktur för att kunna skicka till Spotify API
-        JsonObject jsonBody = new JsonObject(); // jsonobjekt = objekt som består av nyckel-värde par
-        JsonArray uris = new JsonArray(); // array av json-värden (sträng i detta fall)
-        for (String uri : trackUris) { // lägger till alla låtar från låtlistan i array
+        //konverterar spellistan till json-struktur för att kunna skicka till Spotify API
+        JsonObject jsonBody = new JsonObject(); //jsonobjekt = objekt som består av nyckel-värde par
+        JsonArray uris = new JsonArray(); //array av json-värden (sträng i detta fall)
+        for (String uri : trackUris) { //lägger till alla låtar från låtlistan i array
             uris.add(uri);
         }
-        jsonBody.add("uris", uris); // lägger till arrayn som värdet ("uris" är nyckeln)
+        jsonBody.add("uris", uris); //lägger till arrayn som värdet ("uris" är nyckeln)
 
-        // Skickar förfrågan och sparar svar
+        //skickar förfrågan och sparar svar
         HttpResponse<String> response = sendRequest(apiUrl, "PUT", accessToken, jsonBody.toString());
 
-        // Om anropet inte var framgångsrikt
+        //om anropet inte var framgångsrikt
         handleApiError(response);
     }
 
@@ -79,10 +73,10 @@ public class MusicController {
     private void resumePlayback(String accessToken) throws Exception {
         String apiUrl = baseUrl + "play";
 
-        // Skickar förfrågan och sparar svar
+        //skickar förfrågan och sparar svar
         HttpResponse<String> response = sendRequest(apiUrl, "PUT", accessToken, null);
 
-        // Om anropet inte var framgångsrikt
+        //om anropet inte var framgångsrikt
         handleApiError(response);
     }
 
@@ -94,10 +88,10 @@ public class MusicController {
     public void pauseMusic(String accessToken) throws Exception {
         String apiUrl = baseUrl + "pause";
 
-        // Skickar förfrågan och sparar svaret
+        //skickar förfrågan och sparar svaret
         HttpResponse<String> response = sendRequest(apiUrl, "PUT", accessToken, "");
 
-        // Om anropet inte var framgångsrikt
+        //om anropet inte var framgångsrikt
         handleApiError(response);
     }
 
@@ -109,10 +103,10 @@ public class MusicController {
     public void nextTrack(String accessToken) throws Exception {
         String apiUrl = baseUrl + "next";
 
-        // Skickar förfrågan och sparar svaret
+        //skickar förfrågan och sparar svaret
         HttpResponse<String> response = sendRequest(apiUrl, "POST", accessToken, "");
 
-        // Om anropet inte var framgångsrikt
+        //om anropet inte var framgångsrikt
         handleApiError(response);
     }
 
@@ -124,38 +118,11 @@ public class MusicController {
     public void previousTrack(String accessToken) throws Exception {
         String apiUrl = baseUrl + "previous";
 
-        // Skickar förfrågan och sparar svaret
+        //skickar förfrågan och sparar svaret
         HttpResponse<String> response = sendRequest(apiUrl, "POST", accessToken, "");
 
-        // Om anropet inte var framgångsrikt
+        //om anropet inte var framgångsrikt
         handleApiError(response);
-    }
-
-    /**
-     * Hämtar aktuell spellista eller låt
-     * @param accessToken
-     * @return URL till coverbilden
-     * @throws Exception
-     */
-    public String getCurrentTrackCover(String accessToken) throws Exception {
-        String apiUrl = "https://api.spotify.com/v1/me/player/currently-playing";
-
-        HttpResponse<String> response = sendRequest(apiUrl, "GET", accessToken, null);
-
-        if (response.statusCode() == 200) {
-            JsonObject jsonResponse = JsonParser.parseString(response.body()).getAsJsonObject();
-            if (jsonResponse.has("item")) {
-                JsonObject track = jsonResponse.getAsJsonObject("item");
-                JsonObject album = track.getAsJsonObject("album");
-                JsonArray images = album.getAsJsonArray("images");
-                if (images.size() > 0) {
-                    return images.get(0).getAsJsonObject().get("url").getAsString();
-                }
-            }
-        } else {
-            handleApiError(response);
-        }
-        return "/images/spotify.png"; // Fallback-bild
     }
 
     /**
@@ -165,17 +132,17 @@ public class MusicController {
      * @throws Exception
      */
     private boolean isPlaybackPaused(String accessToken) throws Exception {
-        // Skickar förfrågan och sparar svaret
+        //skickar förfrågan och sparar svaret
         HttpResponse<String> response = sendRequest(baseUrl, "GET", accessToken, null);
 
-        // Om anropet var framgångsrikt
+        //om anropet var framgångsrikt
         if (response.statusCode() == 200) {
-            // Omvandlar svaret till jsonobjekt
+            //omvandlar svaret till jsonobjekt
             JsonObject playbackState = JsonParser.parseString(response.body()).getAsJsonObject();
-            // Returnerar true om Spotify spelar musik men är pausad
+            //returnerar true om Spotify spelar musik med den är pausad
             return playbackState.has("is_playing") && !playbackState.get("is_playing").getAsBoolean();
         } else {
-            // Om anropet inte var framgångsrikt
+            //om anropet inte var framgångsrikt
             handleApiError(response);
             return false;
         }
@@ -190,16 +157,16 @@ public class MusicController {
     private boolean isPausedTrackInPlaylist(List<String> trackUris, String accessToken) throws Exception {
         String apiUrl = baseUrl + "currently-playing";
 
-        // Skickar förfrågan och sparar svar
+        //skickar förfrågan och sparar svar
         HttpResponse<String> response = sendRequest(apiUrl, "GET", accessToken, null);
 
-        // Om anropet var framgångsrikt
+        //om anropet var framgångsrikt
         if (response.statusCode() == 200) {
             JsonObject jsonResponse = JsonParser.parseString(response.body()).getAsJsonObject();
-            // Hämtar uri för den pausade låten
+            //hämtar uri för den pausade låten
             if (jsonResponse.has("item")) {
                 String pausedTrackUri = jsonResponse.getAsJsonObject("item").get("uri").getAsString();
-                // Kollar om den pausade låtens uri finns i spellistan
+                //kollar om den pausade låtens uri finns i spellistan
                 return trackUris.contains(pausedTrackUri);
             }
         } else {
@@ -217,26 +184,27 @@ public class MusicController {
     public boolean isActiveDevice(String accessToken) throws Exception {
         String apiUrl = baseUrl + "devices";
 
-        // Skickar förfrågan och sparar svaret
+        //skickar förfrågan och sparar svaret
         HttpResponse<String> response = sendRequest(apiUrl, "GET", accessToken, null);
 
-        // Om anropet var framgångsrikt
+        //om anropet var framgångsrikt
         if (response.statusCode() == 200) {
-            // Omvandlar svaret till jsonobjekt
+            //omvandlar svaret till jsonobjekt
             JsonObject jsonResponse = new Gson().fromJson(response.body(), JsonObject.class);
-            // Om svaret innehåller nyckeln "devices" med ett värde som är en lista med enheter
+            //om svaret innehåller nyckeln "devices" med ett värde som är en lista med enheter
             if (jsonResponse.has("devices")) {
-                // Varje enhet i listan omvandlas till jsonobjekt
+                //varje enhet i listas omvandlas till jsonobjekt
                 for (var device : jsonResponse.getAsJsonArray("devices")) {
                     JsonObject deviceObj = device.getAsJsonObject();
-                    // Om objektet har en aktiv enhet returneras true
+                    //om objektet har en aktiv enhet returneras true
                     if (deviceObj.has("is_active") && deviceObj.get("is_active").getAsBoolean()) {
                         return true;
                     }
                 }
             }
-        } else {
-            // Om anropet inte var framgångsrikt
+        }
+        else {
+            //om anropet inte var framgångsrikt
             handleApiError(response);
         }
         return false;
@@ -252,26 +220,26 @@ public class MusicController {
     public List<String> getPlaylistTracks(String playlistId, String accessToken) throws Exception {
         String apiUrl = "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks";
 
-        // Skickar förfrågan och sparar svaret
+        //skickar förfrågan och sparar svaret
         HttpResponse<String> response = sendRequest(apiUrl, "GET", accessToken, null);
 
-        // Om anropet var framgångsrikt
+        //om anropet var framgångsrikt
         if (response.statusCode() == 200) {
-            // Omvandlar svaret till jsonobjekt
+            //omvandlar svaret till jsonobjekt
             JsonObject jsonResponse = JsonParser.parseString(response.body()).getAsJsonObject();
-            // Sparar alla låtar (items) i objektet i en array
+            //sparar alla låtar (items) i objektet i en array
             JsonArray tracks = jsonResponse.getAsJsonArray("items");
 
             List<String> trackUris = new ArrayList<>();
             for (JsonElement track : tracks) {
-                // Hämtar uri för varje låt i listan och sparar som sträng
+                //hämtar uri för varje låt i listan och sparar som sträng
                 String trackUri = track.getAsJsonObject().getAsJsonObject("track").get("uri").getAsString();
                 trackUris.add(trackUri);
             }
 
             return trackUris;
         } else {
-            // Om anropet inte var framgångsrikt
+            //om anropet inte var framgångsrikt
             handleApiError(response);
             throw new RuntimeException("Misslyckades att hämta spellistas spår: " + response.body());
         }
