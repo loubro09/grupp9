@@ -123,9 +123,15 @@ document.getElementById("getLocation").addEventListener("click", fetchLocationAn
 
 // Funktion för att uppdatera väderbilden och servicesbilderna
 function updateWeatherImage(weatherCode, weatherDescription) {
-    // Uppdatera huvudväderbilden
+    // Uppdatera huvudväderbilden och weatherIcon
     const weatherImage = document.getElementById("weatherImage");
     const weatherInfo = document.getElementById("weatherInfo");
+    const weatherIcon = document.getElementById("weather-icon");
+        // Hämta rätt weather icon
+        if (weatherIcon) {
+                weatherIcon.src = `icons/${weatherCode}.png`;
+                weatherIcon.alt = `Weather Icon - ${weatherDescription}`;
+            }
 
     let imgSrc = "/images/default.png"; // Fallback-bild
 
