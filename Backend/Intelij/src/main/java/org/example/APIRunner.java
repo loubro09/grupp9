@@ -2,9 +2,6 @@ package org.example;
 
 import io.javalin.Javalin;
 import java.io.*;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -140,6 +137,12 @@ public class APIRunner {
             // String playlistId = "37i9dQZF1EIfS0ZRAzGri5";
             musicController.playOrResumeMusic(playlistId, accessToken);
             ctx.status(204);
+        });
+
+        app.put("/start-playlist", ctx -> {
+            String accessToken = loginController.getAccessToken();
+            String playlistId = weatherAnalyzer.analyzeWeather("1000", 16.0);
+            musicController.playPlaylist(playlistId, accessToken);
         });
 
         // *** NYA ENDPOINTS FÖR MUSIKSPELAREN ***
