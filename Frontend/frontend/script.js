@@ -242,6 +242,9 @@ document.getElementById("next-button").addEventListener("click", async () => {
     await fetch("/next", { method: "POST" });
 });
 
+<<<<<<< Updated upstream
 document.getElementById("start-playlist").addEventListener("click", async () => {
     await fetch("/start-playlist", { method: "PUT" });
 });
+=======
+>>>>>>> Stashed changes
