@@ -69,7 +69,7 @@ async function fetchLocationAndWeather() {
 // Funktion för att hämta väderdata
 async function fetchWeather() {
     try {
-        const response = await fetch("http://localhost:5009/weatherLocation");
+        const response = await fetch("http://localhost:5009/weather");
 
         if (!response.ok) {
             throw new Error(`API-fel vid väder: ${response.status}`);
@@ -101,7 +101,7 @@ document.getElementById("fetchCoordinates").addEventListener("click", async () =
     }
 
     try {
-        const response = await fetch("http://localhost:5009/locationByName?place=${encodeURIComponent(locationInput)}");
+        const response = await fetch("http://localhost:5009/coordinates?place=${encodeURIComponent(locationInput)}");
         if (!response.ok) {
             throw new Error(`API-fel: ${response.status}`);
         }
@@ -257,7 +257,7 @@ async function fetchCurrentlyPlaying() {
         const trackImageElement = document.getElementById("track-image");
 
 
-        const response = await fetch("http://localhost:5009/currently-playing");
+        const response = await fetch("http://localhost:5009/current-song");
 
         if (!response.ok) {
             if (response.status === 204) {
@@ -284,20 +284,20 @@ async function fetchCurrentlyPlaying() {
     }
 }
 document.getElementById("pause-button").addEventListener("click", async () => {
-    await fetch("/pause", { method: "PUT" });
+    await fetch("/playback/pause", { method: "PUT" });
 });
 
 document.getElementById("prev-button").addEventListener("click", async () => {
-    await fetch("/previous", { method: "POST" });
+    await fetch("/playback/previous", { method: "POST" });
 });
 
 document.getElementById("next-button").addEventListener("click", async () => {
-    await fetch("/next", { method: "POST" });
+    await fetch("/playback/next", { method: "POST" });
 });
 
 
 document.getElementById("play-button").addEventListener("click", async () => {
-    const response = await fetch("/play-playlist", { method: "PUT" });
+    const response = await fetch("/playback/play", { method: "PUT" });
     if (response.status === 400) {
         showPopup();  // Visa popup med felmeddelandet
     }

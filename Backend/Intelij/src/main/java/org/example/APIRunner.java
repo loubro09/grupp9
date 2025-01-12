@@ -64,12 +64,12 @@ public class APIRunner {
         });
 
         //anrop för att få koordinaterna till en plats
-        app.get("/locationByName", ctx -> {
+        app.get("/coordinates", ctx -> {
             runner.locationController.locationByName(ctx);
         });
 
         //anrop för att få vädret hos en plats
-        app.get("/weatherLocation", ctx -> {
+        app.get("/weather", ctx -> {
             if (locationController.getLocationCoordinates() == null) {
                 ctx.status(400).result("Ingen plats har sparats ännu.");
                 return;
@@ -79,7 +79,7 @@ public class APIRunner {
         });
 
         //anrop för att logga in
-        app.get("/login", ctx -> {
+        app.get("/loginURL", ctx -> {
             String loginUrl = loginController.getSpotifyLoginUrl();
             ctx.redirect(loginUrl); //omdirigering till Spotify OAuth 2.0 inloggningssida
         });
@@ -96,25 +96,25 @@ public class APIRunner {
         });
 
         //anrop för att pausa musik
-        app.put("/pause", ctx -> {
+        app.put("/playback/pause", ctx -> {
             String accessToken = loginController.getAccessToken();
             musicController.pauseMusic(accessToken);
         });
 
         //anrop för att spela nästa låt
-        app.post("/next", ctx -> {
+        app.post("/playback/next", ctx -> {
             String accessToken = loginController.getAccessToken();
             musicController.nextTrack(accessToken);
         });
 
         //anrop för att spela föregående låt
-        app.post("/previous", ctx -> {
+        app.post("/playback/previous", ctx -> {
             String accessToken = loginController.getAccessToken();
             musicController.previousTrack(accessToken);
         });
 
         //anrop för att starta musik
-        app.put("/play-playlist", ctx -> {
+        app.put("/playback/play", ctx -> {
             String accessToken = loginController.getAccessToken();
             String playlistId = weatherAnalyzer.analyzeWeather(ctx);
 
@@ -128,35 +128,9 @@ public class APIRunner {
         });
 
         //anrop för att hämta låten som spelas just nu
-        app.get("/currently-playing", ctx -> {
+        app.get("/current-song", ctx -> {
             String accessToken = loginController.getAccessToken();
             musicData.fetchCurrentlyPlaying(ctx, accessToken);
-        });
-
-        app.put("/seek", ctx -> {
-            String accessToken = loginController.getAccessToken();
-            if (accessToken != null && !accessToken.isEmpty()) {
-                String positionMs = ctx.queryParam("position_ms");
-                if (positionMs != null && !positionMs.isEmpty()) {
-                    try {
-                        String apiUrl = "https://api.spotify.com/v1/me/player/seek?position_ms=" + positionMs;
-                        HttpResponse<String> response = musicController.sendRequest(apiUrl, "PUT", accessToken, null);
-                        if (response.statusCode() == 204) {
-                            ctx.status(204);
-                        } else {
-                            musicController.handleApiError(response);
-                            ctx.status(500).result("Serverfel vid seek.");
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        ctx.status(500).result("Serverfel vid seek.");
-                    }
-                } else {
-                    ctx.status(400).result("Bad Request: position_ms saknas.");
-                }
-            } else {
-                ctx.status(401).result("Obehörig");
-            }
         });
     }
 
