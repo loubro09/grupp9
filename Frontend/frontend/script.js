@@ -305,9 +305,7 @@ document.getElementById("play-button").addEventListener("click", async () => {
 
 async function fetchPlaylist(weatherCode, temp) {
     try {
-        const response = await fetch(`http://localhost:5009/play-playlist?weatherCode=${weatherCode}&temp=${temp}`, {
-            method: "PUT",
-        });
+    const response = await fetch("/playback/play", { method: "PUT" });
 
         if (!response.ok) {
             throw new Error(`API-fel vid spellista: ${response.status}`);
