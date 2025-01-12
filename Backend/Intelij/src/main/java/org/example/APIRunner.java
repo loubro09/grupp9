@@ -116,7 +116,7 @@ public class APIRunner {
         //anrop för att starta musik
         app.put("/play-playlist", ctx -> {
             String accessToken = loginController.getAccessToken();
-            String playlistId = weatherAnalyzer.analyzeWeather(weatherData.getWeatherCode(), weatherData.getTemp());
+            String playlistId = weatherAnalyzer.analyzeWeather(ctx);
 
             if (!musicController.isActiveDevice(accessToken)) {
                 ctx.status(400); //ingen aktiv enhet, skapar popup på webbsidan

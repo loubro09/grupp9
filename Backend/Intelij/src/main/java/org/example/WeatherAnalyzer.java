@@ -1,6 +1,13 @@
 package org.example;
 
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
+import io.javalin.http.Context;
+
+
+
 public class WeatherAnalyzer {
 
     /**
@@ -10,9 +17,33 @@ public class WeatherAnalyzer {
      * @param temperature the current temperature in degrees Celsius.
      * @return a string representing a playlist based on the weather and season.
      */
-    public String analyzeWeather(String weatherCode, double temperature) {
-        String season = getSeason(temperature);
-        String weatherDescription = getWeatherDescription(weatherCode);
+    public String analyzeWeather(Context ctx ) {
+        try {
+            // Parse the JSON body from ctx
+            String requestBody = ctx.body();
+
+            String body = ctx.body();
+            if (body == null || body.isEmpty()) {
+                throw new IllegalArgumentException("Request body is empty or null.");
+            }
+
+
+            JsonObject jsonObject = JsonParser.parseString(requestBody).getAsJsonObject();
+
+            // Extract weatherCode and temperature from the JSON body
+            String weatherCode = jsonObject.has("weatherCode") ? jsonObject.get("weatherCode").getAsString() : null;
+            Double temperature = jsonObject.has("temperature") ? jsonObject.get("temperature").getAsDouble() : null;
+
+            if (weatherCode == null || temperature == null) {
+                throw new IllegalArgumentException("Missing required fields: weatherCode or temperature.");
+            }
+
+            // Analyze weather using existing methods
+            String season = getSeason(temperature);
+            String weatherDescription = getWeatherDescription(weatherCode);
+
+            System.out.println("Season: " + season + "Temp: " + temperature + "Weathercode: " + weatherCode);
+
 
         if (season.equals("Summer") && weatherDescription.equals("Sunshine")) {
             return "6s2WRJKFow7wGTj4Ogsgwv";
@@ -40,7 +71,7 @@ public class WeatherAnalyzer {
 
         } else if (season.equals("Winter") && weatherDescription.equals("Rain")) {
             return "2yIAa15P5OsuxOCBbQ98aP";
-            
+
         } else if (season.equals("Summer") && weatherDescription.equals("ThunderStorm")) {
             return "1XZNnIESn9lDcLY7WzItO4";
 
@@ -64,6 +95,9 @@ public class WeatherAnalyzer {
 
         }else {
             return "6i2Qd6OpeRBAzxfscNXeWp";
+        }
+    } catch (JsonSyntaxException e) {
+            throw new RuntimeException(e);
         }
     }
 
