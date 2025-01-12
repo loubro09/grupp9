@@ -101,7 +101,8 @@ document.getElementById("fetchCoordinates").addEventListener("click", async () =
     }
 
     try {
-        const response = await fetch("http://localhost:5009/coordinates?place=${encodeURIComponent(locationInput)}");
+        const response = await fetch(`http://localhost:5009/coordinates?place=${encodeURIComponent(locationInput)}`);
+
         if (!response.ok) {
             throw new Error(`API-fel: ${response.status}`);
         }
