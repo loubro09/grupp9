@@ -63,7 +63,7 @@ public class WeatherAnalyzer {
             return "6E0RTtaSREqhZJQgAWEFqt";
 
         }else {
-            return "6i2Qd6OpeRBAzxfscNXeWp";
+            return "7dv5JWzDCZd8RMwWKBgHG9";
         }
     }
 
