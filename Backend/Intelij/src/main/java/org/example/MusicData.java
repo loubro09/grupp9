@@ -9,7 +9,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-
 /**
  * Denna klass hanterar musikdataoperationer som att hämta spellisteinformation och
  * hämta den aktuellt spelande låten från Spotify API.
@@ -20,7 +19,6 @@ public class MusicData {
     private String songName;
     private String artist;
     private String songImage;
-
 
     /**
      * Hämtar detaljer om en spellista från Spotify API och skickar tillbaka informationen till klienten.
@@ -152,7 +150,6 @@ public class MusicData {
         }
     }
 
-
     /**
      * Bearbetar JSON-svaret från Spotify API för att extrahera information om den aktuellt spelande låten.
      * @param jsonResponse JSON-svaret från Spotify API.
@@ -179,5 +176,4 @@ public class MusicData {
             songImage = "No Image";
         }
     }
-
 }

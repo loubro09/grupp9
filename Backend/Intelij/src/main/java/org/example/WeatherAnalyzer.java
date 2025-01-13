@@ -110,7 +110,6 @@ public class WeatherAnalyzer {
         }
     }
 
-
     /**
      * Returnerar en säsong beroende på temperaturen
      * @param temperature
@@ -121,7 +120,6 @@ public class WeatherAnalyzer {
         if(temperature == 10000.0){
             return "default";
         }
-
         if (temperature >30.0){
             return "Tropical"; //tropiskt klimat om temperaturen är över 30 °C
         }
