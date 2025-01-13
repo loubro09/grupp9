@@ -296,7 +296,6 @@ document.getElementById("next-button").addEventListener("click", async () => {
     await fetch("/playback/next", { method: "POST" });
 });
 
-<<<<<<< HEAD
 
 document.getElementById("play-button").addEventListener("click", async () => {
     const response = await fetch("/playback/play", { method: "PUT" });
@@ -386,11 +385,3 @@ function closePopup() {
         popup.remove();
     }
 }
-=======
-<<<<<<< Updated upstream
-document.getElementById("start-playlist").addEventListener("click", async () => {
-    await fetch("/start-playlist", { method: "PUT" });
-});
-=======
->>>>>>> Stashed changes
->>>>>>> Frontend--Backend--V2
