@@ -1,26 +1,19 @@
 package org.example;
 
-
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
-import io.javalin.http.Context;
-
-
-
 public class WeatherAnalyzer {
 
     /**
-     * Analyzes the weather based on a weather code and temperature and returns name of Spotify Playlist.
-     *
-     * @param weatherCode the code representing the weather condition (e.g., sunshine, rain, snow).
-     * @param temperature the current temperature in degrees Celsius.
-     * @return a string representing a playlist based on the weather and season.
+     * Analyserar vädret baserat på en väderkod från Tomorrow.io API och returnerar en spellista
+     * @param weatherCode koden som representerar en vädertyp
+     * @param temperature temperaturen i celsius
+     * @return ID till en spellista på Spotify
      */
     public String analyzeWeather(String weatherCode, double temperature) {
-        String season = getSeason(temperature);
+        String season = getSeason(temperature); //hämtar säsongen bereoende på temperaturen
+        //hämtar väderbeskrivning baserat på väderkod
         String weatherDescription = getWeatherDescription(weatherCode);
 
+        //jämför väderbeskrivning och säsong för att få en spellista
         if (season.equals("Summer") && weatherDescription.equals("Sunshine")) {
             return "6s2WRJKFow7wGTj4Ogsgwv";
 
@@ -75,43 +68,42 @@ public class WeatherAnalyzer {
     }
 
     /**
-     * Returns a description of the weather condition based on the provided weather code.
-     *
-     * @param weatherCode the code representing the weather condition.
-     * @return a string describing the weather condition (e.g., Sunshine, Rain, Snow).
+     * Returnerar en väderbeskrivning baserat på väderkoden
+     * @param weatherCode
+     * @return väderbeskrivning
      */
     public String getWeatherDescription(String weatherCode) {
         switch (weatherCode) {
-            case "1000": // "Clear, Sunny"
-            case "1100": // "Mostly Clear"
+            case "1000": //"Clear, Sunny"
+            case "1100": //"Mostly Clear"
                 return "Sunshine";
-            case "1101": // "Partly Cloudy"
-            case "1102": // "Mostly Cloudy"
-            case "1001": // "Cloudy"
-            case "2000": // "Fog"
-            case "2100": // "Light Fog"
-                return "Cloudy"; // Mostly Clear, Partly Cloudy
-            case "4000": // "Drizzle"
-            case "4200": // "Rain"
-            case "4001": // "Light Rain"
-            case "4201": // "Heavy Rain"
+            case "1101": //"Partly Cloudy"
+            case "1102": //"Mostly Cloudy"
+            case "1001": //"Cloudy"
+            case "2000": //"Fog"
+            case "2100": //"Light Fog"
+                return "Cloudy";
+            case "4000":// "Drizzle"
+            case "4200":// "Rain"
+            case "4001":// "Light Rain"
+            case "4201":// "Heavy Rain"
                 return "Rain";
-            case "8000": // "Thunderstorm"
+            case "8000": //"Thunderstorm"
                 return "Thunderstorm";
-            case "5000": // "Snow"
-            case "5100": // "Flurries"
-            case "5101": // "Light Snow"
-            case "5001": // "Heavy Snow"
+            case "5000": //"Snow"
+            case "5100": //"Flurries"
+            case "5101": //"Light Snow"
+            case "5001": //"Heavy Snow"
                 return "Snow";
-            case "6000": // "Freezing Drizzle"
-            case "6001": // "Freezing Rain"
-            case "6200": // "Light Freezing Rain"
-            case "6201": // "Heavy Freezing Rain"
-            case "7000": // "Ice Pellets"
-            case "7101": // "Heavy Ice Pellets"
-            case "7102": // "Light Ice Pellets"
+            case "6000": //"Freezing Drizzle"
+            case "6001": //"Freezing Rain"
+            case "6200": //"Light Freezing Rain"
+            case "6201": //"Heavy Freezing Rain"
+            case "7000": //"Ice Pellets"
+            case "7101": //"Heavy Ice Pellets"
+            case "7102": //"Light Ice Pellets"
                 return "Cold";
-            case "0": // Unknown
+            case "0": //Unknown
                 return "Unknown";
             default:
                 return "Deafult";
@@ -120,25 +112,25 @@ public class WeatherAnalyzer {
 
 
     /**
-     * Determines the season based on the temperature.
-     *
-     * @param temperature the current temperature in degrees Celsius.
-     * @return a string representing the season (e.g., Summer, SA (Spring/Autumn), Winter).
+     * Returnerar en säsong beroende på temperaturen
+     * @param temperature
+     * @return säsongen
      */
     private String getSeason(double temperature) {
-
+        //om temp är null
         if(temperature == 10000.0){
             return "default";
         }
+
         if (temperature >30.0){
-            return "Tropical"; //Tropiskt klimat om temperaturen är över 30 °C
+            return "Tropical"; //tropiskt klimat om temperaturen är över 30 °C
         }
         else if (temperature > 19.0) {
-            return "Summer";  // Sommar om temperaturen är över 15°C
+            return "Summer";  //sommar om temperaturen är över 15°C
         } else if (temperature >= 5.0) {
-            return "SA";     // Vår/Höst om temperaturen är mellan 5°C och 15°C
+            return "SA";     //vår/höst om temperaturen är mellan 5°C och 15°C
         } else {
-            return "Winter";  // Vinter om temperaturen är under 5°C
+            return "Winter";  // vinter om temperaturen är under 5°C
         }
     }
 }

@@ -3,30 +3,30 @@
     margin: 0;
     padding: 0;
     font-family: 'Kumbh Sans', sans-serif;
-  }
+}
 
 body {
     padding-bottom: 80px;
 }
 
 .button {
-display: flex;
-justify-content: center;
-align-items: center;
-text-decoration: none;
-padding: 10px 20px;
-height: 100%;
-width: 100%;
-border: none;
-outline: none;
-border-radius: 4px;
-background: #f77062;
-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    padding: 10px 20px;
+    height: 100%;
+    width: 100%;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    background: #f77062;
+    color: #fff;
 }
 
 .button:hover {
-background: #4837ff;
-transition: all 0.3s ease;
+    background: #4837ff;
+    transition: all 0.3s ease;
 }
 
 /* NAVBAR CSS */
@@ -64,77 +64,77 @@ transition: all 0.3s ease;
 
 /* Services Section CSS */
 .services {
-background: #131313;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
+    background: #131313;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .services h1 {
-background-color: #ff8177;
-background-image: linear-gradient(
-  to right,
-  #ff8177 0%,
-  #ff867a 0%,
-  #ff8c7f 21%,
-  #f99185 52%,
-  #cf556c 78%,
-  #b12a5b 100%
-);
-background-size: 100%;
--webkit-background-clip: text;
--moz-background-clip: text;
--webkit-text-fill-color: transparent;
--moz-text-fill-color: transparent;
-font-size: 2.5rem;
+    background-color: #ff8177;
+    background-image: linear-gradient(
+      to right,
+      #ff8177 0%,
+      #ff867a 0%,
+      #ff8c7f 21%,
+      #f99185 52%,
+      #cf556c 78%,
+      #b12a5b 100%
+    );
+    background-size: 100%;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+    font-size: 2.5rem;
 }
 
 .services__container {
-display: flex;
-justify-content: center;
-flex-wrap: wrap;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .services__card {
-margin: 1rem;
-height: 525px;
-width: 400px;
-border-radius: 4px;
-background-image: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(17, 17, 17, 0.6) 100%
-  ),
-  url('/images/cloudy.jpg');
-background-size: cover;
-position: relative;
-color: #fff;
+    margin: 1rem;
+    height: 525px;
+    width: 400px;
+    border-radius: 4px;
+    background-image: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(17, 17, 17, 0.6) 100%
+      ),
+      url('/images/cloudy.jpg');
+    background-size: cover;
+    position: relative;
+    color: #fff;
 }
 
 .services__card:before {
-opacity: 0.2;
+    opacity: 0.2;
 }
 
 .services__card:nth-child(2) {
-background-image: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(17, 17, 17, 0.9) 100%
-  ),
-  url('/images/Sunny.jpg');
+    background-image: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(17, 17, 17, 0.9) 100%
+      ),
+    url('/images/cloudy.jpg');
 }
 
 .services__card h2 {
-position: absolute;
-top: 350px;
-left: 30px;
+    position: absolute;
+    top: 350px;
+    left: 30px;
 }
 
 .services__card p {
-position: absolute;
-top: 400px;
-left: 30px;
+    position: absolute;
+    top: 400px;
+    left: 30px;
 }
 
 .services__card p#temperature {
@@ -144,26 +144,26 @@ left: 30px;
 }
 
 .services__card button {
-color: #fff;
-padding: 10px 20px;
-border: none;
-outline: none;
-border-radius: 4px;
-background: #f77062;
-position: absolute;
-top: 440px;
-left: 30px;
-font-size: 1rem;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    background: #f77062;
+    position: absolute;
+    top: 440px;
+    left: 30px;
+    font-size: 1rem;
 }
 
 .services__card button:hover {
-cursor: pointer;
+    cursor: pointer;
 }
 
 .services__card:hover {
-transform: scale(1.075);
-transition: 0.2s ease-in;
-cursor: pointer;
+    transform: scale(1.075);
+    transition: 0.2s ease-in;
+    cursor: pointer;
 }
 
 /* Footer CSS */
@@ -178,109 +178,102 @@ cursor: pointer;
 }
 
 .footer__container {
-background-color: #141414;
-padding: 5rem 0;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
+    background-color: #141414;
+    padding: 5rem 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 #footer__logo {
-color: #fff;
-display: flex;
-align-items: center;
-cursor: pointer;
-text-decoration: none;
-font-size: 2rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 2rem;
 }
 
 .footer__links {
-width: 100%;
-max-width: 1000px;
-display: flex;
-justify-content: center;
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    justify-content: center;
 }
 
 .footer__link--wrapper {
-display: flex;
+    display: flex;
 }
 
 .footer__link--items {
-display: flex;
-flex-direction: column;
-align-items: flex-start;
-margin: 16px;
-text-align: left;
-width: 160px;
-box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 16px;
+    text-align: left;
+    width: 160px;
+    box-sizing: border-box;
 }
 
 .footer__link--items h2 {
-margin-bottom: 16px;
+    margin-bottom: 16px;
 }
 
 .footer__link--items > h2 {
-color: #fff;
+    color: #fff;
 }
 
 .footer__link--items a {
-color: #fff;
-text-decoration: none;
-margin-bottom: 0.5rem;
+    color: #fff;
+    text-decoration: none;
+    margin-bottom: 0.5rem;
 }
-
-.footer__link--items a:hover {
-color: #e9e9e9;
-transition: 0.3s ease-out;
-}
-
-
 
 /* Input-fältet */
 #manualLocation {
-width: 250px;
-padding: 10px;
-font-size: 1rem;
-border: none;
-border-radius: 4px;
-margin-right: 10px;
-outline: none;
+    width: 250px;
+    padding: 10px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    margin-right: 10px;
+    outline: none;
 }
 
 /* Knapparna */
 #fetchCoordinates,
 #getLocation {
-padding: 10px 16px;
-font-size: 1rem;
-color: #fff;
-background: #f77062;
-border: none;
-border-radius: 4px;
-cursor: pointer;
-margin-right: 5px;
-transition: background 0.3s ease;
+    padding: 10px 16px;
+    font-size: 1rem;
+    color: #fff;
+    background: #f77062;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px;
+    transition: background 0.3s ease;
 }
 
 #fetchCoordinates:hover,
 #getLocation:hover {
-background: #4837ff;
+    background: #4837ff;
 }
 
 #weather {
-color: #fff;
-margin-top: 1rem;
+    color: #fff;
+    margin-top: 1rem;
 }
 
 .search__container {
-display: flex;
-justify-content: center;
-align-items: center;
-background-color: #131313;
-padding: 1rem;
-position: sticky;
-top: 80px;
-z-index: 998;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #131313;
+    padding: 1rem;
+    position: sticky;
+    top: 80px;
+    z-index: 998;
 }
 
 /* Music Player CSS */
@@ -353,66 +346,6 @@ z-index: 998;
 .music-player__control-button:active {
     transform: scale(1.1);
 }
-
-/* Progress Bar */
-.music-player__progress-bar {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    max-width: 600px;
-    color: #fff;
-}
-
-.music-player__seek-bar {
-    flex: 1;
-    margin: 0 8px;
-    cursor: pointer;
-    -webkit-appearance: none;
-    width: 100%;
-    height: 3px;
-    background: #555;
-    border-radius: 1.5px;
-    outline: none;
-    background: linear-gradient(to right, #1db954 0%, #1db954 50%, #555 50%, #555 100%);
-    background-size: 200% 100%;
-    transition: background-position 0.3s;
-}
-
-.music-player__seek-bar::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #1db954;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.music-player__seek-bar::-webkit-slider-thumb:hover {
-    background: #1ed760;
-}
-
-.music-player__seek-bar::-moz-range-thumb {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #1db954;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.music-player__seek-bar::-moz-range-thumb:hover {
-    background: #1ed760;
-}
-
-#current-time,
-#duration {
-    width: 35px;
-    text-align: center;
-    font-size: 12px;
-}
-
 
 .playlistcard {
   display: flex;

@@ -117,7 +117,7 @@ public class Location {
     }
 
     /**
-     * Returnerar stad, län och land från svaret
+     * Returnerar stad och land från svaret
      * @param jsonResponse
      * @return sträng med stad, län och land
      */

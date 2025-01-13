@@ -1,7 +1,6 @@
-
 window.onload = function () {
-// Sätt default-bakgrund för locationCard och playlistCard
-    const defaultBg = "/images/cloudy.jpg"; // Eller vilken default-bild du vill använda
+    //default-bakgrund för locationCard och playlistCard
+    const defaultBg = "/images/cloudy.jpg";
 
     const locationCard = document.getElementById("locationCard");
     const playlistCard = document.getElementById("playlistCard");
@@ -14,14 +13,14 @@ window.onload = function () {
         playlistCard.style.backgroundImage = `linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(17, 17, 17, 0.9) 100%), url('${defaultBg}')`;
     }
 
-    // Fetch the currently playing song when the page loads
+    //hämta nuvarande låt info
     fetchCurrentlyPlaying();
-    // Periodically refresh the currently playing info every 30 seconds
+    //uppdatera låtinfo kontinuerligt
     setInterval(fetchCurrentlyPlaying, 1000);
 };
-// --- Plats- och Väderfunktionalitet ---
+//--- Plats- och Väderfunktionalitet ---
 
-// Funktion för att hämta plats och väder vid sidladdning eller via knappar
+//funktion för att hämta plats och väder vid sidladdning eller via knappar
 async function fetchLocationAndWeather() {
     if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(
@@ -32,7 +31,7 @@ async function fetchLocationAndWeather() {
                  const locationData = `${latitude},${longitude}`;
 
                 try {
-                    // Skicka platskoordinater till servern
+                    //skicka platskoordinater till servern
                     const locationResponse = await fetch("http://localhost:5009/location", {
                         method: "POST",
                         headers: {
@@ -49,24 +48,18 @@ async function fetchLocationAndWeather() {
                     const place = locationDataResponse.place || "Okänd plats";
                     document.getElementById("place").textContent = place;
 
-                    // Hämta väderdata baserat på platsen
+                    //hämta väderdata baserat på platsen
                     fetchWeather();
                     fetchPlaylist()
                 } catch (error) {
                     console.error("Fel vid hämtning av plats:", error);
-                    document.getElementById("output").textContent = "Kunde inte hämta plats.";
                 }
             },
-            (error) => {
-                document.getElementById("output").textContent = "Fel vid geolocation: " + error.message;
-            }
         );
-    } else {
-        document.getElementById("output").textContent = "Geolocation stöds inte.";
     }
 }
 
-// Funktion för att hämta väderdata
+//funktion för att hämta väderdata
 async function fetchWeather() {
     try {
         const response = await fetch("http://localhost:5009/weather");
@@ -82,21 +75,21 @@ async function fetchWeather() {
         const temperatureOutput = `${Math.round(data.temp)} °C` || "Unknown temperature";
                document.getElementById("temperature").textContent = temperatureOutput;
 
-        // Uppdatera väderbilden baserat på väderdata
+        //uppdatera väderbilden baserat på väderdata
         updateWeatherImage(data.weatherCode, data.weatherDescription);
 
         fetchPlaylist(data.weatherCode, data.temp);
     } catch (error) {
         console.error("Fel vid hämtning av väderdata:", error);
-        document.getElementById("weather").textContent = "Kunde inte hämta väderdata.";
+        document.getElementById("weather").textContent = "Could not get weather information.";
     }
 }
 
-// Eventlyssnare för manuellt sök
+//funktion för att hämta koordinater baserat på platsnamn
 document.getElementById("fetchCoordinates").addEventListener("click", async () => {
     const locationInput = document.getElementById("manualLocation").value.trim();
+
     if (locationInput === "") {
-        document.getElementById("output").textContent = "Skriv in en giltig plats.";
         return;
     }
 
@@ -109,17 +102,18 @@ document.getElementById("fetchCoordinates").addEventListener("click", async () =
 
         const data = await response.json();
         const place = data.place || "Okänd plats";
-       document.getElementById("place").textContent = place;
 
-        // Hämta väderdata baserat på den sökta platsen
+        //skriv ut platsnamn
+        document.getElementById("place").textContent = place;
+
+        //hämta väderdata baserat på den sökta platsen
         fetchWeather();
     } catch (error) {
         console.error("Fel vid hämtning av koordinater:", error);
-        document.getElementById("output").textContent = "Kunde inte hitta plats.";
     }
 });
 
-// Eventlyssnare för att hämta användarens plats via geolokalisering
+//eventlyssnare för att hämta användarens plats via geolokalisering
 document.getElementById("getLocation").addEventListener("click", fetchLocationAndWeather);
 
 // Funktion för att uppdatera väderbilden och servicesbilderna
@@ -299,8 +293,8 @@ document.getElementById("next-button").addEventListener("click", async () => {
 
 document.getElementById("play-button").addEventListener("click", async () => {
     const response = await fetch("/playback/play", { method: "PUT" });
-    if (response.status === 400) {
-        showPopup();  // Visa popup med felmeddelandet
+    if (response.status === 400) { //om ingen aktiv enhet
+        showPopup();  //visa popup med felmeddelande
     }
 });
 
