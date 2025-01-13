@@ -1,0 +1,129 @@
+swagger: '2.0'
+info:
+  title: Example API Documentation
+  description: Documentation for the API endpoints in the APIRunner class.
+  version: 1.0.0
+servers:
+  - url: http://localhost:5009
+    description: Local development server
+paths:
+  /:
+    get:
+      summary: Render login page
+      description: Renders the login page as the default view.
+      responses:
+        '200':
+          description: Login page rendered successfully.
+  /location:
+    post:
+      summary: Get location name by coordinates
+      description: Fetches the name of a location based on its coordinates.
+      responses:
+        '200':
+          description: Location name retrieved successfully.
+        '400':
+          description: Invalid request or missing data.
+  /coordinates:
+    get:
+      summary: Get coordinates of a location
+      description: Fetches the coordinates of a location by its name.
+      parameters:
+        - name: place
+          in: query
+          required: true
+          description: Name of the location.
+          type: string
+          example: "Stockholm"
+      responses:
+        '200':
+          description: Coordinates retrieved successfully.
+          schema:
+            type: object
+            properties:
+              place:
+                type: string
+                description: Name of the location.
+              latitude:
+                type: number
+              longitude:
+                type: number
+        '400':
+          description: Invalid location name.
+  /weather:
+    get:
+      summary: Get weather for a location
+      description: Fetches weather data for the currently saved location.
+      responses:
+        '200':
+          description: Weather data retrieved successfully.
+        '400':
+          description: No location saved or invalid request.
+  /loginURL:
+    get:
+      summary: Redirect to Spotify login
+      description: Redirects the user to Spotify's OAuth 2.0 login page.
+      responses:
+        '302':
+          description: Redirected to Spotify login page.
+  /callback:
+    get:
+      summary: Handle Spotify login callback
+      description: Processes the Spotify OAuth callback and redirects to the music control page.
+      responses:
+        '200':
+          description: Login successful, redirected to music control.
+        '400':
+          description: Login failed or missing code.
+  /playback/pause:
+    put:
+      summary: Pause music playback
+      description: Pauses music playback on the active device.
+      responses:
+        '200':
+          description: Music paused successfully.
+        '400':
+          description: No active device found or invalid token.
+  /playback/next:
+    post:
+      summary: Play next track
+      description: Skips to the next track in the playback queue.
+      responses:
+        '200':
+          description: Track skipped successfully.
+        '400':
+          description: No active device found or invalid token.
+  /playback/previous:
+    post:
+      summary: Play previous track
+      description: Plays the previous track in the playback queue.
+      responses:
+        '200':
+          description: Track rewound successfully.
+        '400':
+          description: No active device found or invalid token.
+  /playback/play:
+    put:
+      summary: Start or resume music playback
+      description: Starts or resumes music playback based on the current weather.
+      responses:
+        '200':
+          description: Playback started or resumed successfully.
+        '400':
+          description: No active device or invalid token.
+  /current-song:
+    get:
+      summary: Get currently playing track
+      description: Fetches the details of the currently playing track.
+      responses:
+        '200':
+          description: Current track details retrieved successfully.
+        '400':
+          description: No active playback session or invalid token.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  responses:
+    InvalidToken:
+      description: Invalid or missing access token.
