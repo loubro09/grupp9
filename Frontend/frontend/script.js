@@ -292,7 +292,7 @@ document.getElementById("play-button").addEventListener("click", async () => {
     if (response.status === 400) {
         showPopup();
     } else {
-        document.getElementById("play-notification").style.display = "none"; 
+        document.getElementById("play-notification").style.display = "none"; //ta bort meddelande när musik börjat spelas
 });
 
 
