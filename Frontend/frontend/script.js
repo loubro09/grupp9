@@ -288,10 +288,13 @@ document.getElementById("next-button").addEventListener("click", async () => {
 
 document.getElementById("play-button").addEventListener("click", async () => {
     const response = await fetch("/playback/play", { method: "PUT" });
-    if (response.status === 400) { //om ingen aktiv enhet
-        showPopup();  //visa popup med felmeddelande
-    }
+
+    if (response.status === 400) {
+        showPopup();
+    } else {
+        document.getElementById("play-notification").style.display = "none"; 
 });
+
 
 async function fetchPlaylist(weatherCode, temp) {
     try {

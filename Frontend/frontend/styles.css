@@ -433,3 +433,16 @@ body {
 .popup-content .close-btn:hover {
     color: #ff5566;
 }
+.play-notification {
+  text-align: center;
+  font-size: 14px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 8px;
+  border-radius: 5px;
+  position: absolute;
+  top: -30px; /* Adjust to position above the play button */
+  left: 50%;
+  transform: translateX(-50%);
+  display: block;
+}
