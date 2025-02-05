@@ -358,7 +358,7 @@ function showPopup() {
     popup.innerHTML = `
             <div class="popup-content">
                 <p>Ingen aktiv enhet hittades.</p>
-                <p>Du måste först aktivera Spotify på en enhet genom att starta en låt.</p>
+                <p>Du måste först aktivera Spotify på en enhet genom att starta en låt. Klicka på play knappen för att börja lyssna! </p>
                 <div class="popup-buttons">
                     <button onclick="closePopup()">OK</button>
                     <a href="https://open.spotify.com/" target="_blank">
