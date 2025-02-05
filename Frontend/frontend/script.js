@@ -52,7 +52,7 @@ async function fetchLocationAndWeather() {
                     fetchWeather();
                     fetchPlaylist()
                 } catch (error) {
-                    console.error("Fel vid hämtning av plats:", error);
+                   // console.error("Fel vid hämtning av plats:", error);
                 }
             },
         );
@@ -80,7 +80,7 @@ async function fetchWeather() {
 
         fetchPlaylist(data.weatherCode, data.temp);
     } catch (error) {
-        console.error("Fel vid hämtning av väderdata:", error);
+        //console.error("Fel vid hämtning av väderdata:", error);
         document.getElementById("weather").textContent = "Could not get weather information.";
     }
 }
@@ -109,7 +109,7 @@ document.getElementById("fetchCoordinates").addEventListener("click", async () =
         //hämta väderdata baserat på den sökta platsen
         fetchWeather();
     } catch (error) {
-        console.error("Fel vid hämtning av koordinater:", error);
+       // console.error("Fel vid hämtning av koordinater:", error);
     }
 });
 
@@ -267,7 +267,7 @@ async function fetchCurrentlyPlaying() {
         if (trackImageElement) trackImageElement.src = data.songImage || "/images/default.png";
 
     } catch (error) {
-        console.error("Error fetching currently playing song:", error);
+       // console.error("Error fetching currently playing song:", error);
         const trackTitleElement = document.getElementById("track-title");
         const trackArtistElement = document.getElementById("track-artist");
         const trackImageElement = document.getElementById("track-image");
@@ -347,7 +347,7 @@ async function fetchPlaylist(weatherCode, temp) {
         titleElement.style.marginTop = "10px";
         playlistCard.appendChild(titleElement);
     } catch (error) {
-        console.error("Fel vid hämtning av spellista:", error);
+       // console.error("Fel vid hämtning av spellista:", error);
     }
 }
 

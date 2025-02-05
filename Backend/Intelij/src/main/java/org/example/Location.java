@@ -142,7 +142,7 @@ public class Location {
             //stad eller provins måste ha skrivits in
             if (city == null || city.isEmpty()) {
                 if (province == null || province.isEmpty()) {
-                    return "You must enter a city name.";
+                    //return "You must enter a city name.";
                 }
             }
 
