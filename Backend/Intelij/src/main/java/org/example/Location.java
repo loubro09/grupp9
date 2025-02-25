@@ -86,8 +86,15 @@ public class Location {
      * @return namn på plats
      */
     private String getPlaceNameFromCoordinates(String coordinates) {
+        if (coordinates == null) {
+            return "You must enter a valid city name."; // Hanterar null innan split()
+        }
+        try {
+            String[] parts = coordinates.split(",");
+            if (parts.length < 2) {
+                return "Invalid coordinates received.";
+            }
         //delar upp koordinater
-        String[] parts = coordinates.split(",");
         double latitude = Double.parseDouble(parts[0]);
         double longitude = Double.parseDouble(parts[1]);
 
@@ -101,7 +108,7 @@ public class Location {
                 .header("User-Agent", "grupp9/1.0")
                 .build();
 
-        try {
+
             //skicka HTTP-förfrågan och spara svar
             HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -166,6 +173,9 @@ public class Location {
      */
     private String getCoordinates(String jsonResponse) {
         try {
+            if (JsonParser.parseString(jsonResponse).getAsJsonArray().size() == 0) {
+                return null; //inga resultat hittades
+            }
             //gör om strängen till objekt
             JsonObject jsonObject = JsonParser.parseString(jsonResponse).getAsJsonArray().get(0).getAsJsonObject();
 

@@ -116,80 +116,79 @@ document.getElementById("fetchCoordinates").addEventListener("click", async () =
 //eventlyssnare för att hämta användarens plats via geolokalisering
 document.getElementById("getLocation").addEventListener("click", fetchLocationAndWeather);
 
-// Funktion för att uppdatera väderbilden och servicesbilderna
+//funktion för att uppdatera väderbilden och servicesbilderna
 function updateWeatherImage(weatherCode, weatherDescription) {
     // Uppdatera huvudväderbilden och weatherIcon
     const weatherImage = document.getElementById("weatherImage");
     const weatherInfo = document.getElementById("weatherInfo");
     const weatherIcon = document.getElementById("weather-icon");
-        // Hämta rätt weather icon
+        //hämta weather icon
         if (weatherIcon) {
                 weatherIcon.src = `icons/${weatherCode}.png`;
                 weatherIcon.alt = `Weather Icon - ${weatherDescription}`;
-            }
+                }
 
-    let imgSrc = "/images/default.png"; // Fallback-bild
+    let imgSrc = "/images/default.png"; //default bild
 
-    // Mappa väderkoder till bilder
+    //mappa väderkoder till bilder
     switch (weatherCode) {
-        case "1000": // Klar himmel
-        case "1100": // Mycket klart
+        case "1000": //"Mostly clear Sky"
+        case "1100": //"Clear sky"
             imgSrc = "/images/Sunny.jpg";
             break;
-        case "1101": // "Partly Cloudy"
-        case "1102": // "Mostly Cloudy"
-        case "1001": // "Cloudy"
-        case "2000": // "Fog"
-        case "2100": // "Light Fog"
+        case "1101": //"Partly Cloudy"
+        case "1102": //"Mostly Cloudy"
+        case "1001": //"Cloudy"
+        case "2000": //"Fog"
+        case "2100": //"Light Fog"
             imgSrc = "/images/cloudy.jpg";
             break;
-        case "4000": // "Drizzle"
-        case "4200": // "Rain"
-        case "4001": // "Light Rain"
-        case "4201": // "Heavy Rain"
-        case "8000": // "Thunderstorm"
+        case "4000": //"Drizzle"
+        case "4200": //"Rain"
+        case "4001": //"Light Rain"
+        case "4201": //"Heavy Rain"
+        case "8000": //"Thunderstorm"
             imgSrc = "/images/rain.jpg";
             break;
-        case "5000": // "Snow"
-        case "5100": // "Flurries"
-        case "5101": // "Light Snow"
-        case "5001": // "Heavy Snow"
-        case "6000": // "Freezing Drizzle"
-        case "6001": // "Freezing Rain"
-        case "6200": // "Light Freezing Rain"
-        case "6201": // "Heavy Freezing Rain"
-        case "7000": // "Ice Pellets"
-        case "7101": // "Heavy Ice Pellets"
-        case "7102": // "Light Ice Pellets"
+        case "5000": //"Snow"
+        case "5100": //"Flurries"
+        case "5101": //"Light Snow"
+        case "5001": //"Heavy Snow"
+        case "6000": //"Freezing Drizzle"
+        case "6001": //"Freezing Rain"
+        case "6200": //"Light Freezing Rain"
+        case "6201": //"Heavy Freezing Rain"
+        case "7000": //"Ice Pellets"
+        case "7101": //"Heavy Ice Pellets"
+        case "7102": //"Light Ice Pellets"
             imgSrc= "/images/winter.jpg";
         default:
             imgSrc = "/images/default.jpg";
             break;
     }
 
-    // Uppdatera huvudväderbildens src om elementet finns
+    //uppdaterar väderbildens src om elementet finns
     if (weatherImage) {
         weatherImage.src = imgSrc;
     }
 
-    // Visa väderbeskrivningen (valfritt) om elementet finns
+    //visar väderbeskrivningen  om elementet finns
     if (weatherInfo) {
         weatherInfo.textContent = weatherDescription;
     }
-
-        // Uppdatera bakgrundsbilderna i Services Section baserat på väder
+        //uppdaterar bakgrundsbilderna baserat på väder
         updateServicesBackgrounds(weatherCode, weatherDescription);
 }
 
-// Funktion för att uppdatera bakgrundsbilderna i Services Section
+//funktion för att uppdatera bakgrundsbilderna
 function updateServicesBackgrounds(weatherCode, weatherDescription) {
     const locationCard = document.getElementById("locationCard");
     const playlistCard = document.getElementById("playlistCard");
 
-    let locationBg = "/images/cloudy.jpg"; // Default platsbild
-    let playlistBg = "/images/cloudy.jpg"; // Default spellistabild
+    let locationBg = "/images/cloudy.jpg"; //default bild väder
+    let playlistBg = "/images/cloudy.jpg"; //default bild spellista
 
-    // Anpassa bilder baserat på väderkoden
+    //anpassar bilder baserat på väderkoden
     switch (weatherCode) {
         case "1000": // Klar himmel
         case "1100": // Mycket klart
@@ -228,12 +227,11 @@ function updateServicesBackgrounds(weatherCode, weatherDescription) {
             playlistBg = "/images/winter.jpg";
             break;
         default:
-            locationBg = "/images/default.jpg"; // Eller annan default bild
-            playlistBg = "/images/default.jpg"; // Eller annan default bild
+            locationBg = "/images/default.jpg";
+            playlistBg = "/images/default.jpg";
             break;
     }
-
-    // Uppdatera bakgrundsbilderna med gradient och ny bild om elementen finns
+    //uppdaterar bakgrundsbilderna med bild om elementen finns
     if (locationCard) {
         locationCard.style.backgroundImage = `linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(17, 17, 17, 0.6) 100%), url('${locationBg}')`;
     }
@@ -243,14 +241,12 @@ function updateServicesBackgrounds(weatherCode, weatherDescription) {
     }
 }
 
-// --- Music Player Functionality ---
-
+//--- Music Player ---
 async function fetchCurrentlyPlaying() {
     try {
         const trackTitleElement = document.getElementById("track-title");
         const trackArtistElement = document.getElementById("track-artist");
         const trackImageElement = document.getElementById("track-image");
-
 
         const response = await fetch("http://localhost:5009/current-song");
 
@@ -290,13 +286,16 @@ document.getElementById("next-button").addEventListener("click", async () => {
     await fetch("/playback/next", { method: "POST" });
 });
 
-
 document.getElementById("play-button").addEventListener("click", async () => {
     const response = await fetch("/playback/play", { method: "PUT" });
-    if (response.status === 400) { //om ingen aktiv enhet
-        showPopup();  //visa popup med felmeddelande
-    }
+
+    if (response.status === 400) {
+        showPopup();
+    } else {
+        document.getElementById("play-notification").style.display = "none"; //ta bort meddelande när musik börjat spelas
+        }
 });
+
 
 async function fetchPlaylist(weatherCode, temp) {
     try {
@@ -312,48 +311,47 @@ async function fetchPlaylist(weatherCode, temp) {
 
         const playlistCard = document.getElementById("playlistCard");
 
-        // Rensa innehållet innan vi lägger till nya element
+        //rensar innehållet innan vi lägger till nya element
         playlistCard.innerHTML = "";
 
-        // Skapa en behållare för att centrera bilden
+        //skapar ruta för spellista
         if (playlistImage) {
             const imageContainer = document.createElement("div");
             imageContainer.style.display = "flex";
             imageContainer.style.justifyContent = "center";
             imageContainer.style.alignItems = "center";
-            imageContainer.style.marginBottom = "10px"; // Utrymme mellan bild och rubrik
+            imageContainer.style.marginBottom = "10px";
 
-            // Skapa bild-elementet
+            //skapar bild-elementet till spellistan
             const imgElement = document.createElement("img");
             imgElement.src = playlistImage;
             imgElement.alt = "Playlist Image";
             imgElement.classList.add("playlist__image");
 
-            // Begränsa storlek
+            //storleksanpassning
             imgElement.style.maxWidth = "100%";
             imgElement.style.maxHeight = "300px";
             imgElement.style.objectFit = "cover";
 
-            // Lägg till bilden i behållaren
+            //lägger till bilden i rutan
             imageContainer.appendChild(imgElement);
 
-            // Lägg till behållaren i playlistCard
+            //lägger till rutan i playlistCard
             playlistCard.appendChild(imageContainer);
         }
 
-        // Skapa och lägg till rubriken under bilden
+        //rubriken under bilden
         const titleElement = document.createElement("h2");
         titleElement.textContent = playlistName;
-        titleElement.style.textAlign = "center"; // Centrera rubriken
-        titleElement.style.marginTop = "10px"; // Utrymme mellan rubriken och bilden
+        titleElement.style.textAlign = "center";
+        titleElement.style.marginTop = "10px";
         playlistCard.appendChild(titleElement);
     } catch (error) {
         console.error("Fel vid hämtning av spellista:", error);
     }
 }
 
-
-// Funktion för att visa popup
+//funktion för att visa popup för Spotify
 function showPopup() {
     const popup = document.createElement("div");
     popup.classList.add("popup");
@@ -372,7 +370,7 @@ function showPopup() {
     document.body.appendChild(popup);
 }
 
-// Funktion för att stänga popup
+//funktion för att stänga popup
 function closePopup() {
     const popup = document.querySelector(".popup");
     if (popup) {
