@@ -33,9 +33,7 @@ public class APIRunner {
 
         //skapar instans av Javalin
         Javalin app = Javalin.create(config -> {
-            //konfigurerar servern att hämta statiska filer (css, js) från frontend katalogen
             config.staticFiles.add("frontend/frontend", io.javalin.http.staticfiles.Location.EXTERNAL);
-            //anger hur servern ska läsa och returnera en fil (html) när den efterfrågas
             config.fileRenderer((filePath, ctx, layoutPath) -> {
                 try {
                     return Files.readString(Paths.get("frontend/frontend/" + filePath));
@@ -43,14 +41,12 @@ public class APIRunner {
                     throw new RuntimeException("Could not read file: " + filePath, e);
                 }
             });
-
-            //aktiverar CORS-plugin
             config.bundledPlugins.enableCors(cors -> {
                 cors.addRule(it -> {
                     it.anyHost(); //tillåter alla domäner skicka begäranden till servern
                 });
             });
-        }).start(5009); //startar server på port 5009
+        }).start(5009);
 
         //anrop för att hämta första sidan
         app.get("/", ctx -> {
@@ -80,12 +76,12 @@ public class APIRunner {
         //anrop för att logga in
         app.get("/loginURL", ctx -> {
             String loginUrl = loginController.getSpotifyLoginUrl();
-            ctx.redirect(loginUrl); //omdirigering till Spotify OAuth 2.0 inloggningssida
+            ctx.redirect(loginUrl);
         });
 
         //anrop för att få access token från Spotify
-        app.get("/callback", ctx -> { //efter inlogg omdirigeras användaren till /callback
-            String code = ctx.queryParam("code"); //hämtar code från callback-URLen
+        app.get("/callback", ctx -> {
+            String code = ctx.queryParam("code");
             if (code != null) {
                 loginController.handleCallback(code);
                 ctx.render("music-control.html");
@@ -94,36 +90,45 @@ public class APIRunner {
             }
         });
 
-        //anrop för att pausa musik
-        app.put("/playback/pause", ctx -> {
+        // Hantera uppspelning (play/pause)
+        app.put("/player/state", ctx -> {
             String accessToken = loginController.getAccessToken();
-            musicController.pauseMusic(accessToken);
+            String state = ctx.formParam("state"); // Hämtar state från request-body
+
+            if ("play".equals(state)) {
+                String playlistId = weatherAnalyzer.analyzeWeather(weatherData.getWeatherCode(), weatherData.getTemp());
+
+                if (!musicController.isActiveDevice(accessToken)) {
+                    ctx.status(400).result("Ingen aktiv enhet.");
+                    return;
+                }
+
+                musicController.playOrResumeMusic(playlistId, accessToken);
+                musicData.fetchPlaylistData(ctx, playlistId, accessToken);
+            } else if ("pause".equals(state)) {
+                musicController.pauseMusic(accessToken);
+            } else {
+                ctx.status(400).result("Ogiltigt statusvärde.");
+            }
         });
 
-        //anrop för att spela nästa låt
-        app.post("/playback/next", ctx -> {
+// Byta låt
+        app.post("/player/next", ctx -> {
             String accessToken = loginController.getAccessToken();
             musicController.nextTrack(accessToken);
         });
 
-        //anrop för att spela föregående låt
-        app.post("/playback/previous", ctx -> {
+        app.post("/player/previous", ctx -> {
             String accessToken = loginController.getAccessToken();
             musicController.previousTrack(accessToken);
         });
 
-        //anrop för att starta musik
-        app.put("/playback/play", ctx -> {
-            String accessToken = loginController.getAccessToken();
-            String playlistId = weatherAnalyzer.analyzeWeather(weatherData.getWeatherCode(), weatherData.getTemp());
 
-            if (!musicController.isActiveDevice(accessToken)) {
-                ctx.status(400); //ingen aktiv enhet, skapar popup på webbsidan
-                return;
-            }
-            
-            musicController.playOrResumeMusic(playlistId, accessToken);
-            musicData.fetchPlaylistData(ctx, playlistId, accessToken); //hämtar data om spellista för att visa på webbsidan
+
+        //anrop för att spela föregående låt
+        app.post("/player/previous", ctx -> {
+            String accessToken = loginController.getAccessToken();
+            musicController.previousTrack(accessToken);
         });
 
         //anrop för att hämta låten som spelas just nu
