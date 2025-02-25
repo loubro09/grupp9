@@ -275,19 +275,19 @@ async function fetchCurrentlyPlaying() {
     }
 }
 document.getElementById("pause-button").addEventListener("click", async () => {
-    await fetch("/playback/pause", { method: "PUT" });
+    await fetch("/player/pause", { method: "PUT" });
 });
 
 document.getElementById("prev-button").addEventListener("click", async () => {
-    await fetch("/playback/previous", { method: "POST" });
+    await fetch("/player/previous", { method: "POST" });
 });
 
 document.getElementById("next-button").addEventListener("click", async () => {
-    await fetch("/playback/next", { method: "POST" });
+    await fetch("/player/next", { method: "POST" });
 });
 
 document.getElementById("play-button").addEventListener("click", async () => {
-    const response = await fetch("/playback/play", { method: "PUT" });
+    const response = await fetch("/player/play", { method: "PUT" });
 
     if (response.status === 400) {
         showPopup();
@@ -299,7 +299,7 @@ document.getElementById("play-button").addEventListener("click", async () => {
 
 async function fetchPlaylist(weatherCode, temp) {
     try {
-    const response = await fetch("/playback/play", { method: "PUT" });
+    const response = await fetch("/player/play", { method: "PUT" });
 
         if (!response.ok) {
             throw new Error(`API-fel vid spellista: ${response.status}`);

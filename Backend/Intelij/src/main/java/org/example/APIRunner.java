@@ -95,25 +95,25 @@ public class APIRunner {
         });
 
         //anrop för att pausa musik
-        app.put("/playback/pause", ctx -> {
+        app.put("/player/pause", ctx -> {
             String accessToken = loginController.getAccessToken();
             musicController.pauseMusic(accessToken);
         });
 
         //anrop för att spela nästa låt
-        app.post("/playback/next", ctx -> {
+        app.post("/player/next", ctx -> {
             String accessToken = loginController.getAccessToken();
             musicController.nextTrack(accessToken);
         });
 
         //anrop för att spela föregående låt
-        app.post("/playback/previous", ctx -> {
+        app.post("/player/previous", ctx -> {
             String accessToken = loginController.getAccessToken();
             musicController.previousTrack(accessToken);
         });
 
         //anrop för att starta musik
-        app.put("/playback/play", ctx -> {
+        app.put("/player/play", ctx -> {
             String accessToken = loginController.getAccessToken();
             String playlistId = weatherAnalyzer.analyzeWeather(weatherData.getWeatherCode(), weatherData.getTemp());
 
