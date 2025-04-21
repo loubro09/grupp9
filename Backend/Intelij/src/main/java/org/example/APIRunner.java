@@ -95,7 +95,7 @@ public class APIRunner {
             }
         });
 
-
+        //anrop för att hämta väderdata
         app.put("/player", ctx -> {
             String accessToken = loginController.getAccessToken();
             String state = ctx.bodyAsClass(Map.class).get("state").toString();
@@ -117,7 +117,7 @@ public class APIRunner {
             }
         });
 
-// Trigger player actions (next or previous)
+        // Trigger player actions (next or previous)
         app.post("/player/actions", ctx -> {
             String accessToken = loginController.getAccessToken();
             String action = ctx.bodyAsClass(Map.class).get("action").toString();
@@ -132,41 +132,6 @@ public class APIRunner {
         });
 
 
-/**
-
-        //anrop för att pausa musik
-        app.put("/player/pause", ctx -> {
-            String accessToken = loginController.getAccessToken();
-            musicController.pauseMusic(accessToken);
-        });
-
-        //anrop för att spela nästa låt
-        app.post("/player/next", ctx -> {
-            String accessToken = loginController.getAccessToken();
-            musicController.nextTrack(accessToken);
-        });
-
-        //anrop för att spela föregående låt
-        app.post("/player/previous", ctx -> {
-            String accessToken = loginController.getAccessToken();
-            musicController.previousTrack(accessToken);
-        });
-
-        //anrop för att starta musik
-        app.put("/player/play", ctx -> {
-            String accessToken = loginController.getAccessToken();
-            String playlistId = weatherAnalyzer.analyzeWeather(weatherData.getWeatherCode(), weatherData.getTemp());
-
-            if (!musicController.isActiveDevice(accessToken)) {
-                ctx.status(400); //ingen aktiv enhet, skapar popup på webbsidan
-                return;
-            }
-            
-            musicController.playOrResumeMusic(playlistId, accessToken);
-            musicData.fetchPlaylistData(ctx, playlistId, accessToken); //hämtar data om spellista för att visa på webbsidan
-        });
-
- **/
         //anrop för att hämta låten som spelas just nu
         app.get("/current-song", ctx -> {
             String accessToken = loginController.getAccessToken();

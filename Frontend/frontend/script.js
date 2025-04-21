@@ -315,7 +315,7 @@ document.getElementById("prev-button").addEventListener("click", async () => {
     });
 });
 
-
+//funktion för att hämta spellista baserat på väder
 async function fetchPlaylist(weatherCode, temp) {
     try {
     const response = await fetch("/player", {

@@ -271,7 +271,6 @@ public class MusicController {
     public void handleApiError(HttpResponse<String> response) {
         if (response.statusCode() != 200 && response.statusCode() != 204) {
             System.err.println("API-anrop misslyckades, Spotify med statuskod: " + response.statusCode());
-          //  System.err.println("Response Body: " + response.body());
         }
     }
 }
