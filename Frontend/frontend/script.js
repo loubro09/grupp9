@@ -275,31 +275,54 @@ async function fetchCurrentlyPlaying() {
     }
 }
 document.getElementById("pause-button").addEventListener("click", async () => {
-    await fetch("/player/pause", { method: "PUT" });
+    await fetch("/player", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ state: "paused" }),
+    });
 });
 
-document.getElementById("prev-button").addEventListener("click", async () => {
-    await fetch("/player/previous", { method: "POST" });
-});
-
-document.getElementById("next-button").addEventListener("click", async () => {
-    await fetch("/player/next", { method: "POST" });
-});
-
+// Play button
 document.getElementById("play-button").addEventListener("click", async () => {
-    const response = await fetch("/player/play", { method: "PUT" });
+    const response = await fetch("/player", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ state: "playing" }),
+    });
 
     if (response.status === 400) {
         showPopup();
     } else {
-        document.getElementById("play-notification").style.display = "none"; //ta bort meddelande när musik börjat spelas
-        }
+        document.getElementById("play-notification").style.display = "none";
+    }
+});
+
+// Next button
+document.getElementById("next-button").addEventListener("click", async () => {
+    await fetch("/player/actions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "next" }),
+    });
+});
+
+// Previous button
+document.getElementById("prev-button").addEventListener("click", async () => {
+    await fetch("/player/actions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "previous" }),
+    });
 });
 
 
 async function fetchPlaylist(weatherCode, temp) {
     try {
-    const response = await fetch("/player/play", { method: "PUT" });
+    const response = await fetch("/player", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ state: "playing" }),
+    });
 
         if (!response.ok) {
             throw new Error(`API-fel vid spellista: ${response.status}`);

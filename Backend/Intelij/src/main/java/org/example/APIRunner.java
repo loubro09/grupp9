@@ -4,6 +4,7 @@ import io.javalin.Javalin;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Map;
 import java.util.Properties;
 
 public class APIRunner {
@@ -50,7 +51,7 @@ public class APIRunner {
                     it.anyHost(); //tillåter alla domäner skicka begäranden till servern
                 });
             });
-        }).start(5009); //startar server på port 5009
+        }).start(5008); //startar server på port 5009
 
         //anrop för att hämta första sidan
         app.get("/", ctx -> {
@@ -94,6 +95,45 @@ public class APIRunner {
             }
         });
 
+
+        app.put("/player", ctx -> {
+            String accessToken = loginController.getAccessToken();
+            String state = ctx.bodyAsClass(Map.class).get("state").toString();
+
+            if ("playing".equals(state)) {
+                String playlistId = weatherAnalyzer.analyzeWeather(weatherData.getWeatherCode(), weatherData.getTemp());
+
+                if (!musicController.isActiveDevice(accessToken)) {
+                    ctx.status(400);
+                    return;
+                }
+
+                musicController.playOrResumeMusic(playlistId, accessToken);
+                musicData.fetchPlaylistData(ctx, playlistId, accessToken);
+            } else if ("paused".equals(state)) {
+                musicController.pauseMusic(accessToken);
+            } else {
+                ctx.status(400).result("Invalid state");
+            }
+        });
+
+// Trigger player actions (next or previous)
+        app.post("/player/actions", ctx -> {
+            String accessToken = loginController.getAccessToken();
+            String action = ctx.bodyAsClass(Map.class).get("action").toString();
+
+            if ("next".equals(action)) {
+                musicController.nextTrack(accessToken);
+            } else if ("previous".equals(action)) {
+                musicController.previousTrack(accessToken);
+            } else {
+                ctx.status(400).result("Invalid action");
+            }
+        });
+
+
+/**
+
         //anrop för att pausa musik
         app.put("/player/pause", ctx -> {
             String accessToken = loginController.getAccessToken();
@@ -126,12 +166,14 @@ public class APIRunner {
             musicData.fetchPlaylistData(ctx, playlistId, accessToken); //hämtar data om spellista för att visa på webbsidan
         });
 
+ **/
         //anrop för att hämta låten som spelas just nu
         app.get("/current-song", ctx -> {
             String accessToken = loginController.getAccessToken();
             musicData.fetchCurrentlyPlaying(ctx, accessToken);
         });
     }
+
 
     //laddar config filen med api-nycklar
     public void loadConfig() {
