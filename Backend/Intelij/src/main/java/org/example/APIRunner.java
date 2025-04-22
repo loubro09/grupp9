@@ -51,7 +51,7 @@ public class APIRunner {
                     it.anyHost(); //tillåter alla domäner skicka begäranden till servern
                 });
             });
-        }).start(5008); //startar server på port 5009
+        }).start(5009); //startar server på port 5009
 
         //anrop för att hämta första sidan
         app.get("/", ctx -> {
@@ -67,6 +67,9 @@ public class APIRunner {
         app.get("/coordinates", ctx -> {
             runner.locationController.locationByName(ctx);
         });
+
+        //TODO: fixa errorkod till en plats som inte finns, skicka tillbaka relevant kod och inte 400 bad request
+
 
         //anrop för att få vädret hos en plats
         app.get("/weather", ctx -> {
@@ -117,7 +120,9 @@ public class APIRunner {
             }
         });
 
-        // Trigger player actions (next or previous)
+
+        //TODO Put/Player? action=next, istället för kombinera next och previous så blir det mer RESTFUL.
+
         app.post("/player/actions", ctx -> {
             String accessToken = loginController.getAccessToken();
             String action = ctx.bodyAsClass(Map.class).get("action").toString();
