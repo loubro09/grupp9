@@ -68,13 +68,12 @@ public class APIRunner {
             runner.locationController.locationByName(ctx);
         });
 
-        //TODO: fixa errorkod till en plats som inte finns, skicka tillbaka relevant kod och inte 400 bad request
 
 
         //anrop för att få vädret hos en plats
         app.get("/weather", ctx -> {
             if (locationController.getLocationCoordinates() == null) {
-                ctx.status(400).result("Ingen plats har sparats ännu.");
+                ctx.status(404).result("Platsen hittades inte.");
                 return;
             }
             runner.weatherData.weatherbylocation(ctx, locationController.getPlaceName(),
@@ -99,7 +98,7 @@ public class APIRunner {
         });
 
         //anrop för att hämta väderdata
-        app.put("/player", ctx -> {
+       /** app.put("/player", ctx -> {
             String accessToken = loginController.getAccessToken();
             String state = ctx.bodyAsClass(Map.class).get("state").toString();
 
@@ -107,7 +106,7 @@ public class APIRunner {
                 String playlistId = weatherAnalyzer.analyzeWeather(weatherData.getWeatherCode(), weatherData.getTemp());
 
                 if (!musicController.isActiveDevice(accessToken)) {
-                    ctx.status(400);
+                    ctx.status(409).result("Ingen aktiv enhet är tillgänglig för uppspelning.");
                     return;
                 }
 
@@ -119,11 +118,45 @@ public class APIRunner {
                 ctx.status(400).result("Invalid state");
             }
         });
+        **/
+        app.put("/player", ctx -> {
+            String accessToken = loginController.getAccessToken();
+            String action = ctx.queryParam("action");
+
+            if (accessToken == null || accessToken.isEmpty()) {
+                ctx.status(401).result("Access token saknas eller är ogiltig.");
+                return;
+            }
+
+            if ("next".equals(action)) {
+                musicController.nextTrack(accessToken);
+                ctx.status(204);
+            } else if ("previous".equals(action)) {
+                musicController.previousTrack(accessToken);
+                ctx.status(204);
+            } else if ("play".equals(action)) {
+                String playlistId = weatherAnalyzer.analyzeWeather(weatherData.getWeatherCode(), weatherData.getTemp());
+
+                if (!musicController.isActiveDevice(accessToken)) {
+                    ctx.status(409).result("Ingen aktiv enhet är tillgänglig för uppspelning.");
+                    return;
+                }
+
+                musicController.playOrResumeMusic(playlistId, accessToken);
+                musicData.fetchPlaylistData(ctx, playlistId, accessToken);
+            } else if ("pause".equals(action)) {
+                musicController.pauseMusic(accessToken);
+                ctx.status(204);
+            } else {
+                ctx.status(422).result("Ogiltig åtgärd: " + action);
+            }
+        });
+
 
 
         //TODO Put/Player? action=next, istället för kombinera next och previous så blir det mer RESTFUL.
 
-        app.post("/player/actions", ctx -> {
+        /**app.post("/player/actions", ctx -> {
             String accessToken = loginController.getAccessToken();
             String action = ctx.bodyAsClass(Map.class).get("action").toString();
 
@@ -132,9 +165,10 @@ public class APIRunner {
             } else if ("previous".equals(action)) {
                 musicController.previousTrack(accessToken);
             } else {
-                ctx.status(400).result("Invalid action");
+                ctx.status(422).result("Ogiltig åtgärd.");
             }
         });
+         **/
 
 
         //anrop för att hämta låten som spelas just nu

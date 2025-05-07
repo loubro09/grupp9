@@ -8,6 +8,9 @@ Installera en IDE:
 För att köra koden behöver du en utvecklingsmiljö (IDE). Vi rekommenderar att du använder antingen IntelliJ IDEA eller Visual Studio Code (VS Code).
 
 -- Körinstruktioner för Weatherly --
+
+OBS: Weatherly är lite långsam ibland och det kan ta tid att få respons från Spotify. Ha tålamod!
+
 1. Starta applikationen:
    Kör klassen APIRunner i din IDE eller kommandotolk för att starta Javelin-servern.
 

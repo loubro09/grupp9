@@ -274,7 +274,63 @@ async function fetchCurrentlyPlaying() {
 
     }
 }
-document.getElementById("pause-button").addEventListener("click", async () => {
+function playMusic() {
+    fetch("http://localhost:5009/player?action=play", {
+        method: "PUT"
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log("Musiken spelas.");
+        } else {
+            response.text().then(text => console.error("Fel:", text));
+        }
+    })
+    .catch(error => console.error("Nätverksfel:", error));
+}
+function pauseMusic() {
+    fetch("http://localhost:5009/player?action=pause", {
+        method: "PUT"
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log("Musiken pausades.");
+        } else {
+            response.text().then(text => console.error("Fel:", text));
+        }
+    })
+    .catch(error => console.error("Nätverksfel:", error));
+}
+function nextTrack() {
+    fetch("http://localhost:5009/player?action=next", {
+        method: "PUT"
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log("Nästa låt spelas.");
+        } else {
+            response.text().then(text => console.error("Fel:", text));
+        }
+    })
+    .catch(error => console.error("Nätverksfel:", error));
+}
+function previousTrack() {
+    fetch("http://localhost:5009/player?action=previous", {
+        method: "PUT"
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log("Föregående låt spelas.");
+        } else {
+            response.text().then(text => console.error("Fel:", text));
+        }
+    })
+    .catch(error => console.error("Nätverksfel:", error));
+}
+
+
+
+
+/**document.getElementById("pause-button").addEventListener("click", async () => {
     await fetch("/player", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -314,6 +370,7 @@ document.getElementById("prev-button").addEventListener("click", async () => {
         body: JSON.stringify({ action: "previous" }),
     });
 });
+**/
 
 //funktion för att hämta spellista baserat på väder
 async function fetchPlaylist(weatherCode, temp) {
@@ -373,6 +430,7 @@ async function fetchPlaylist(weatherCode, temp) {
         console.error("Fel vid hämtning av spellista:", error);
     }
 }
+
 
 //funktion för att visa popup för Spotify
 function showPopup() {
