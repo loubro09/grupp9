@@ -136,7 +136,7 @@ public class APIRunner {
                 ctx.status(204);
             } else if ("play".equals(action)) {
                 String playlistId = weatherAnalyzer.analyzeWeather(weatherData.getWeatherCode(), weatherData.getTemp());
-
+                
                 if (!musicController.isActiveDevice(accessToken)) {
                     ctx.status(409).result("Ingen aktiv enhet är tillgänglig för uppspelning.");
                     return;

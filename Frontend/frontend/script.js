@@ -274,6 +274,12 @@ async function fetchCurrentlyPlaying() {
 
     }
 }
+
+document.getElementById("play-button").addEventListener("click", playMusic);
+document.getElementById("pause-button").addEventListener("click", pauseMusic);
+document.getElementById("next-button").addEventListener("click", nextTrack);
+document.getElementById("prev-button").addEventListener("click", previousTrack);
+
 function playMusic() {
     fetch("http://localhost:5009/player?action=play", {
         method: "PUT"
@@ -281,7 +287,10 @@ function playMusic() {
     .then(response => {
         if (response.ok) {
             console.log("Musiken spelas.");
-        } else {
+        } else if (response.status === 409) {
+            showPopup(); //visa popup om ingen enhet är aktiv
+        }
+        else {
             response.text().then(text => console.error("Fel:", text));
         }
     })
