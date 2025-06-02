@@ -64,7 +64,7 @@ public class MusicData {
 
         } catch (Exception e) {
             e.printStackTrace();
-            ctx.status(500).result("Error processing playlist data.");
+            //ctx.status(500).result("Error processing playlist data.");
         }
     }
 
