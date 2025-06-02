@@ -33,7 +33,7 @@ public class WeatherAnalyzer {
             return "3zhLD3MnatY98mrKI4O33G";
 
         } else if (season.equals("Summer") && weatherDescription.equals("Rain")) {
-            return "4p7lCzu4FNwPlyUtfm3mXY";
+            return "5rAP6LphEBzt9QlLjTXHal";
 
         } else if (season.equals("SA") && weatherDescription.equals("Rain")) {
             return "0nEchTvkwkbzJ54p5aTT7X";
@@ -54,7 +54,7 @@ public class WeatherAnalyzer {
             return "6UUCrjB00LEiGvhCWtxduy";
 
         } else if (season.equals("Tropical") && weatherDescription.equals("Rain")) {
-            return "4p7lCzu4FNwPlyUtfm3mXY";
+            return "5rAP6LphEBzt9QlLjTXHal";
 
         } else if (season.equals("Tropical") && weatherDescription.equals("Sunshine")) {
             return "3fVXnGdrsw7bKUmUd3OxFv";
