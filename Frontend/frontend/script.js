@@ -384,11 +384,10 @@ document.getElementById("prev-button").addEventListener("click", async () => {
 //funktion för att hämta spellista baserat på väder
 async function fetchPlaylist(weatherCode, temp) {
     try {
-    const response = await fetch("/player", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ state: "playing" }),
+        const response = await fetch("/player?action=play", {
+            method: "PUT"
     });
+
 
         if (!response.ok) {
             throw new Error(`API-fel vid spellista: ${response.status}`);
