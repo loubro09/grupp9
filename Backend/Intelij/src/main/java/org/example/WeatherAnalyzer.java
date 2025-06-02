@@ -60,7 +60,7 @@ public class WeatherAnalyzer {
             return "3fVXnGdrsw7bKUmUd3OxFv";
 
         } else if (season.equals("Tropical") && weatherDescription.equals("Cloudy")) {
-            return "6E0RTtaSREqhZJQgAWEFqt";
+            return "6Wjpdjap3aoSB73x43aOek";
 
         }else {
             return "7dv5JWzDCZd8RMwWKBgHG9";
