@@ -68,8 +68,6 @@ public class APIRunner {
             runner.locationController.locationByName(ctx);
         });
 
-
-
         //anrop för att få vädret hos en plats
         app.get("/weather", ctx -> {
             if (locationController.getLocationCoordinates() == null) {
@@ -97,28 +95,7 @@ public class APIRunner {
             }
         });
 
-        //anrop för att hämta väderdata
-       /** app.put("/player", ctx -> {
-            String accessToken = loginController.getAccessToken();
-            String state = ctx.bodyAsClass(Map.class).get("state").toString();
-
-            if ("playing".equals(state)) {
-                String playlistId = weatherAnalyzer.analyzeWeather(weatherData.getWeatherCode(), weatherData.getTemp());
-
-                if (!musicController.isActiveDevice(accessToken)) {
-                    ctx.status(409).result("Ingen aktiv enhet är tillgänglig för uppspelning.");
-                    return;
-                }
-
-                musicController.playOrResumeMusic(playlistId, accessToken);
-                musicData.fetchPlaylistData(ctx, playlistId, accessToken);
-            } else if ("paused".equals(state)) {
-                musicController.pauseMusic(accessToken);
-            } else {
-                ctx.status(400).result("Invalid state");
-            }
-        });
-        **/
+        //anrop för att kontrollera musiken
         app.put("/player", ctx -> {
             String accessToken = loginController.getAccessToken();
             String action = ctx.queryParam("action");
@@ -152,32 +129,12 @@ public class APIRunner {
             }
         });
 
-
-
-        //TODO Put/Player? action=next, istället för kombinera next och previous så blir det mer RESTFUL.
-
-        /**app.post("/player/actions", ctx -> {
-            String accessToken = loginController.getAccessToken();
-            String action = ctx.bodyAsClass(Map.class).get("action").toString();
-
-            if ("next".equals(action)) {
-                musicController.nextTrack(accessToken);
-            } else if ("previous".equals(action)) {
-                musicController.previousTrack(accessToken);
-            } else {
-                ctx.status(422).result("Ogiltig åtgärd.");
-            }
-        });
-         **/
-
-
         //anrop för att hämta låten som spelas just nu
         app.get("/current-song", ctx -> {
             String accessToken = loginController.getAccessToken();
             musicData.fetchCurrentlyPlaying(ctx, accessToken);
         });
     }
-
 
     //laddar config filen med api-nycklar
     public void loadConfig() {

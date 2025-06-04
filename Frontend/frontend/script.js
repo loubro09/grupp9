@@ -296,6 +296,7 @@ function playMusic() {
     })
     .catch(error => console.error("Nätverksfel:", error));
 }
+
 function pauseMusic() {
     fetch("http://localhost:5009/player?action=pause", {
         method: "PUT"
@@ -309,6 +310,7 @@ function pauseMusic() {
     })
     .catch(error => console.error("Nätverksfel:", error));
 }
+
 function nextTrack() {
     fetch("http://localhost:5009/player?action=next", {
         method: "PUT"
@@ -322,6 +324,7 @@ function nextTrack() {
     })
     .catch(error => console.error("Nätverksfel:", error));
 }
+
 function previousTrack() {
     fetch("http://localhost:5009/player?action=previous", {
         method: "PUT"
@@ -335,51 +338,6 @@ function previousTrack() {
     })
     .catch(error => console.error("Nätverksfel:", error));
 }
-
-
-
-
-/**document.getElementById("pause-button").addEventListener("click", async () => {
-    await fetch("/player", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ state: "paused" }),
-    });
-});
-
-// Play button
-document.getElementById("play-button").addEventListener("click", async () => {
-    const response = await fetch("/player", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ state: "playing" }),
-    });
-
-    if (response.status === 400) {
-        showPopup();
-    } else {
-        document.getElementById("play-notification").style.display = "none";
-    }
-});
-
-// Next button
-document.getElementById("next-button").addEventListener("click", async () => {
-    await fetch("/player/actions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "next" }),
-    });
-});
-
-// Previous button
-document.getElementById("prev-button").addEventListener("click", async () => {
-    await fetch("/player/actions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "previous" }),
-    });
-});
-**/
 
 //funktion för att hämta spellista baserat på väder
 async function fetchPlaylist(weatherCode, temp) {
