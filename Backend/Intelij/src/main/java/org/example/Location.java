@@ -41,7 +41,7 @@ public class Location {
         placeName = getPlaceNameFromCoordinates(locationCoordinates); //hämtar addressen till platsen
 
         if (placeName == null || placeName.contains("Invalid") || placeName.contains("You must enter")) {
-            ctx.status(400).result(placeName);
+            ctx.status(404).result(placeName);
             return;
         }
 
