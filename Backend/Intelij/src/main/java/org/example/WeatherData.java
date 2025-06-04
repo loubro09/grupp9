@@ -86,7 +86,7 @@ public class WeatherData {
     }
 
     public double getTemp() {
-        if(temp == null || temp.isEmpty()) {
+        if(temp == null || temp.isEmpty() || temp.equals("Unknown temperature")) {
             return 10000.0;
         }
         double temp1 = Double.parseDouble(temp);
