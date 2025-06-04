@@ -40,6 +40,11 @@ public class Location {
         locationCoordinates = getCoordinatesFromPlaceName(place); //hämtar koordinaterna till platsen
         placeName = getPlaceNameFromCoordinates(locationCoordinates); //hämtar addressen till platsen
 
+        if (placeName == null || placeName.contains("Invalid") || placeName.contains("You must enter")) {
+            ctx.status(400).result(placeName);
+            return;
+        }
+
         //skickar addressen till platsen till frontend
         JsonObject jsonResponse = new JsonObject();
         jsonResponse.addProperty("place", placeName);

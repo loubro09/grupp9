@@ -97,6 +97,7 @@ document.getElementById("fetchCoordinates").addEventListener("click", async () =
         const response = await fetch(`http://localhost:5009/coordinates?place=${encodeURIComponent(locationInput)}`);
 
         if (!response.ok) {
+            document.getElementById("place").textContent = "You must enter a valid city name.";
             throw new Error(`API-fel: ${response.status}`);
         }
 
@@ -267,10 +268,6 @@ async function fetchCurrentlyPlaying() {
         if (trackImageElement) trackImageElement.src = data.songImage || "/images/default.png";
 
     } catch (error) {
-        console.error("Error fetching currently playing song:", error);
-        const trackTitleElement = document.getElementById("track-title");
-        const trackArtistElement = document.getElementById("track-artist");
-        const trackImageElement = document.getElementById("track-image");
 
     }
 }
